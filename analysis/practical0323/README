@@ -1,0 +1,42 @@
+6/7
+何が何のファイルかさっぱり忘れた。今後はここにメモを残す。
+macro_bad0421.cpp
+がバッドキューブの補正用のマクロ。
+
+macro_correlation3.cpp
+で補正のための一次関数フィット、パラメータを出す。
+
+macro_correlation4.cpp
+がmacro_correlation3.cpp で出したパラメータを手で入力して、補正するためのマクロ。
+
+6/8
+04010410_holecor.root 
+はpic0325の28グッドキューブ画像を使っている。hxholeMeanとかは、28*6=168のエントリ。
+
+04200422_bad1cor.root
+はpic0415badの140バッドを補正した後のもの。hxholeとかは、補正した後の140*6=840のエントリ。
+
+学振用に、
+goodとbadの穴位置について、基準値から最も外れているものをヒストグラムに詰める、
+というマクロをかく。macro_correlation0608.cpp
+bad についてはもともとのbadのマクロに書き足す。
+macro_bad0421.cpp
+6/9
+基準値から最も外れているものの、”基準値からの差”をヒストグラムに詰める。
+
+6/10
+goodを155こ撮影した。一個ヒゲのせいで画像が解析できなかったため、ツリーには154このキューブの情報が入っている。
+macro_correlation4.cpp をコピーしてmacro_correlation4_0610.cppを作った。
+これに、macro_bad0421.cppの補正関数を入れて、補正前後の穴位置のstd. devのヒストグラムを見てみる。
+
+
+8/21
+久しぶりにこのフォルダを開けた。回転ジグのハードウェアの問題がほどんど解決して、
+解析コードを詰めている段階。また何がなんだかさっぱり忘れた。
+cam_daiza_hosei/ というフォルダを新しく作った。以降はそこにルートファイルや解析コードを置く。
+TTree_cube.cpp をコピーしてcam_daiza_hosei/に置いた。初めのルートファイルはこれで作る。
+
+
+上の記述を参考に、macro_correlation3.cpp とmacro_correlation4.cpp をコピーして見てみる。
+macro_correlation3.cpp をlinearfit.cpp と改名。
+macro_correlation4.cpp をafterfit.cpp と改名。
