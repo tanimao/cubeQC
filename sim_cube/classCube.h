@@ -53,6 +53,17 @@ class Cube : public TObject
                       float * hole[8], float *fibarea[8], 
                       float *sizemax); 
 
+
+    void CubeArrangex1(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
+                      Cube *c5, Cube *c6, Cube *c7, Cube *c8,
+                      float * hole[8], float *fibarea[8], 
+                      float *sizemax); 
+
+
+    void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
+                      Cube *c5, Cube *c6, Cube *c7, Cube *c8,
+                      float * hole[8], float *fibarea[8], 
+                      float *sizemax); 
 	private:
    int _id;
    float _surf1_xs;

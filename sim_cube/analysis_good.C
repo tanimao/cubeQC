@@ -4,6 +4,7 @@
 #include <cmath>
 
 #include <vector>
+//#include "classCube_matsu.cc"
 #include "classCube_matsu_sukima.cc"
 //#include "classCube.cc"
 
@@ -18,7 +19,7 @@
 
 
 
-void analysis()
+void analysis_good()
 {
 
 //    gRandom->SetSeed(2);
@@ -27,7 +28,7 @@ void analysis()
 //    srand((unsigned int) time(NULL));
 //    std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
     // TH1F でパラメたの測定分布を読み込む
-    TFile * fin = new TFile("2009010905hist.root", "read");
+    TFile * fin = new TFile("0829goodsizecor0910hist.root", "read");
     TH1D  * h1  = (TH1D*)fin->Get("h1");  //radius
     TH1D  * h2  = (TH1D*)fin->Get("h2");  //xhole
     TH1D  * h3  = (TH1D*)fin->Get("h3");  //yhole
@@ -99,41 +100,42 @@ void analysis()
             47.5  < r[3]  && r[3] < 51.5 && 
             47.5  < r[4]  && r[4] < 51.5 && 
             47.5  < r[5]  && r[5] < 51.5 &&
+
+            650 < xs[0] && xs[0] < 665 && 
+            650 < xs[1] && xs[1] < 665 && 
+            650 < xs[2] && xs[2] < 665 && 
+            650 < xs[3] && xs[3] < 665 && 
+            650 < xs[4] && xs[4] < 665 && 
+            650 < xs[5] && xs[5] < 665 && 
+
+            650 < ys[0] && ys[0] < 665 && 
+            650 < ys[1] && ys[1] < 665 && 
+            650 < ys[2] && ys[2] < 665 && 
+            650 < ys[3] && ys[3] < 665 && 
+            650 < ys[4] && ys[4] < 665 && 
+            650 < ys[5] && ys[5] < 665 && 
+
+            170 < xh[0] && xh[0] < 200 && 
+            170 < xh[1] && xh[1] < 200 && 
+            170 < xh[2] && xh[2] < 200 && 
+            170 < xh[3] && xh[3] < 200 && 
+            170 < xh[4] && xh[4] < 200 && 
+            170 < xh[5] && xh[5] < 200 && 
+
+            170 < yh[0] && yh[0] < 200 && 
+            170 < yh[1] && yh[1] < 200 && 
+            170 < yh[2] && yh[2] < 200 && 
+            170 < yh[3] && yh[3] < 200 && 
+            170 < yh[4] && yh[4] < 200 && 
+            170 < yh[5] && yh[5] < 200 && 
             */
-            652 < xs[0] && xs[0] < 664 && 
-            652 < xs[1] && xs[1] < 664 && 
-            652 < xs[2] && xs[2] < 664 && 
-            652 < xs[3] && xs[3] < 664 && 
-            652 < xs[4] && xs[4] < 664 && 
-            652 < xs[5] && xs[5] < 664 && 
 
-            652 < ys[0] && ys[0] < 664 && 
-            652 < ys[1] && ys[1] < 664 && 
-            652 < ys[2] && ys[2] < 664 && 
-            652 < ys[3] && ys[3] < 664 && 
-            652 < ys[4] && ys[4] < 664 && 
-            652 < ys[5] && ys[5] < 664 && 
-
-            168 < xh[0] && xh[0] < 198 && 
-            168 < xh[1] && xh[1] < 198 && 
-            168 < xh[2] && xh[2] < 198 && 
-            168 < xh[3] && xh[3] < 198 && 
-            168 < xh[4] && xh[4] < 198 && 
-            168 < xh[5] && xh[5] < 198 && 
-
-            168 < yh[0] && yh[0] < 198 && 
-            168 < yh[1] && yh[1] < 198 && 
-            168 < yh[2] && yh[2] < 198 && 
-            168 < yh[3] && yh[3] < 198 && 
-            168 < yh[4] && yh[4] < 198 && 
-            168 < yh[5] && yh[5] < 198 && 
-
-            47.8  < r[0]  &&
-            47.8  < r[1]  &&
-            47.8  < r[2]  &&
-            47.8  < r[3]  &&
-            47.8  < r[4]  &&
-            47.8  < r[5]  &&
+            48  < r[0]  && 
+            48  < r[1]  && 
+            48  < r[2]  && 
+            48  < r[3]  && 
+            48  < r[4]  && 
+            48  < r[5]  && 
             1==1
             ){        
             igood += 1; 
@@ -443,23 +445,21 @@ void analysis()
         std::cout << "sizemax::  y: "<< sizemax[0] << ", x: "<< sizemaxx[0] << std::endl;
         fout << sizemax[0] << "  " << sizemaxx[0] << std::endl;
         std::cout << "********************************************" << std::endl;
-        float widthrange = 82.2;
         if (sizemax[0]==100 || sizemaxx[0]==100){
             miss += 1;
         }
         else{
-
-            if (sizemax[0] < widthrange){
+            if (sizemax[0] < 82.3){
                 yclear += 1;
             }
-            if (sizemaxx[0] < widthrange){
+            if (sizemaxx[0] < 82.3){
                 xclear += 1;
             }
-            if (sizemax[0] < widthrange && sizemaxx[0] < widthrange){
-                andclear += 1;
+            if (sizemax[0] < 82.3 && sizemaxx[0] <82.3){
+                andclear +=1;
             }
-            if (sizemax[0] >=widthrange || sizemaxx[0] >=widthrange){
-                OutOfRange += 1 ;
+            if (sizemax[0] >=82.2 || sizemaxx[0] >=82.2){
+                OutOfRange +=1;
             }
         }
    } 
@@ -474,7 +474,7 @@ void analysis()
        std::cout << "good rate      : "<< (float) cube.size()*100/cubemax << "%" << std::endl;
        std::cout << "************************************************" << std::endl;
        std::cout << "miss : "   << miss     << " /" << unitnum << ", " << (float) miss*100/unitnum     << "%" << std::endl;
-       std::cout << "OutOfRange : "<<OutOfRange<< " /" <<unitnum<< ", "<< (float) OutOfRange*100/unitnum<< "%" << std::endl;
+       std::cout << "OutOfRange : " <<OutOfRange<< " /" << unitnum<<", "<<(float) OutOfRange*100/unitnum<< "%" << std::endl;
        std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
        std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
        std::cout << "both   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
