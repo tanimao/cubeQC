@@ -100,33 +100,33 @@ void analysis()
             47.5  < r[4]  && r[4] < 51.5 && 
             47.5  < r[5]  && r[5] < 51.5 &&
             */
-            652 < xs[0] && xs[0] < 664 && 
-            652 < xs[1] && xs[1] < 664 && 
-            652 < xs[2] && xs[2] < 664 && 
-            652 < xs[3] && xs[3] < 664 && 
-            652 < xs[4] && xs[4] < 664 && 
-            652 < xs[5] && xs[5] < 664 && 
+            652+0.8 < xs[0] && xs[0] < 664+0.8 && 
+            652+0.8 < xs[1] && xs[1] < 664+0.8 && 
+            652+0.8 < xs[2] && xs[2] < 664+0.8 && 
+            652+0.8 < xs[3] && xs[3] < 664+0.8 && 
+            652+0.8 < xs[4] && xs[4] < 664+0.8 && 
+            652+0.8 < xs[5] && xs[5] < 664+0.8 && 
 
-            652 < ys[0] && ys[0] < 664 && 
-            652 < ys[1] && ys[1] < 664 && 
-            652 < ys[2] && ys[2] < 664 && 
-            652 < ys[3] && ys[3] < 664 && 
-            652 < ys[4] && ys[4] < 664 && 
-            652 < ys[5] && ys[5] < 664 && 
+            652+0.8 < ys[0] && ys[0] < 664+0.8 && 
+            652+0.8 < ys[1] && ys[1] < 664+0.8 && 
+            652+0.8 < ys[2] && ys[2] < 664+0.8 && 
+            652+0.8 < ys[3] && ys[3] < 664+0.8 && 
+            652+0.8 < ys[4] && ys[4] < 664+0.8 && 
+            652+0.8 < ys[5] && ys[5] < 664+0.8 && 
 
-            168 < xh[0] && xh[0] < 198 && 
-            168 < xh[1] && xh[1] < 198 && 
-            168 < xh[2] && xh[2] < 198 && 
-            168 < xh[3] && xh[3] < 198 && 
-            168 < xh[4] && xh[4] < 198 && 
-            168 < xh[5] && xh[5] < 198 && 
+            168+4.5 < xh[0] && xh[0] < 198+1.5 && 
+            168+4.5 < xh[1] && xh[1] < 198+1.5 && 
+            168+4.5 < xh[2] && xh[2] < 198+1.5 && 
+            168+4.5 < xh[3] && xh[3] < 198+1.5 && 
+            168+4.5 < xh[4] && xh[4] < 198+1.5 && 
+            168+4.5 < xh[5] && xh[5] < 198+1.5 && 
 
-            168 < yh[0] && yh[0] < 198 && 
-            168 < yh[1] && yh[1] < 198 && 
-            168 < yh[2] && yh[2] < 198 && 
-            168 < yh[3] && yh[3] < 198 && 
-            168 < yh[4] && yh[4] < 198 && 
-            168 < yh[5] && yh[5] < 198 && 
+            168+4.5 < yh[0] && yh[0] < 198+1.5 && 
+            168+4.5 < yh[1] && yh[1] < 198+1.5 && 
+            168+4.5 < yh[2] && yh[2] < 198+1.5 && 
+            168+4.5 < yh[3] && yh[3] < 198+1.5 && 
+            168+4.5 < yh[4] && yh[4] < 198+1.5 && 
+            168+4.5 < yh[5] && yh[5] < 198+1.5 && 
 
             47.8  < r[0]  &&
             47.8  < r[1]  &&
@@ -189,7 +189,7 @@ void analysis()
         float sizediff = 0;
     
         std::cout << "===array 1:===" << std::endl;
-        CubeArrange1(cube[0], cube[1], cube[2], cube[3],
+        CubeArrangey1(cube[0], cube[1], cube[2], cube[3],
                      cube[4], cube[5], cube[6], cube[7],
                      hole, fibarea, sizemax);
     //    std::cout << hole[0] <<" "<< fibarea[0]<<" " << sizemax[0] << std::endl;
@@ -201,7 +201,7 @@ void analysis()
     
     
         std::cout << "===array 2:===" << std::endl;
-        CubeArrange2(cube[8],  cube[9],  cube[10], cube[11],
+        CubeArrangey2(cube[8],  cube[9],  cube[10], cube[11],
                      cube[12], cube[13], cube[14], cube[15],
                      hole, fibarea, sizemax);
     
@@ -219,7 +219,7 @@ void analysis()
     
     
         std::cout << "===array 3:===" << std::endl;
-        CubeArrange2(cube[16], cube[17], cube[18], cube[19],
+        CubeArrangey2(cube[16], cube[17], cube[18], cube[19],
                      cube[20], cube[21], cube[22], cube[23],
                      hole, fibarea, sizemax);
     
@@ -237,7 +237,7 @@ void analysis()
     
     
         std::cout << "===array 4:===" << std::endl;
-        CubeArrange2(cube[24], cube[25], cube[26], cube[27],
+        CubeArrangey2(cube[24], cube[25], cube[26], cube[27],
                      cube[28], cube[29], cube[30], cube[31],
                      hole, fibarea, sizemax);
     
@@ -252,7 +252,7 @@ void analysis()
     
     
         std::cout << "===array 5:===" << std::endl;
-        CubeArrange2(cube[32], cube[33], cube[34], cube[35],
+        CubeArrangey2(cube[32], cube[33], cube[34], cube[35],
                      cube[36], cube[37], cube[38], cube[39],
                      hole, fibarea, sizemax);
     
@@ -267,7 +267,7 @@ void analysis()
     
     
         std::cout << "===array 6:===" << std::endl;
-        CubeArrange2(cube[40], cube[41], cube[42], cube[43],
+        CubeArrangey2(cube[40], cube[41], cube[42], cube[43],
                      cube[44], cube[45], cube[46], cube[47],
                      hole, fibarea, sizemax);
     
@@ -282,7 +282,7 @@ void analysis()
     
     
         std::cout << "===array 7:===" << std::endl;
-        CubeArrange2(cube[48], cube[49], cube[50], cube[51],
+        CubeArrangey2(cube[48], cube[49], cube[50], cube[51],
                      cube[52], cube[53], cube[54], cube[55],
                      hole, fibarea, sizemax);
     
@@ -297,7 +297,7 @@ void analysis()
     
     
         std::cout << "===array 8:===" << std::endl;
-        CubeArrange2(cube[56], cube[57], cube[58], cube[59],
+        CubeArrangey2(cube[56], cube[57], cube[58], cube[59],
                      cube[60], cube[61], cube[62], cube[63],
                      hole, fibarea, sizemax);
     
@@ -443,7 +443,7 @@ void analysis()
         std::cout << "sizemax::  y: "<< sizemax[0] << ", x: "<< sizemaxx[0] << std::endl;
         fout << sizemax[0] << "  " << sizemaxx[0] << std::endl;
         std::cout << "********************************************" << std::endl;
-        float widthrange = 82.2;
+        float widthrange = 82.3;
         if (sizemax[0]==100 || sizemaxx[0]==100){
             miss += 1;
         }

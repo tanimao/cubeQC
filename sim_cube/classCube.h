@@ -42,13 +42,13 @@ class Cube : public TObject
     void GetSurf5(float parlist[5]);
     void GetSurf6(float parlist[5]);
 
-    void CubeArrange1(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
+    void CubeArrangey1(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
                       Cube *c5, Cube *c6, Cube *c7, Cube *c8,
                       float * hole[8], float *fibarea[8], 
                       float *sizemax); 
 
 
-    void CubeArrange2(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
+    void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
                       Cube *c5, Cube *c6, Cube *c7, Cube *c8,
                       float * hole[8], float *fibarea[8], 
                       float *sizemax); 

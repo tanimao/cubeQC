@@ -2,20 +2,35 @@ import numpy as np
 
 def checkSign(cubedata):
     ###good,badの分布を見て範囲を書いておく。
-    xholemax = 202
-    xholemin = 176.
-    yholemax = 202.
-    yholemin = 176.
-    xsizemax = 674.0
-    xsizemin = 642.0
-    ysizemax = 676.0
-    ysizemin = 642.0
+    ###9/28のけっかから範囲を更新
+    ##xholemax = 202
+    ##xholemin = 176.
+    ##yholemax = 202.
+    ##yholemin = 176.
+    ##xsizemax = 674.0
+    ##xsizemin = 642.0
+    ##ysizemax = 676.0
+    ##ysizemin = 642.0
+    
+    ##rholemin = 47
+    ##rholemax = 53
+
+    xholemax = 198+2
+    yholemax = 198+2
+    xholemin = 168+4
+    yholemin = 168+4
+
+    xsizemax = 664.8
+    ysizemax = 664.8
+    xsizemin = 652.8
+    ysizemin = 652.8
+    
+    rholemin = 47.8
+    rholemax = 100 ## ありえないはず。実質下限のみ用意する。
     Esummax  = 200
     bumpthr1 = 200
     bumpmax  = 300
 
-    rholemin = 47
-    rholemax = 53
 
     ###cubedataの中身を名前つける。
     '''
@@ -69,13 +84,14 @@ def checkSign(cubedata):
             sign = 'bad'
             print('yhole is bad.')
 
-    #    if xsize[surface] > xsizemax or xsize[surface] < xsizemin :
-    #        sign = 'bad'
-    #        print('xsize is bad.')
+        ###今回(9/28以降はサイズでしっかり切る)
+        if xsize[surface] > xsizemax or xsize[surface] < xsizemin :
+            sign = 'bad'
+            print('xsize is bad.')
 
-    #    if ysize[surface] > ysizemax or ysize[surface] < ysizemin :
-    #        sign = 'bad'
-    #        print('ysize is bad.')
+        if ysize[surface] > ysizemax or ysize[surface] < ysizemin :
+            sign = 'bad'
+            print('ysize is bad.')
 
         if Esum[surface]  > Esummax :
             sign = 'bad'
@@ -103,36 +119,38 @@ def checkSign(cubedata):
         return sign
 
     #bad でないとき。
-    elif  ( (xhole[0] > xholemin-1 and xhole[0] < xholemin +1) or
-            (xhole[0] > xholemax-1 and xhole[0] < xholemax +1) or
-            (xhole[1] > xholemin-1 and xhole[1] < xholemin +1) or
-            (xhole[1] > xholemax-1 and xhole[1] < xholemax +1) or
-            (xhole[2] > xholemin-1 and xhole[2] < xholemin +1) or
-            (xhole[2] > xholemax-1 and xhole[2] < xholemax +1) or
-            (xhole[3] > xholemin-1 and xhole[3] < xholemin +1) or
-            (xhole[3] > xholemax-1 and xhole[3] < xholemax +1) or
-            (xhole[4] > xholemin-1 and xhole[4] < xholemin +1) or
-            (xhole[4] > xholemax-1 and xhole[4] < xholemax +1) or
-            (xhole[5] > xholemin-1 and xhole[5] < xholemin +1) or
-            (xhole[5] > xholemax-1 and xhole[5] < xholemax +1) ) :
+    ##ミドル領域は1ずつ取るのではなく、0.5ずつにする
+    ##１ずつだと、ミドルが多くなりすぎる。
+    elif  ( (xhole[0] > xholemin-0.5 and xhole[0] < xholemin +0.5) or
+            (xhole[0] > xholemax-0.5 and xhole[0] < xholemax +0.5) or
+            (xhole[1] > xholemin-0.5 and xhole[1] < xholemin +0.5) or
+            (xhole[1] > xholemax-0.5 and xhole[1] < xholemax +0.5) or
+            (xhole[2] > xholemin-0.5 and xhole[2] < xholemin +0.5) or
+            (xhole[2] > xholemax-0.5 and xhole[2] < xholemax +0.5) or
+            (xhole[3] > xholemin-0.5 and xhole[3] < xholemin +0.5) or
+            (xhole[3] > xholemax-0.5 and xhole[3] < xholemax +0.5) or
+            (xhole[4] > xholemin-0.5 and xhole[4] < xholemin +0.5) or
+            (xhole[4] > xholemax-0.5 and xhole[4] < xholemax +0.5) or
+            (xhole[5] > xholemin-0.5 and xhole[5] < xholemin +0.5) or
+            (xhole[5] > xholemax-0.5 and xhole[5] < xholemax +0.5) ) :
         
         sign = 'middle'
         print("xhole is around threshold:", sign)
         return sign
 
 
-    elif  ( (yhole[0] > yholemin-1 and yhole[0] < yholemin +1) or
-            (yhole[0] > yholemax-1 and yhole[0] < yholemax +1) or
-            (yhole[1] > yholemin-1 and yhole[1] < yholemin +1) or
-            (yhole[1] > yholemax-1 and yhole[1] < yholemax +1) or
-            (yhole[2] > yholemin-1 and yhole[2] < yholemin +1) or
-            (yhole[2] > yholemax-1 and yhole[2] < yholemax +1) or
-            (yhole[3] > yholemin-1 and yhole[3] < yholemin +1) or
-            (yhole[3] > yholemax-1 and yhole[3] < yholemax +1) or
-            (yhole[4] > yholemin-1 and yhole[4] < yholemin +1) or
-            (yhole[4] > yholemax-1 and yhole[4] < yholemax +1) or
-            (yhole[5] > yholemin-1 and yhole[5] < yholemin +1) or
-            (yhole[5] > yholemax-1 and yhole[5] < yholemax +1) ) :
+    elif  ( (yhole[0] > yholemin-0.5 and yhole[0] < yholemin +0.5) or
+            (yhole[0] > yholemax-0.5 and yhole[0] < yholemax +0.5) or
+            (yhole[1] > yholemin-0.5 and yhole[1] < yholemin +0.5) or
+            (yhole[1] > yholemax-0.5 and yhole[1] < yholemax +0.5) or
+            (yhole[2] > yholemin-0.5 and yhole[2] < yholemin +0.5) or
+            (yhole[2] > yholemax-0.5 and yhole[2] < yholemax +0.5) or
+            (yhole[3] > yholemin-0.5 and yhole[3] < yholemin +0.5) or
+            (yhole[3] > yholemax-0.5 and yhole[3] < yholemax +0.5) or
+            (yhole[4] > yholemin-0.5 and yhole[4] < yholemin +0.5) or
+            (yhole[4] > yholemax-0.5 and yhole[4] < yholemax +0.5) or
+            (yhole[5] > yholemin-0.5 and yhole[5] < yholemin +0.5) or
+            (yhole[5] > yholemax-0.5 and yhole[5] < yholemax +0.5) ) :
         
         sign = 'middle'
         print("yhole is around threshold:", sign)
@@ -147,18 +165,18 @@ def checkSign(cubedata):
         print ('There are some bump:',sign)
         return sign
     
-    elif    xsize[0] > xsizemax or xsize[0] < xsizemin or xsize[1] > xsizemax or xsize[1] < xsizemin or xsize[2] > xsizemax or xsize[2] < xsizemin or xsize[3] > xsizemax or xsize[3] < xsizemin or xsize[4] > xsizemax or xsize[4] < xsizemin or xsize[5] > xsizemax or xsize[5] < xsizemin :
+    ##elif    xsize[0] > xsizemax or xsize[0] < xsizemin or xsize[1] > xsizemax or xsize[1] < xsizemin or xsize[2] > xsizemax or xsize[2] < xsizemin or xsize[3] > xsizemax or xsize[3] < xsizemin or xsize[4] > xsizemax or xsize[4] < xsizemin or xsize[5] > xsizemax or xsize[5] < xsizemin :
 
-        sign = 'middle'
-        print ('xsize is out of range:',sign)
-        return sign
-    
+    ##    sign = 'middle'
+    ##    print ('xsize is out of range:',sign)
+    ##    return sign
+    ##
 
-    elif    ysize[0] > ysizemax or  ysize[0] < ysizemin or ysize[1] > ysizemax or ysize[1] < ysizemin or ysize[2] > ysizemax or ysize[2] < ysizemin or ysize[3] > ysizemax or ysize[3] < ysizemin or ysize[4] > ysizemax or ysize[4] < ysizemin or ysize[5] > ysizemax or ysize[5] < ysizemin :
-        
-        sign = 'middle'
-        print ('ysize is out of range:',sign)
-        return sign
+    ##elif    ysize[0] > ysizemax or  ysize[0] < ysizemin or ysize[1] > ysizemax or ysize[1] < ysizemin or ysize[2] > ysizemax or ysize[2] < ysizemin or ysize[3] > ysizemax or ysize[3] < ysizemin or ysize[4] > ysizemax or ysize[4] < ysizemin or ysize[5] > ysizemax or ysize[5] < ysizemin :
+    ##    
+    ##    sign = 'middle'
+    ##    print ('ysize is out of range:',sign)
+    ##    return sign
         
 
 

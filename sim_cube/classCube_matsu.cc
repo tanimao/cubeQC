@@ -127,7 +127,7 @@ void Cube::GetSurf6(float parlist[5])
 }
 
 
-void CubeArrange1(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
+void CubeArrangey1(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
                   Cube *c5, Cube *c6, Cube *c7, Cube *c8, 
                   float * hole, float * fibarea,
                   float * sizemax)
@@ -175,7 +175,7 @@ void CubeArrange1(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
 }
 
 
-void CubeArrange2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
+void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
                   Cube *c5, Cube *c6, Cube *c7, Cube *c8, 
                   float * hole, float * fibarea,
                   float * sizemax)
@@ -444,14 +444,15 @@ void CubeArrangex1(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     c8->GetSurf2(par8);
 
     ///穴位置が縦の時と定義がちょっと異なる
-    hole[0] = par1[0]-par1[2]; 
-    hole[1] = par2[0]-par2[2] + par1[1];
-    hole[2] = par3[0]-par3[2] + par1[1]+par2[1];
-    hole[3] = par4[0]-par4[2] + par1[1]+par2[1]+par3[1];
-    hole[4] = par5[0]-par5[2] + par1[1]+par2[1]+par3[1]+par4[1];
-    hole[5] = par6[0]-par6[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1];
-    hole[6] = par7[0]-par7[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1]+par6[1];
-    hole[7] = par8[0]-par8[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1]+par6[1]+par7[1];
+    //やっぱりyと同じにする。
+    hole[0] = par1[2]; 
+    hole[1] = par2[2] + par1[1];
+    hole[2] = par3[2] + par1[1]+par2[1];
+    hole[3] = par4[2] + par1[1]+par2[1]+par3[1];
+    hole[4] = par5[2] + par1[1]+par2[1]+par3[1]+par4[1];
+    hole[5] = par6[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1];
+    hole[6] = par7[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1]+par6[1];
+    hole[7] = par8[2] + par1[1]+par2[1]+par3[1]+par4[1]+par5[1]+par6[1]+par7[1];
 
 
     fibarea[0] = 2*par1[4];

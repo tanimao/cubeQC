@@ -6,8 +6,8 @@
 
 void TTree_forrange(){
 
-TString filedate = "2009010905cor";
-TString dumpdate = "2009010905";
+TString filedate = "0828bad0831cor";
+TString dumpdate = "0828bad0831cor0911";
 TString makeroot = ".root";
 TString opentxt1 = "../../../files/data";
 TString opentxt2 = ".txt";
@@ -24,7 +24,7 @@ if(fin.fail()){
     cerr << "cannot open file. " << endl;
     return 1;
 }
- Int_t n_cube = 576; //cube数
+ Int_t n_cube = 241; //cube数
  Int_t n = 6;        //6面
 
 std::string saveName[n];

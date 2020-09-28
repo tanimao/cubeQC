@@ -15,7 +15,6 @@ import matplotlib.patches as patches
 from numba.decorators import jit
 
 
-'''
 ###cubeQC.py の時はこれ
 from QCpackage2.package_cube import manualminimize
 from QCpackage2.package_cube import figureInfo
@@ -50,7 +49,6 @@ from package_cube import detectHole
 from package_cube import outline2
 from package_cube import choiceOutline3
 
-'''
 ###plt.show()する時はこれ
 from package_cube_show import manualminimize
 from package_cube_show import figureInfo
@@ -72,18 +70,18 @@ from package_cube_show import choiceOutline3
 ##############################################################################
 
 def ANALYSIS(saveName, ImageName, camID):
-        start = time.time()
+                    start = time.time()
    # for cubenumber in range(16):
     
-        for i in range(576):
-            for k in range(6):
+      #  for i in range(576):
+       #     for k in range(6):
             
 #                for j in range(4):
-                    saveName='cube'+str(i+ 1)+'cam'+str(k+1) 
+#                    saveName='cube'+str(i+ 1)+'cam'+str(k+1) 
          #           saveName  = 'cube'+str(cubenumber+1)+'cam'+str(k+4)+'_'+str(i+1)+str(j+1)
-                    ImageName = 'mao_pictures/pic200901/'+ saveName + '.jpg' 
+ #                   ImageName = 'mao_pictures/pic200912/'+ saveName + '.jpg' 
                  #   print (saveName)   
-                    filename = 'files/data2009010905.txt'
+                    filename = 'files/data200912.txt'
                     imgG= cv2.imread(ImageName,0)
                     if imgG is None :
                         print('image not found!')
@@ -147,8 +145,8 @@ def ANALYSIS(saveName, ImageName, camID):
                         file = open(filename,'a')
                         file.write(saveName +' icam: '+str(0)+' direction: '+str(0)+' '+str(cubedata_err)+'\n')#' size(outline) :'+str(0)+','+str(0)+'\n')
                         file.close()
-                        continue
-#                        return cubedata_err
+        #                continue
+                        return cubedata_err
 
 
 
@@ -214,8 +212,8 @@ def ANALYSIS(saveName, ImageName, camID):
                         file = open(filename,'a')
                         file.write(saveName +' icam: '+str(0)+' direction: '+str(0)+' '+str(cubedata_err)+'\n')#' size(outline) :'+str(0)+','+str(0)+'\n')
                         file.close()
-                        continue
- #                       return cubedata_err
+#                        continue
+                        return cubedata_err
  #                   '''    
         
                     print("cube size by line detection : {},{}".format(xsize,ysize))
@@ -375,13 +373,13 @@ def ANALYSIS(saveName, ImageName, camID):
 
                     print('saveName:{} ,output:{}\n'.format(saveName, cubedata))
                     file = open(filename,'a')
-                    file.write(saveName +' icam: '+str(k+1)+' direction: '+str(directionID+1)+' '+str(cubedata)+'\n')#' size(outline) :'+str(round(cube_size[0],2))+','+str(round(cube_size[1],2))+'\n')
+                    file.write(saveName +' icam: '+str(camID+1)+' direction: '+str(directionID+1)+' '+str(cubedata)+'\n')#' size(outline) :'+str(round(cube_size[0],2))+','+str(round(cube_size[1],2))+'\n')
                     file.close()
 
 
                     print('type of cubedata: ', type(cubedata))
   #                  plt.show()
-  #                  return cubedata
+                    return cubedata
     
 
 

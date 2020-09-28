@@ -191,7 +191,7 @@ void analysis_good()
         float sizediff = 0;
     
         std::cout << "===array 1:===" << std::endl;
-        CubeArrange1(cube[0], cube[1], cube[2], cube[3],
+        CubeArrangey1(cube[0], cube[1], cube[2], cube[3],
                      cube[4], cube[5], cube[6], cube[7],
                      hole, fibarea, sizemax);
     //    std::cout << hole[0] <<" "<< fibarea[0]<<" " << sizemax[0] << std::endl;
@@ -203,7 +203,7 @@ void analysis_good()
     
     
         std::cout << "===array 2:===" << std::endl;
-        CubeArrange2(cube[8],  cube[9],  cube[10], cube[11],
+        CubeArrangey2(cube[8],  cube[9],  cube[10], cube[11],
                      cube[12], cube[13], cube[14], cube[15],
                      hole, fibarea, sizemax);
     
@@ -221,7 +221,7 @@ void analysis_good()
     
     
         std::cout << "===array 3:===" << std::endl;
-        CubeArrange2(cube[16], cube[17], cube[18], cube[19],
+        CubeArrangey2(cube[16], cube[17], cube[18], cube[19],
                      cube[20], cube[21], cube[22], cube[23],
                      hole, fibarea, sizemax);
     
@@ -239,7 +239,7 @@ void analysis_good()
     
     
         std::cout << "===array 4:===" << std::endl;
-        CubeArrange2(cube[24], cube[25], cube[26], cube[27],
+        CubeArrangey2(cube[24], cube[25], cube[26], cube[27],
                      cube[28], cube[29], cube[30], cube[31],
                      hole, fibarea, sizemax);
     
@@ -254,7 +254,7 @@ void analysis_good()
     
     
         std::cout << "===array 5:===" << std::endl;
-        CubeArrange2(cube[32], cube[33], cube[34], cube[35],
+        CubeArrangey2(cube[32], cube[33], cube[34], cube[35],
                      cube[36], cube[37], cube[38], cube[39],
                      hole, fibarea, sizemax);
     
@@ -269,7 +269,7 @@ void analysis_good()
     
     
         std::cout << "===array 6:===" << std::endl;
-        CubeArrange2(cube[40], cube[41], cube[42], cube[43],
+        CubeArrangey2(cube[40], cube[41], cube[42], cube[43],
                      cube[44], cube[45], cube[46], cube[47],
                      hole, fibarea, sizemax);
     
@@ -284,7 +284,7 @@ void analysis_good()
     
     
         std::cout << "===array 7:===" << std::endl;
-        CubeArrange2(cube[48], cube[49], cube[50], cube[51],
+        CubeArrangey2(cube[48], cube[49], cube[50], cube[51],
                      cube[52], cube[53], cube[54], cube[55],
                      hole, fibarea, sizemax);
     
@@ -299,7 +299,7 @@ void analysis_good()
     
     
         std::cout << "===array 8:===" << std::endl;
-        CubeArrange2(cube[56], cube[57], cube[58], cube[59],
+        CubeArrangey2(cube[56], cube[57], cube[58], cube[59],
                      cube[60], cube[61], cube[62], cube[63],
                      hole, fibarea, sizemax);
     

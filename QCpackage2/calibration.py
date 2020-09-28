@@ -21,10 +21,10 @@ def calibration(daizaID, cubedata, icam):
     if      camID == 1 or camID == 2 or camID == 3:
         caliID = 12*(daizaID-1) + 4*(camID-1) + (directionID-1)
     
-    else if camID == 4 or camID == 5 or camID == 6:
+    elif camID == 4 or camID == 5 or camID == 6:
         caliID = 96 + 12*(daizaID-1) + 4*(camID-4) + (directionID-1)
     
-    else if camID == 0 :
+    elif camID == 0 :
         print("camID is 0; img is broken")
         calidata = [ 0, 0, 0, 0, 0, 0, 0, 0]
         return calidata
