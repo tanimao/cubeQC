@@ -18,18 +18,18 @@ print('MainAnalysis __name__ is ', MainAnalysis0604.__name__)
 
 ###カメラの起動
 cam1 = cv2.VideoCapture(0)
-cam2 = cv2.VideoCapture(4)
-cam3 = cv2.VideoCapture(1)
-cam4 = cv2.VideoCapture(5)
-cam5 = cv2.VideoCapture(2)
-cam6 = cv2.VideoCapture(6)
+cam2 = cv2.VideoCapture(6)
+cam3 = cv2.VideoCapture(2)
+cam4 = cv2.VideoCapture(4)
+cam5 = cv2.VideoCapture(7)
+cam6 = cv2.VideoCapture(3)
 width_cam  = int(cam1.get(cv2.CAP_PROP_FRAME_WIDTH ))//2
 height_cam = int(cam1.get(cv2.CAP_PROP_FRAME_HEIGHT))//2
 cubeID = 1
 
 
 ###シリアル通信機器読み込み
-ser = serial.Serial('/dev/tty.usbmodem145301',9600)
+ser = serial.Serial('/dev/tty.usbmodem142201',9600)
 ###六個のデータセットを3組保持するために、ナムパイ配列を使う。
 saveName = [0] * 6
 ImageName= [0] * 6
