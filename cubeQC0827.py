@@ -25,7 +25,7 @@ cam5 = cv2.VideoCapture(2)
 cam6 = cv2.VideoCapture(6)
 width_cam  = int(cam1.get(cv2.CAP_PROP_FRAME_WIDTH ))//2
 height_cam = int(cam1.get(cv2.CAP_PROP_FRAME_HEIGHT))//2
-cubeID = 161
+cubeID = 1
 
 
 ###シリアル通信機器読み込み
@@ -66,8 +66,8 @@ print('勝手にジグが回転したでしょう？\n目の前の台座にキ�
 firststep = input()
 ser.write(b'200\n')
 
-picfolder = 'mao_pictures/pic200901/'
-filename = 'files/data200901_.txt'
+picfolder = 'mao_pictures/pic200912/'
+filename = 'files/data200912.txt'
 
 
 #############################################################################################
