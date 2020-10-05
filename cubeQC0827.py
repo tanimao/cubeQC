@@ -8,7 +8,7 @@ from QCpackage2 import ServoRun
 from QCpackage2 import calibration
 import numpy as np
 
-
+##コミット用テストコメント
 
 ###読み込めてるかの確認
 print('__name__ is', __name__)
