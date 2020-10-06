@@ -5,7 +5,7 @@
 
 void macro_forrangeif(){
 
-TFile *fin     = new TFile("2009010905.root", "read");
+TFile *fin     = new TFile("201005corg.root", "read");
 //TFile *finbad  = new TFile("0828bad0831cor.root","read");
 TTree *tree    = (TTree*)fin->Get("tree");
 //TTree *treebad = (TTree*)finbad->Get("tree");
@@ -19,15 +19,22 @@ TH1D* hd = new TH1D("hd","distance",100,0,100);
 TH1D* hb = new TH1D("hb","bump",100,0,1000); 
 TH1D* hE = new TH1D("hE","Esum",1000,0,500); 
 
+TH1D* h1all = new TH1D("h1all","radius",100,45,55); 
+TH1D* h2all = new TH1D("h2all","xhole_max",100,140,220); 
+TH1D* h3all = new TH1D("h3all","yhole_max",100,140,220); 
+TH1D* h4all = new TH1D("h4all","xsize_max",100,640,680); 
+TH1D* h5all = new TH1D("h5all","ysize_max",100,640,680); 
+TH1D* hball = new TH1D("hball","bump",100,0,1000); 
+TH1D* hEall = new TH1D("hEall","Esum",1000,0,500); 
 
-TH1D* h1full = new TH1D("h1full","radius",100,45,55); 
-TH1D* h2full = new TH1D("h2full","xhole_max",100,140,220); 
-TH1D* h3full = new TH1D("h3full","yhole_max",100,140,220); 
-TH1D* h4full = new TH1D("h4full","xsize_max",100,640,680); 
-TH1D* h5full = new TH1D("h5full","ysize_max",100,640,680); 
-TH1D* hdfull = new TH1D("hdfull","distance",100,0,100); 
-TH1D* hbfull = new TH1D("hbfull","bump",100,0,1000); 
-TH1D* hEfull = new TH1D("hEfull","Esum",1000,0,500); 
+TH1D* h1six = new TH1D("h1six","radius",100,45,55); 
+TH1D* h2six = new TH1D("h2six","xhole_max",100,140,220); 
+TH1D* h3six = new TH1D("h3six","yhole_max",100,140,220); 
+TH1D* h4six = new TH1D("h4six","xsize_max",100,640,680); 
+TH1D* h5six = new TH1D("h5six","ysize_max",100,640,680); 
+TH1D* hdsix = new TH1D("hdsix","distance",100,0,100); 
+TH1D* hbsix = new TH1D("hbsix","bump",100,0,1000); 
+TH1D* hEsix = new TH1D("hEsix","Esum",1000,0,500); 
 
 //TH1D* h1bad = new TH1D("h1bad","radius",100,40,60); 
 //TH1D* h2bad = new TH1D("h2bad","xhole_max",100,150,220); 
@@ -143,6 +150,16 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
 
     
     for (int isurf = 0; isurf <6; isurf++){
+
+
+
+        h1all->Fill(radius[isurf]);
+        h2all->Fill( xhole[isurf]);
+        h3all->Fill( yhole[isurf]);
+        h4all->Fill( xsize[isurf]);
+        h5all->Fill( ysize[isurf]);
+        hball->Fill(  bump[isurf]);
+        hEall->Fill(  Esum[isurf]);
         if (radiabs <= fabs(radius[isurf]-rMean)){
             radiabs  = fabs(radius[isurf]-rMean);
             rMax = radius[isurf];
@@ -197,19 +214,19 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
  168+4+0.5 < yhole[4] && yhole[4] < 198 -0.5+2 &&
  168+4+0.5 < yhole[5] && yhole[5] < 198 -0.5+2 &&
    
-  653-0.2 < xsize[0] && xsize[0] < 665-0.2 &&
-  653-0.2 < xsize[1] && xsize[1] < 665-0.2 &&
-  653-0.2 < xsize[2] && xsize[2] < 665-0.2 &&
-  653-0.2 < xsize[3] && xsize[3] < 665-0.2 &&
-  653-0.2 < xsize[4] && xsize[4] < 665-0.2 &&
-  653-0.2 < xsize[5] && xsize[5] < 665-0.2 &&
+  651.8 < xsize[0] && xsize[0] < 664.8-0.5 &&
+  651.8 < xsize[1] && xsize[1] < 664.8-0.5 &&
+  651.8 < xsize[2] && xsize[2] < 664.8-0.5 &&
+  651.8 < xsize[3] && xsize[3] < 664.8-0.5 &&
+  651.8 < xsize[4] && xsize[4] < 664.8-0.5 &&
+  651.8 < xsize[5] && xsize[5] < 664.8-0.5 &&
   
-  653-0.2 < ysize[0] && ysize[0] < 665-0.2 &&
-  653-0.2 < ysize[1] && ysize[1] < 665-0.2 &&
-  653-0.2 < ysize[2] && ysize[2] < 665-0.2 &&
-  653-0.2 < ysize[3] && ysize[3] < 665-0.2 &&
-  653-0.2 < ysize[4] && ysize[4] < 665-0.2 &&
-  653-0.2 < ysize[5] && ysize[5] < 665-0.2 &&
+  651.8 < ysize[0] && ysize[0] < 664.8-0.5 &&
+  651.8 < ysize[1] && ysize[1] < 664.8-0.5 &&
+  651.8 < ysize[2] && ysize[2] < 664.8-0.5 &&
+  651.8 < ysize[3] && ysize[3] < 664.8-0.5 &&
+  651.8 < ysize[4] && ysize[4] < 664.8-0.5 &&
+  651.8 < ysize[5] && ysize[5] < 664.8-0.5 &&
  
  Esum[0] < 200 &&
  Esum[1] < 200 &&
@@ -237,13 +254,13 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     hE->Fill(EMax);
     
     for (int fill =0; fill<6; fill++){
-    h1full->Fill(radius[fill]);
-    h2full->Fill(xhole[fill]);
-    h3full->Fill(yhole[fill]);
-    h4full->Fill(xsize[fill]);
-    h5full->Fill(ysize[fill]);
-    hbfull->Fill(bump[fill]);
-    hEfull->Fill(Esum[fill]);
+    h1six->Fill(radius[fill]);
+    h2six->Fill(xhole[fill]);
+    h3six->Fill(yhole[fill]);
+    h4six->Fill(xsize[fill]);
+    h5six->Fill(ysize[fill]);
+    hbsix->Fill(bump[fill]);
+    hEsix->Fill(Esum[fill]);
 
 //    h1bad->Fill(radiusbad[fill]);
 //    h2bad->Fill(xholebad[fill]);
@@ -267,7 +284,7 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
 
 }
 
-TFile *fout = new TFile("2009010905cut0925.root", "recreate");
+TFile *fout = new TFile("201005cutg.root", "recreate");
 h1->Write();
 h2->Write();
 h3->Write();
@@ -276,14 +293,21 @@ h5->Write();
 hb->Write();
 hE->Write();
 
+h1all->Write();
+h2all->Write();
+h3all->Write();
+h4all->Write();
+h5all->Write();
+hball->Write();
+hEall->Write();
 
-h1full->Write();
-h2full->Write();
-h3full->Write();
-h4full->Write();
-h5full->Write();
-hbfull->Write();
-hEfull->Write();
+h1six->Write();
+h2six->Write();
+h3six->Write();
+h4six->Write();
+h5six->Write();
+hbsix->Write();
+hEsix->Write();
 
 //h1bad->Write();
 //h2bad->Write();
