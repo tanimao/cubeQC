@@ -30,9 +30,9 @@ class Cube : public TObject
     }
 
     inline void GetInfoSurf1() {
-        std::cerr << "call: GetInfoSurf1()" << std::endl;
-   	    std::cerr << " _surf1_xs = " << _surf1_xs
-                  << " _surf1_ys= " << _surf1_ys << std::endl;
+        //std::cerr << "call: GetInfoSurf1()" << std::endl;
+   	    //std::cerr << " _surf1_xs = " << _surf1_xs
+          //        << " _surf1_ys= " << _surf1_ys << std::endl;
     }
 
     void GetSurf1(float parlist[5]);
