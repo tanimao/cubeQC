@@ -4,7 +4,7 @@
 #include <string>
 
 
-void TTree_cube(){
+void TTree_rate(){
 
 TString filedate = "0820";
 TString dumpdate = "0823";
