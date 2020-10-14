@@ -16,9 +16,7 @@
 // root -l analysis.C
 
 
-
-
-void analysis()
+void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int smin)
 {
 
 //    gRandom->SetSeed(2);
@@ -27,7 +25,7 @@ void analysis()
 //    srand((unsigned int) time(NULL));
 //    //std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
     // TH1F でパラメたの測定分布を読み込む
-    TFile * fin = new TFile("201007hist.root", "read");
+//    TFile * fin = new TFile("201007hist.root", "read");
     TH1D  * h1  = (TH1D*)fin->Get("h1");  //radius
     TH1D  * h2  = (TH1D*)fin->Get("h2");  //xhole
     TH1D  * h3  = (TH1D*)fin->Get("h3");  //yhole
@@ -47,7 +45,7 @@ void analysis()
     float parlist[5];
     
     int igood = 0;
-    int cubemax = 10000;
+    int cubemax = 5000;
     int unitnum = 5000;
    // キューブのパラメータを決定しながら、キューブを定義する
 
@@ -64,70 +62,35 @@ void analysis()
             r[isu]  = h1->GetRandom();
         }
         if (
-                /*
-            650 < xs[0] && xs[0] < 669-2 && 
-            650 < xs[1] && xs[1] < 669-2 && 
-            650 < xs[2] && xs[2] < 669-2 && 
-            650 < xs[3] && xs[3] < 669-2 && 
-            650 < xs[4] && xs[4] < 669-2 && 
-            650 < xs[5] && xs[5] < 669-2 && 
+            //各定数は範囲の下限。
+            //ここに変数を足して範囲を変えてゆく。
+            649.5+smin < xs[0] && xs[0] < 664.3+smax && 
+            649.5+smin < xs[1] && xs[1] < 664.3+smax && 
+            649.5+smin < xs[2] && xs[2] < 664.3+smax && 
+            649.5+smin < xs[3] && xs[3] < 664.3+smax && 
+            649.5+smin < xs[4] && xs[4] < 664.3+smax && 
+            649.5+smin < xs[5] && xs[5] < 664.3+smax && 
 
-            650 < ys[0] && ys[0] < 669-2 && 
-            650 < ys[1] && ys[1] < 669-2 && 
-            650 < ys[2] && ys[2] < 669-2 && 
-            650 < ys[3] && ys[3] < 669-2 && 
-            650 < ys[4] && ys[4] < 669-2 && 
-            650 < ys[5] && ys[5] < 669-2 && 
+            649.5+smin < ys[0] && ys[0] < 664.3+smax && 
+            649.5+smin < ys[1] && ys[1] < 664.3+smax && 
+            649.5+smin < ys[2] && ys[2] < 664.3+smax && 
+            649.5+smin < ys[3] && ys[3] < 664.3+smax && 
+            649.5+smin < ys[4] && ys[4] < 664.3+smax && 
+            649.5+smin < ys[5] && ys[5] < 664.3+smax && 
 
-            165+9 < xh[0] && xh[0] < 200 && 
-            165+9 < xh[1] && xh[1] < 200 && 
-            165+9 < xh[2] && xh[2] < 200 && 
-            165+9 < xh[3] && xh[3] < 200 && 
-            165+9 < xh[4] && xh[4] < 200 && 
-            165+9 < xh[5] && xh[5] < 200 && 
+            162.5+hmin < xh[0] && xh[0] < 199.5+hmax && 
+            162.5+hmin < xh[1] && xh[1] < 199.5+hmax && 
+            162.5+hmin < xh[2] && xh[2] < 199.5+hmax && 
+            162.5+hmin < xh[3] && xh[3] < 199.5+hmax && 
+            162.5+hmin < xh[4] && xh[4] < 199.5+hmax && 
+            162.5+hmin < xh[5] && xh[5] < 199.5+hmax && 
 
-            165+9 < yh[0] && yh[0] < 200 && 
-            165+9 < yh[1] && yh[1] < 200 && 
-            165+9 < yh[2] && yh[2] < 200 && 
-            165+9 < yh[3] && yh[3] < 200 && 
-            165+9 < yh[4] && yh[4] < 200 && 
-            165+9 < yh[5] && yh[5] < 200 && 
-
-            47.5  < r[0]  && 
-            47.5  < r[1]  && 
-            47.5  < r[2]  && 
-            47.5  < r[3]  && 
-            47.5  < r[4]  && 
-            47.5  < r[5]  && 
-            */
-            //10/13 現行の条件(以下)
-            652+0.8-1 < xs[0] && xs[0] < 664+0.8-0.5 && 
-            652+0.8-1 < xs[1] && xs[1] < 664+0.8-0.5 && 
-            652+0.8-1 < xs[2] && xs[2] < 664+0.8-0.5 && 
-            652+0.8-1 < xs[3] && xs[3] < 664+0.8-0.5 && 
-            652+0.8-1 < xs[4] && xs[4] < 664+0.8-0.5 && 
-            652+0.8-1 < xs[5] && xs[5] < 664+0.8-0.5 && 
-
-            652+0.8-1 < ys[0] && ys[0] < 664+0.8-0.5 && 
-            652+0.8-1 < ys[1] && ys[1] < 664+0.8-0.5 && 
-            652+0.8-1 < ys[2] && ys[2] < 664+0.8-0.5 && 
-            652+0.8-1 < ys[3] && ys[3] < 664+0.8-0.5 && 
-            652+0.8-1 < ys[4] && ys[4] < 664+0.8-0.5 && 
-            652+0.8-1 < ys[5] && ys[5] < 664+0.8-0.5 && 
-
-            168+4.5 < xh[0] && xh[0] < 198+1.5 && 
-            168+4.5 < xh[1] && xh[1] < 198+1.5 && 
-            168+4.5 < xh[2] && xh[2] < 198+1.5 && 
-            168+4.5 < xh[3] && xh[3] < 198+1.5 && 
-            168+4.5 < xh[4] && xh[4] < 198+1.5 && 
-            168+4.5 < xh[5] && xh[5] < 198+1.5 && 
-
-            168+4.5 < yh[0] && yh[0] < 198+1.5 && 
-            168+4.5 < yh[1] && yh[1] < 198+1.5 && 
-            168+4.5 < yh[2] && yh[2] < 198+1.5 && 
-            168+4.5 < yh[3] && yh[3] < 198+1.5 && 
-            168+4.5 < yh[4] && yh[4] < 198+1.5 && 
-            168+4.5 < yh[5] && yh[5] < 198+1.5 && 
+            162.5+hmin < yh[0] && yh[0] < 199.5+hmax && 
+            162.5+hmin < yh[1] && yh[1] < 199.5+hmax && 
+            162.5+hmin < yh[2] && yh[2] < 199.5+hmax && 
+            162.5+hmin < yh[3] && yh[3] < 199.5+hmax && 
+            162.5+hmin < yh[4] && yh[4] < 199.5+hmax && 
+            162.5+hmin < yh[5] && yh[5] < 199.5+hmax && 
 
             47.8  < r[0]  &&
             47.8  < r[1]  &&
@@ -135,42 +98,6 @@ void analysis()
             47.8  < r[3]  &&
             47.8  < r[4]  &&
             47.8  < r[5]  &&
-            /*
-            652+0.8-0 < xs[0] && xs[0] < 667+0.8-0.5 && 
-            652+0.8-0 < xs[1] && xs[1] < 667+0.8-0.5 && 
-            652+0.8-0 < xs[2] && xs[2] < 667+0.8-0.5 && 
-            652+0.8-0 < xs[3] && xs[3] < 667+0.8-0.5 && 
-            652+0.8-0 < xs[4] && xs[4] < 667+0.8-0.5 && 
-            652+0.8-0 < xs[5] && xs[5] < 667+0.8-0.5 && 
-
-            652+0.8-0 < ys[0] && ys[0] < 667+0.8-0.5 && 
-            652+0.8-0 < ys[1] && ys[1] < 667+0.8-0.5 && 
-            652+0.8-0 < ys[2] && ys[2] < 667+0.8-0.5 && 
-            652+0.8-0 < ys[3] && ys[3] < 667+0.8-0.5 && 
-            652+0.8-0 < ys[4] && ys[4] < 667+0.8-0.5 && 
-            652+0.8-0 < ys[5] && ys[5] < 667+0.8-0.5 && 
-
-            168+4.5 < xh[0] && xh[0] < 198+1.5 && 
-            168+4.5 < xh[1] && xh[1] < 198+1.5 && 
-            168+4.5 < xh[2] && xh[2] < 198+1.5 && 
-            168+4.5 < xh[3] && xh[3] < 198+1.5 && 
-            168+4.5 < xh[4] && xh[4] < 198+1.5 && 
-            168+4.5 < xh[5] && xh[5] < 198+1.5 && 
-
-            168+4.5 < yh[0] && yh[0] < 198+1.5 && 
-            168+4.5 < yh[1] && yh[1] < 198+1.5 && 
-            168+4.5 < yh[2] && yh[2] < 198+1.5 && 
-            168+4.5 < yh[3] && yh[3] < 198+1.5 && 
-            168+4.5 < yh[4] && yh[4] < 198+1.5 && 
-            168+4.5 < yh[5] && yh[5] < 198+1.5 && 
-
-            47.8  < r[0]  &&
-            47.8  < r[1]  &&
-            47.8  < r[2]  &&
-            47.8  < r[3]  &&
-            47.8  < r[4]  &&
-            47.8  < r[5]  &&
-*/
 
             1==1
             ){        
@@ -481,7 +408,7 @@ void analysis()
         //std::cout << "sizemax::  y: "<< sizemax[0] << ", x: "<< sizemaxx[0] << std::endl;
         fout << sizemax[0] << "  " << sizemaxx[0] << std::endl;
         //std::cout << "********************************************" << std::endl;
-        float widthrange = 82.4;
+        float widthrange = 82.3;
         if (sizemax[0]==100 || sizemaxx[0]==100){
             miss += 1;
         }
@@ -513,13 +440,52 @@ void analysis()
        std::cout << "************************************************" << std::endl;
        std::cout << "miss : "   << miss     << " /" << unitnum << ", " << (float) miss*100/unitnum     << "%" << std::endl;
        std::cout << "OutOfRange : "<<OutOfRange<< " /" <<unitnum<< ", "<< (float) OutOfRange*100/unitnum<< "%" << std::endl;
-       std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
-       std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
-       std::cout << "both   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
-   std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
+//       std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
+//       std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
+       std::cout << "clear   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
+       std::cout << "************************************************" << std::endl;
+       std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
+
+    //テキストファイルに出力
+    std::ofstream ratetxt("good_clear.txt", std::ios::app);
+    ratetxt  << Nall << " " << (float) cube.size()*100/cubemax 
+                     << " " << (float) andclear*100/unitnum << std::endl;
     
+    ratetxt.close();
     fout.close();
 }
 
+
+void analysis_scan()
+{
+    TFile * fin = new TFile("201007hist.root", "read");
+    std::cout << "hello!" << std::endl;
+
+    int Nall = 0;// ダンプするテキストファイルとの整合性のための通し番号
+    int hmin = 0;
+    int hmax = 0;
+    int smin = 0;
+    int smax = 0;
+    for(int ismin = 0; ismin < 2+1; ismin++){
+        for(int ismax = 0; ismax < 5+1; ismax++){
+            for(int ihmin = 0; ihmin < 5+1; ihmin++){
+                for(int ihmax = 0; ihmax < 5+1; ihmax++){
+                    std::cout << "\nsize min = 649.5 + " << ismin << std::endl;
+                    std::cout << "size max = 664.3 + " << ismax << std::endl;
+                    std::cout << "hole min = 162.5 + " << ihmin << std::endl;
+                    std::cout << "hole max = 199.5 + " << ihmax << std::endl;
+
+                    Nall = Nall +1 ;
+                    hmax =    ihmax ;
+                    hmin =  2*ihmin ;
+                    smax =    ismax ;
+                    smin =    ismin ;
+                    analysis_scan_func(fin, Nall, hmax,hmin,smax,smin);
+        }
+        }
+      }
+   }
+
+}
 
 
