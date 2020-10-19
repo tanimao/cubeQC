@@ -466,25 +466,25 @@ void analysis_scan()
     int hmax = 0;
     int smin = 0;
     int smax = 0;
-    for(int ismin = 0; ismin < 2+1; ismin++){
-        for(int ismax = 0; ismax < 5+1; ismax++){
-            for(int ihmin = 0; ihmin < 5+1; ihmin++){
-                for(int ihmax = 0; ihmax < 5+1; ihmax++){
-                    std::cout << "\nsize min = 649.5 + " << ismin << std::endl;
-                    std::cout << "size max = 664.3 + " << ismax << std::endl;
-                    std::cout << "hole min = 162.5 + " << ihmin << std::endl;
-                    std::cout << "hole max = 199.5 + " << ihmax << std::endl;
+   // for(int ismin = 0; ismin < 2+1; ismin++){
+     //   for(int ismax = 0; ismax < 5+1; ismax++){
+       //     for(int ihmin = 0; ihmin < 5+1; ihmin++){
+         //       for(int ihmax = 0; ihmax < 5+1; ihmax++){
+           //         std::cout << "\nsize min = 649.5 + " << ismin << std::endl;
+           //         std::cout << "size max = 664.3 + " << ismax << std::endl;
+           //         std::cout << "hole min = 162.5 + " << ihmin << std::endl;
+           //         std::cout << "hole max = 199.5 + " << ihmax << std::endl;
 
                     Nall = Nall +1 ;
-                    hmax =    ihmax ;
-                    hmin =  2*ihmin ;
-                    smax =    ismax ;
-                    smin =    ismin ;
+                    hmax = 3;//   ihmax ;
+                    hmin = 2*3;// 2*ihmin ;
+                    smax = 3;//   ismax ;
+                    smin = 0;//   ismin ;
                     analysis_scan_func(fin, Nall, hmax,hmin,smax,smin);
-        }
-        }
-      }
-   }
+    //    }
+    //    }
+  //    }
+//   }
 
 }
 
