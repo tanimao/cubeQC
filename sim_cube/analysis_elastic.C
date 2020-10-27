@@ -4,8 +4,8 @@
 #include <cmath>
 
 #include <vector>
-#include "classCube_matsu_sukima.cc"
-//#include "classCube.cc"
+//#include "classCube_matsu_sukima.cc"
+#include "classCube_elastic.cc"
 
 #include <stdlib.h>
 #include <time.h>
@@ -16,7 +16,9 @@
 // root -l analysis.C
 
 
-void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int smin)
+
+
+void analysis_elastic()
 {
 
 //    gRandom->SetSeed(2);
@@ -25,27 +27,33 @@ void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int 
 //    srand((unsigned int) time(NULL));
 //    //std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
     // TH1F でパラメたの測定分布を読み込む
-//    TFile * fin = new TFile("201007hist.root", "read");
-    TH1D  * h1  = (TH1D*)fin->Get("h1");  //radius
-    TH1D  * h2  = (TH1D*)fin->Get("h2");  //xhole
-    TH1D  * h3  = (TH1D*)fin->Get("h3");  //yhole
-    TH1D  * h4  = (TH1D*)fin->Get("h4");  //xsize
-    TH1D  * h5  = (TH1D*)fin->Get("h5");  //ysize
-    TH1D  * hb  = (TH1D*)fin->Get("hb");  //bump
-    TH1D  * hE  = (TH1D*)fin->Get("hE");  //Esum
-    //  hogehoge
+    TFile * fr = new TFile("201007hist.root", "read");//半径だけはここから持ってくる
+    TH1D  * h1  = (TH1D*)fr->Get("h1");  //radius
+    TFile * fin = new TFile("hist_correlation1007.root", "read");//半径だけはここから持ってくる
+    TH3D * sizexyz = (TH3D*)fin->Get("sizexyz");
+    TH2D * hole1   = (TH2D*)fin->Get("hole1");
+    TH2D * hole2   = (TH2D*)fin->Get("hole2");
+    TH2D * hole3   = (TH2D*)fin->Get("hole3");
+    TH2D * hole4   = (TH2D*)fin->Get("hole4");
+    TH2D * hole5   = (TH2D*)fin->Get("hole5");
+    TH2D * hole6   = (TH2D*)fin->Get("hole6");
+    TH2D * hole7   = (TH2D*)fin->Get("hole7");
+    TH2D * hole8   = (TH2D*)fin->Get("hole8");
  
     // 読み込んだ分布より、GetRndom で値を取ってきて、
-    float xs[6];
-    float ys[6];
-    float xh[6];
-    float yh[6];
-    float r[6];
+   // float sizehwd[3];
+   // float hole14[2];
+   // float hole25[2];
+   // float hole36[2];
     
-    float parlist[5];
+    Double_t sizehwd[3];
+    Double_t hole14[2];
+    Double_t hole25[2];
+    Double_t hole36[2];
+    Double_t r[6];
     
     int igood = 0;
-    int cubemax = 5000;
+    int cubemax = 10000;
     int unitnum = 5000;
    // キューブのパラメータを決定しながら、キューブを定義する
 
@@ -53,44 +61,76 @@ void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int 
    //Cube *cube[12000];
     std::vector < Cube* > cube;
  
+    double _sMean = 659.2; //if文での参照用。macro_forrangeif.cppよりとってきた
+
     for (int icu = 0; icu<cubemax; icu++) {
+        sizexyz->GetRandom3(sizehwd[0], sizehwd[1], sizehwd[2]);
+        //サイズごとに、参照するヒストグラムを変えることで、相関を表現
+        if (sizehwd[0] < _sMean){
+            if (sizehwd[1] < _sMean){
+                if (sizehwd[2] < _sMean){
+                    hole1->GetRandom2(hole14[0], hole14[1]);
+                    hole1->GetRandom2(hole25[0], hole25[1]);
+                    hole1->GetRandom2(hole36[0], hole36[1]);
+                }else{
+                    hole4->GetRandom2(hole14[0], hole14[1]);
+                    hole4->GetRandom2(hole25[0], hole25[1]);
+                    hole4->GetRandom2(hole36[0], hole36[1]);
+                }
+            }else{
+                if (sizehwd[2] < _sMean){
+                    hole3->GetRandom2(hole14[0], hole14[1]);
+                    hole3->GetRandom2(hole25[0], hole25[1]);
+                    hole3->GetRandom2(hole36[0], hole36[1]);
+                }else{
+                    hole7->GetRandom2(hole14[0], hole14[1]);
+                    hole7->GetRandom2(hole25[0], hole25[1]);
+                    hole7->GetRandom2(hole36[0], hole36[1]);
+                }
+            }
+        }else{
+            if (sizehwd[1] < _sMean){
+                if (sizehwd[2] < _sMean){
+                    hole2->GetRandom2(hole14[0], hole14[1]);
+                    hole2->GetRandom2(hole25[0], hole25[1]);
+                    hole2->GetRandom2(hole36[0], hole36[1]);
+                }else{
+                    hole6->GetRandom2(hole14[0], hole14[1]);
+                    hole6->GetRandom2(hole25[0], hole25[1]);
+                    hole6->GetRandom2(hole36[0], hole36[1]);
+                }
+            }else{
+                if (sizehwd[2] < _sMean){
+                    hole5->GetRandom2(hole14[0], hole14[1]);
+                    hole5->GetRandom2(hole25[0], hole25[1]);
+                    hole5->GetRandom2(hole36[0], hole36[1]);
+                }else{
+                    hole8->GetRandom2(hole14[0], hole14[1]);
+                    hole8->GetRandom2(hole25[0], hole25[1]);
+                    hole8->GetRandom2(hole36[0], hole36[1]);
+                }
+            }
+        }
+
+       //rは以前のままにしておく 
         for (int isu = 0; isu<6; isu++){
-            xs[isu] = h4->GetRandom();
-            ys[isu] = h5->GetRandom();
-            xh[isu] = h2->GetRandom();
-            yh[isu] = h3->GetRandom();
             r[isu]  = h1->GetRandom();
+
+                    
         }
         if (
-            //各定数は範囲の下限。
-            //ここに変数を足して範囲を変えてゆく。
-            649.5+smin < xs[0] && xs[0] < 664.3+smax && 
-            649.5+smin < xs[1] && xs[1] < 664.3+smax && 
-            649.5+smin < xs[2] && xs[2] < 664.3+smax && 
-            649.5+smin < xs[3] && xs[3] < 664.3+smax && 
-            649.5+smin < xs[4] && xs[4] < 664.3+smax && 
-            649.5+smin < xs[5] && xs[5] < 664.3+smax && 
+         //10/13 現行の条件(以下)
+           8+ 652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
+           8+ 652+0.8-1 < sizehwd[1] && sizehwd[1] < 664+0.8-0.5 && 
+           8+ 652+0.8-1 < sizehwd[2] && sizehwd[2] < 664+0.8-0.5 && 
 
-            649.5+smin < ys[0] && ys[0] < 664.3+smax && 
-            649.5+smin < ys[1] && ys[1] < 664.3+smax && 
-            649.5+smin < ys[2] && ys[2] < 664.3+smax && 
-            649.5+smin < ys[3] && ys[3] < 664.3+smax && 
-            649.5+smin < ys[4] && ys[4] < 664.3+smax && 
-            649.5+smin < ys[5] && ys[5] < 664.3+smax && 
+            168+4.5 < hole14[0] && hole14[0] < 198+1.5 && 
+            168+4.5 < hole14[1] && hole14[1] < 198+1.5 && 
+            168+4.5 < hole25[0] && hole25[0] < 198+1.5 && 
+            168+4.5 < hole25[1] && hole25[1] < 198+1.5 && 
+            168+4.5 < hole36[0] && hole36[0] < 198+1.5 && 
+            168+4.5 < hole36[1] && hole36[1] < 198+1.5 && 
 
-            162.5+hmin < xh[0] && xh[0] < 199.5+hmax && 
-            162.5+hmin < xh[1] && xh[1] < 199.5+hmax && 
-            162.5+hmin < xh[2] && xh[2] < 199.5+hmax && 
-            162.5+hmin < xh[3] && xh[3] < 199.5+hmax && 
-            162.5+hmin < xh[4] && xh[4] < 199.5+hmax && 
-            162.5+hmin < xh[5] && xh[5] < 199.5+hmax && 
-
-            162.5+hmin < yh[0] && yh[0] < 199.5+hmax && 
-            162.5+hmin < yh[1] && yh[1] < 199.5+hmax && 
-            162.5+hmin < yh[2] && yh[2] < 199.5+hmax && 
-            162.5+hmin < yh[3] && yh[3] < 199.5+hmax && 
-            162.5+hmin < yh[4] && yh[4] < 199.5+hmax && 
-            162.5+hmin < yh[5] && yh[5] < 199.5+hmax && 
 
             47.8  < r[0]  &&
             47.8  < r[1]  &&
@@ -100,21 +140,19 @@ void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int 
             47.8  < r[5]  &&
 
             1==1
+
             ){        
             igood += 1; 
             cube.push_back( new Cube(igood,
             //ピクセル数をミリメートルに変換
-                   0.01554*xs[0],0.01554*ys[0],0.01554*xh[0],0.01554*yh[0], 0.01554*r[0],
-                   0.01554*xs[1],0.01554*ys[1],0.01554*xh[1],0.01554*yh[1], 0.01554*r[1],
-                   0.01554*xs[2],0.01554*ys[2],0.01554*xh[2],0.01554*yh[2], 0.01554*r[2],
-                   0.01554*xs[3],0.01554*ys[3],0.01554*xh[3],0.01554*yh[3], 0.01554*r[3],
-                   0.01554*xs[4],0.01554*ys[4],0.01554*xh[4],0.01554*yh[4], 0.01554*r[4],
-                   0.01554*xs[5],0.01554*ys[5],0.01554*xh[5],0.01554*yh[5], 0.01554*r[5])); 
+                   0.01554*sizehwd[0], 0.01554*sizehwd[1], 0.01554*sizehwd[2], 
+                   0.01554*hole14[0], 0.01554*hole14[1],  
+                   0.01554*hole25[0], 0.01554*hole25[1],  
+                   0.01554*hole36[0], 0.01554*hole36[1],  
+                   0.01554*r[0], 0.01554*r[1], 0.01554*r[2], 
+                   0.01554*r[3], 0.01554*r[4], 0.01554*r[5])); 
         //  id と parameter :  必要な parameter は自分で定義する
-            cube[igood-1]->GetInfoSurf1();
-            cube[igood-1]->GetSurf1(parlist);
-            ////std::cout << "parlist : "<< parlist[0] << ", " << parlist[1] << ", " << parlist[2] 
-            //          << ", " << parlist[3] << ", " << parlist[4]<< std::endl;
+        //    cube[igood-1]->GetSurf1(parlist);
         }
 //        if (parlist[0]<680){
 //            cube.pop_back();
@@ -406,25 +444,30 @@ void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int 
     
         //std::cout << "********************************************" << std::endl;
         //std::cout << "sizemax::  y: "<< sizemax[0] << ", x: "<< sizemaxx[0] << std::endl;
-/bin/bash: s: command not found
+        //fout << sizemax[0] << "  " << sizemaxx[0] << std::endl;
         //std::cout << "********************************************" << std::endl;
         float widthrange = 82.3;
         if (sizemax[0]==100 || sizemaxx[0]==100){
             miss += 1;
+            //std::cout << "miss : " << miss << std::endl;
+
         }
         else{
 
-            if (sizemax[0] < widthrange){
+            if (sizemax[0] <= widthrange){
                 yclear += 1;
             }
-            if (sizemaxx[0] < widthrange){
+            if (sizemaxx[0] <= widthrange){
                 xclear += 1;
             }
-            if (sizemax[0] < widthrange && sizemaxx[0] < widthrange){
+            if (sizemax[0] <= widthrange && sizemaxx[0] <= widthrange){
                 andclear += 1;
             }
-            if (sizemax[0] >=widthrange || sizemaxx[0] >=widthrange){
+            if (sizemax[0] > widthrange || sizemaxx[0] > widthrange){
+                std::cout << "sizemax::  y: "<< sizemax[0] << ", x: "<< sizemaxx[0] << std::endl;
                 OutOfRange += 1 ;
+            }
+            else{
             }
         }
    } 
@@ -440,52 +483,13 @@ void analysis_scan_func(TFile* fin, int Nall, int hmax, int hmin, int smax, int 
        std::cout << "************************************************" << std::endl;
        std::cout << "miss : "   << miss     << " /" << unitnum << ", " << (float) miss*100/unitnum     << "%" << std::endl;
        std::cout << "OutOfRange : "<<OutOfRange<< " /" <<unitnum<< ", "<< (float) OutOfRange*100/unitnum<< "%" << std::endl;
-//       std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
-//       std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
-       std::cout << "clear   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
-       std::cout << "************************************************" << std::endl;
-       std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
-
-    //テキストファイルに出力
-    std::ofstream ratetxt("good_clear.txt", std::ios::app);
-    ratetxt  << Nall << " " << (float) cube.size()*100/cubemax 
-                     << " " << (float) andclear*100/unitnum << std::endl;
+       std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
+       std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
+       std::cout << "both   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
+   std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
     
-    ratetxt.close();
     fout.close();
 }
 
-
-void analysis_scan()
-{
-    TFile * fin = new TFile("201007hist.root", "read");
-    std::cout << "hello!" << std::endl;
-
-    int Nall = 0;// ダンプするテキストファイルとの整合性のための通し番号
-    int hmin = 0;
-    int hmax = 0;
-    int smin = 0;
-    int smax = 0;
-   // for(int ismin = 0; ismin < 2+1; ismin++){
-     //   for(int ismax = 0; ismax < 5+1; ismax++){
-       //     for(int ihmin = 0; ihmin < 5+1; ihmin++){
-         //       for(int ihmax = 0; ihmax < 5+1; ihmax++){
-           //         std::cout << "\nsize min = 649.5 + " << ismin << std::endl;
-           //         std::cout << "size max = 664.3 + " << ismax << std::endl;
-           //         std::cout << "hole min = 162.5 + " << ihmin << std::endl;
-           //         std::cout << "hole max = 199.5 + " << ihmax << std::endl;
-
-                    Nall = Nall +1 ;
-                    hmax = 3;//   ihmax ;
-                    hmin = 2*3;// 2*ihmin ;
-                    smax = 3;//   ismax ;
-                    smin = 0;//   ismin ;
-                    analysis_scan_func(fin, Nall, hmax,hmin,smax,smin);
-    //    }
-    //    }
-  //    }
-//   }
-
-}
 
 

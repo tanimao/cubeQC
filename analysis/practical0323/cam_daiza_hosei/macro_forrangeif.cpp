@@ -36,14 +36,6 @@ TH1D* hdsix = new TH1D("hdsix","distance",100,0,100);
 TH1D* hbsix = new TH1D("hbsix","bump",100,0,1000); 
 TH1D* hEsix = new TH1D("hEsix","Esum",1000,0,500); 
 
-//TH1D* h1bad = new TH1D("h1bad","radius",100,40,60); 
-//TH1D* h2bad = new TH1D("h2bad","xhole_max",100,150,220); 
-//TH1D* h3bad = new TH1D("h3bad","yhole_max",100,150,220); 
-//TH1D* h4bad = new TH1D("h4bad","xsize_max",100,600,700); 
-//TH1D* h5bad = new TH1D("h5bad","ysize_max",100,600,700); 
-//TH1D* hdbad = new TH1D("hdbad","distance",100,0,100); 
-//TH1D* hbbad = new TH1D("hbbad","bump",100,0,1000); 
-//TH1D* hEbad = new TH1D("hEbad","Esum",1000,0,500); 
 
 
 TH1D* h1b = new TH1D("h1b","radius",100,45,55); 
@@ -83,40 +75,10 @@ TH2D * xsys= new TH2D ("xsys", "xsize_ysize; xsize [mm]; ysize [mm]",
 TH2D * xhyh= new TH2D ("xhyh", "xhole_yhole; xhole [mm]; yhole [mm]",
                         100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
 
-TH2D * xsr= new TH2D ("xsr", "xsize_radius; xsize [mm]; radius [mm]",
-                        100, 0.01554*640, 0.01554*680, 100, 0.01554*45, 0.01554*55);
-TH2D * xsE= new TH2D ("xsE", "xsize_circle_chi2; xsize [mm]; circle_chi2",
-                        100, 0.01554*640, 0.01554*680, 100, 0, 500);
-TH2D * xsb= new TH2D ("xsb", "xsize_bump; xsize [mm]; bump",
-                        100, 0.01554*640, 0.01554*680, 100, 0, 1000);
 
-TH2D * ysr= new TH2D ("ysr", "ysize_radius; ysize [mm]; radius [mm]",
-                        100, 0.01554*640, 0.01554*680, 100, 0.01554*45, 0.01554*55);
-TH2D * ysE= new TH2D ("ysE", "ysize_circle_chi2; ysize [mm]; circle_chi2",
-                        100, 0.01554*640, 0.01554*680, 100, 0, 500);
-TH2D * ysb= new TH2D ("ysb", "ysize_bump; ysize [mm]; bump",
-                        100, 0.01554*640, 0.01554*680, 100, 0, 1000);
 
-TH2D * xhr= new TH2D ("xhr", "xhole_radius; xhole [mm]; radius [mm]",
-                        100, 0.01554*140, 0.01554*220, 100, 0.01554*45, 0.01554*55);
-TH2D * xhE= new TH2D ("xhE", "xhole_circle_chi2; xhole [mm]; circle_chi2",
-                        100, 0.01554*140, 0.01554*220, 100, 0, 500);
-TH2D * xhb= new TH2D ("xhb", "xhole_bump; xhole [mm]; bump",
-                        100, 0.01554*140, 0.01554*220, 100, 0, 1000);
 
-TH2D * yhr= new TH2D ("yhr", "yhole_radius; yhole [mm]; radius [mm]",
-                        100, 0.01554*140, 0.01554*220, 100, 0.01554*45, 0.01554*55);
-TH2D * yhE= new TH2D ("yhE", "yhole_circle_chi2; yhole [mm]; circle_chi2",
-                        100, 0.01554*140, 0.01554*220, 100, 0, 500);
-TH2D * yhb= new TH2D ("yhb", "yhole_bump; yhole [mm]; bump",
-                        100, 0.01554*140, 0.01554*220, 100, 0, 1000);
 
-TH2D * rE= new TH2D ("rE", "radius_circle_chi2; radius [mm]; circle_chi2",
-                        100, 0.01554*45, 0.01554*55, 100, 0, 500);
-TH2D * rb= new TH2D ("rb", "radius_bump; radius [mm]; bump",
-                        100, 0.01554*45, 0.01554*55, 100, 0, 1000);
-TH2D * Eb= new TH2D ("Eb", "circle_chi2_bump; circle_chi2; bump",
-                        100, 0, 500, 100, 0, 1000);
 
 
 //向かい合う面での相関
@@ -144,6 +106,42 @@ TH2D * fysyh= new TH2D ("fysyh", "facing ysize_yhole; ysize [mm]; yhole [mm]",
                         100, 0.01554*640, 0.01554*680, 100, 0.01554*140, 0.01554*220);
 
 
+TH2D * sizexy= new TH2D ("sizexy", "height, width ; height; width",
+                        100,640,680, 100,640,680);
+TH2D * sizexz= new TH2D ("sizexz", "height, depth ; height; depth",
+                        100,640,680, 100,640,680);
+TH2D * sizeyz= new TH2D ("sizeyz", "width, depth ; width; depth",
+                        100,640,680, 100,640,680);
+
+TH3D * sizexyz= new TH3D ("sizexyz", "height, width, depth; height; width; depth",
+                        100,640,680, 100,640,680, 100,640,680);
+
+//サイズヒストグラムの領域ごとに、穴位置ヒストグラムを８個に分ける。
+
+TH2D * hole1 = new TH2D ("hole1", "hole1 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole2 = new TH2D ("hole2", "hole2 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole3 = new TH2D ("hole3", "hole3 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole4 = new TH2D ("hole4", "hole4 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole5 = new TH2D ("hole5", "hole5 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole6 = new TH2D ("hole6", "hole6 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole7 = new TH2D ("hole7", "hole7 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+TH2D * hole8 = new TH2D ("hole8", "hole8 ;xhole; yhole", 
+                        100, 140, 220, 100, 140, 220);
+
+
+
+//テスト。隣あう面について相関を見てみる。
+TH2D * sizex2y1= new TH2D ("sizex2y1", "height ; height(xsize2); height(ysize1)",
+                        100,640,680, 100,640,680);
+TH2D * sizex1y3= new TH2D ("sizex1y3", "width ; width(xsize1); width(ysize3)",
+                        100,640,680, 100,640,680);
 Int_t n = 6;
 Double_t radius[n];
 Double_t xhole[n];
@@ -195,6 +193,17 @@ Double_t yhMax;
 Double_t bMax;
 Double_t EMax;
 
+Double_t height;
+Double_t width;
+Double_t depth;
+
+Double_t xhole14;
+Double_t yhole14;
+Double_t xhole25;
+Double_t yhole25;
+Double_t xhole36;
+Double_t yhole36;
+
 tree->SetBranchAddress("radius", radius);
 tree->SetBranchAddress("xhole", xhole);
 tree->SetBranchAddress("yhole", yhole);
@@ -238,9 +247,90 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     bMax = bump[0];
     EMax = Esum[0];
 
+    // キューブの高さ、幅、奥行きをfill
+    height = (ysize[0] + xsize[1] + ysize[3] + xsize[4])/4; // 高さ
+    width  = (xsize[0] + ysize[2] + xsize[3] + ysize[5])/4;// 幅
+    depth  = (ysize[1] + xsize[2] + ysize[4] + xsize[5])/4;// 奥行き
+
+
+    
+    sizexy->Fill(height,// 高さ
+                  width);// 幅
+    
+    sizexz->Fill(height, // 高さ
+                  depth);// 奥行き
+    
+    sizeyz->Fill(width, // 幅
+                 depth); // 奥行き
+
+    sizexyz->Fill(height, // 高さ
+                  width, // 幅
+                  depth); // 奥行き
+
+    xhole14 = (xhole[0] +xhole[3])/2;
+    yhole14 = (yhole[0] +yhole[3])/2;
+    xhole25 = (xhole[1] +xhole[4])/2;
+    yhole25 = (yhole[1] +yhole[4])/2;
+    xhole36 = (xhole[2] +xhole[5])/2;
+    yhole36 = (yhole[2] +yhole[5])/2;
+
+    if (height < xsMean){
+        if (width < xsMean){
+            if (depth < xsMean){
+                hole1->Fill(xhole14, yhole14);
+                hole1->Fill(xhole25, yhole25);
+                hole1->Fill(xhole36, yhole36);
+            }else{
+                hole4->Fill(xhole14, yhole14);
+                hole4->Fill(xhole25, yhole25);
+                hole4->Fill(xhole36, yhole36);
+            }
+        }else{
+            if (depth < xsMean){
+                hole3->Fill(xhole14, yhole14);
+                hole3->Fill(xhole25, yhole25);
+                hole3->Fill(xhole36, yhole36);
+            }else{
+                hole7->Fill(xhole14, yhole14);
+                hole7->Fill(xhole25, yhole25);
+                hole7->Fill(xhole36, yhole36);
+            }
+        }
+    }else{
+        if (width < xsMean){
+            if (depth < xsMean){
+                hole2->Fill(xhole14, yhole14);
+                hole2->Fill(xhole25, yhole25);
+                hole2->Fill(xhole36, yhole36);
+            }else{
+                hole6->Fill(xhole14, yhole14);
+                hole6->Fill(xhole25, yhole25);
+                hole6->Fill(xhole36, yhole36);
+            }
+        }else{
+            if (depth < xsMean){
+                hole5->Fill(xhole14, yhole14);
+                hole5->Fill(xhole25, yhole25);
+                hole5->Fill(xhole36, yhole36);
+            }else{
+                hole8->Fill(xhole14, yhole14);
+                hole8->Fill(xhole25, yhole25);
+                hole8->Fill(xhole36, yhole36);
+            }
+        }
+    }
+
+
+
+
+
+
+    sizex2y1->Fill(xsize[1],ysize[0]);
+    sizex1y3->Fill(xsize[0],ysize[2]);
     
     for (int isurf = 0; isurf <6; isurf++){
 
+        //（役に立ったか分からないが）色々なパラメータ間の相関
 
         xsxh->Fill(xsize[isurf]*0.01554, xhole[isurf]*0.01554);
         xsyh->Fill(xsize[isurf]*0.01554, yhole[isurf]*0.01554);
@@ -249,26 +339,7 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
         xsys->Fill(xsize[isurf]*0.01554, ysize[isurf]*0.01554);
         xhyh->Fill(xhole[isurf]*0.01554, yhole[isurf]*0.01554);
 
-        xsr->Fill(xsize[isurf]*0.01554, radius[isurf]*0.01554);
-        xsE->Fill(xsize[isurf]*0.01554, Esum[isurf]);
-        xsb->Fill(xsize[isurf]*0.01554, bump[isurf]);
 
-        ysr->Fill(ysize[isurf]*0.01554, radius[isurf]*0.01554);
-        ysE->Fill(ysize[isurf]*0.01554, Esum[isurf]);
-        ysb->Fill(ysize[isurf]*0.01554, bump[isurf]);
-
-        xhr->Fill(xhole[isurf]*0.01554, radius[isurf]*0.01554);
-        xhE->Fill(xhole[isurf]*0.01554, Esum[isurf]);
-        xhb->Fill(xhole[isurf]*0.01554, bump[isurf]);
-
-        yhr->Fill(yhole[isurf]*0.01554, radius[isurf]*0.01554);
-        yhE->Fill(yhole[isurf]*0.01554, Esum[isurf]);
-        yhb->Fill(yhole[isurf]*0.01554, bump[isurf]);
-
-
-        rE->Fill(radius[isurf]*0.01554, Esum[isurf]);
-        rb->Fill(radius[isurf]*0.01554, bump[isurf]);
-        Eb->Fill(Esum[isurf], bump[isurf]);
 
 
 
@@ -440,26 +511,18 @@ xsys->SetMarkerStyle(6);
 xhyh->SetMarkerStyle(6);
 
 
-xsr->SetMarkerStyle(6);
-xsE->SetMarkerStyle(6);
-xsb->SetMarkerStyle(6);
+hole1->SetMarkerStyle(6);     
+hole2->SetMarkerStyle(6);     
+hole3->SetMarkerStyle(6);     
+hole4->SetMarkerStyle(6);     
+hole5->SetMarkerStyle(6);     
+hole6->SetMarkerStyle(6);     
+hole7->SetMarkerStyle(6);     
+hole8->SetMarkerStyle(6);     
      
-ysr->SetMarkerStyle(6);
-ysE->SetMarkerStyle(6);
-ysb->SetMarkerStyle(6);
-     
-xhr->SetMarkerStyle(6);
-xhE->SetMarkerStyle(6);
-xhb->SetMarkerStyle(6);
     
-yhr->SetMarkerStyle(6);
-yhE->SetMarkerStyle(6);
-yhb->SetMarkerStyle(6);
      
      
-rE->SetMarkerStyle(6);
-rb->SetMarkerStyle(6);
-Eb->SetMarkerStyle(6);
 
 
 fxsxs->SetMarkerStyle(6);
@@ -475,6 +538,14 @@ fxsyh->SetMarkerStyle(6);
 fysxh->SetMarkerStyle(6);
 fysyh->SetMarkerStyle(6);
 
+sizexy->SetMarkerStyle(6);
+sizexz->SetMarkerStyle(6);
+sizeyz->SetMarkerStyle(6);
+sizexyz->SetMarkerStyle(6);
+
+
+sizex2y1->SetMarkerStyle(6);
+sizex1y3->SetMarkerStyle(6);
 
 std::cout << "CorrelationFactor(fxsxs): " << fxsxs->GetCorrelationFactor() << std::endl;
 std::cout << "CorrelationFactor(fxsys): " << fxsys->GetCorrelationFactor() << std::endl;
@@ -546,26 +617,14 @@ ysyh->Write();
 xsys->Write();
 xhyh->Write();
 
-xsr->Write();
-xsE->Write();
-xsb->Write();
-
-ysr->Write();
-ysE->Write();
-ysb->Write();
- 
-xhr->Write();
-xhE->Write();
-xhb->Write();
-  
-yhr->Write();
-yhE->Write();
-yhb->Write();
-    
-   
-rE->Write();
-rb->Write();
-Eb->Write();
+hole1->Write();
+hole2->Write();
+hole3->Write();
+hole4->Write();
+hole5->Write();
+hole6->Write();
+hole7->Write();
+hole8->Write();
 
 
 fxsxs->Write();
@@ -580,6 +639,15 @@ fxsxh->Write();
 fxsyh->Write();
 fysxh->Write();
 fysyh->Write();
+
+sizexy->Write();
+sizexz->Write();
+sizeyz->Write();
+sizexyz->Write();
+
+sizex2y1->Write();
+sizex1y3->Write();
+
 
 fout->Close();
 
