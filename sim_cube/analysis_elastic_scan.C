@@ -18,7 +18,8 @@
 
 
 
-void analysis_elastic()
+void analysis_elastic(TFile* fr, TFile* fin, int Nall, 
+                      int hmax, int hmin, int smax, int smin)
 {
 
 //    gRandom->SetSeed(2);
@@ -27,9 +28,7 @@ void analysis_elastic()
 //    srand((unsigned int) time(NULL));
 //    //std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
     // TH1F でパラメたの測定分布を読み込む
-    TFile * fr = new TFile("201007hist.root", "read");//半径だけはここから持ってくる
     TH1D  * h1  = (TH1D*)fr->Get("h1");  //radius
-    TFile * fin = new TFile("hist_correlation1007.root", "read");//大きさと穴の位置は相関を持たせる
     TH3D * sizexyz = (TH3D*)fin->Get("sizexyz");
     TH2D * hole1   = (TH2D*)fin->Get("hole1");
     TH2D * hole2   = (TH2D*)fin->Get("hole2");
@@ -120,10 +119,29 @@ void analysis_elastic()
                     
         }
         if (
+         //スキャン用の条件
+         649.5 + smin < sizehwd[0] && sizehwd[0] < 664.3 + smax &&
+         649.5 + smin < sizehwd[1] && sizehwd[1] < 664.3 + smax &&
+         649.5 + smin < sizehwd[2] && sizehwd[2] < 664.3 + smax &&
+
+         162.5 + hmin < hole14[0]  && hole14[0]  < 199.5 + hmax &&
+         162.5 + hmin < hole14[1]  && hole14[1]  < 199.5 + hmax &&
+         162.5 + hmin < hole25[0]  && hole25[0]  < 199.5 + hmax &&
+         162.5 + hmin < hole25[1]  && hole25[1]  < 199.5 + hmax &&
+         162.5 + hmin < hole36[0]  && hole36[0]  < 199.5 + hmax &&
+         162.5 + hmin < hole36[1]  && hole36[1]  < 199.5 + hmax &&
+
+         47.8 < r[0] &&
+         47.8 < r[1] &&
+         47.8 < r[2] &&
+         47.8 < r[3] &&
+         47.8 < r[4] &&
+         47.8 < r[5] &&
          //10/13 現行の条件(以下)
-            3+ 652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
-            3+ 652+0.8-1 < sizehwd[1] && sizehwd[1] < 664+0.8-0.5 && 
-            3+ 652+0.8-1 < sizehwd[2] && sizehwd[2] < 664+0.8-0.5 && 
+         /*
+             652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
+             652+0.8-1 < sizehwd[1] && sizehwd[1] < 664+0.8-0.5 && 
+             652+0.8-1 < sizehwd[2] && sizehwd[2] < 664+0.8-0.5 && 
 
             168+4.5 < hole14[0] && hole14[0] < 198+1.5 && 
             168+4.5 < hole14[1] && hole14[1] < 198+1.5 && 
@@ -139,7 +157,7 @@ void analysis_elastic()
             47.8  < r[3]  &&
             47.8  < r[4]  &&
             47.8  < r[5]  &&
-
+        */
             1==1
 
             ){        
@@ -488,9 +506,49 @@ void analysis_elastic()
        std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
        std::cout << "both   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
    std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
-    
+
+
+    //テキストファイルに出力
+    std::ofstream ratetxt("good_clear_ela.txt", std::ios::app);
+    ratetxt << Nall << " " << (float) cube.size() * 100/cubemax
+                    << " " << (float) andclear * 100/unitnum << std::endl;
+
+    ratetxt.close();
+
     fout.close();
 }
 
+void analysis_elastic_scan()
+{
 
+
+    TFile * fr = new TFile("201007hist.root", "read");//半径だけはここから持ってくる
+    TFile * fin = new TFile("hist_correlation1007.root", "read");//大きさと穴の位置は相関を持たせる
+
+    int Nall = 0;
+    int hmin = 0;
+    int hmax = 0;
+    int smin = 0;
+    int smax = 0;
+
+    for (int ismin = 0; ismin < 2+1; ismin++){
+        for (int ismax = 0; ismax < 5+1; ismax++){
+            for (int ihmin = 0; ihmin < 5+1; ihmin++){
+                for (int ihmax = 0; ihmax < 5+1; ihmax++){
+                    std::cout << "\nsize min = 649.5 + " << ismin << std::endl;
+                    std::cout << "size max = 664.3 + " << ismax << std::endl;
+                    std::cout << "hole min = 162.5 + " << ihmin << std::endl;
+                    std::cout << "hole max = 199.5 + " << ihmax << std::endl;
+
+                    Nall = Nall +1 ;
+                    hmax =  ihmax ;
+                    hmin =  2*ihmin ;
+                    smax =  ismax ;
+                    smin =  ismin ;
+                    analysis_elastic(fr, fin, Nall, hmax, hmin, smax, smin);
+                }
+            }
+        }
+    }
+}
 

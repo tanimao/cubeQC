@@ -314,7 +314,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //一個めのキューブをおく。
  //   //std::cout << "*1st cube:" << std::endl;
     d[0] = fibarea[0]/2 + rad[0][1] - fabs(hole[0]-(hole25[0][0]+gap[0]));
-    if (d[0] > 1.1){  
+    if (d[0] > 1.52){  
         sizemax[1] = hwd[0][2]+gap[0]; //sizemax は次のキューブの穴位置を見るときに使う。
         fibarea[0] = 2*rad[0][1];
         }
@@ -329,7 +329,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //二個目のキューブをおく。
  //   //std::cout << "*2nd cube:" << std::endl;
     d[1] = fibarea[1]/2 + rad[1][1] - fabs(hole[1]-(hole25[1][0]+gap[1]+sizemax[1]));
-    if (d[1] > 1.1){  // かさ上げ必要なし。
+    if (d[1] > 1.52){  // かさ上げ必要なし。
             fibarea[1] = 2*rad[1][1];
             sizemax[1] = sizemax[1] + hwd[1][2]+gap[1];
     }
@@ -349,7 +349,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //三個目のキューブをおく。
  //   //std::cout << "*3rd cube:" << std::endl;
     d[2] = fibarea[2]/2 + rad[2][1] - fabs(hole[2]-(hole25[2][0]+gap[2]+sizemax[1]));
-    if (d[2] > 1.1){  // かさ上げ必要なし。
+    if (d[2] > 1.52){  // かさ上げ必要なし。
             fibarea[2] = 2*rad[2][1];
             sizemax[1] = sizemax[1] + hwd[2][2]+gap[2];
     }
@@ -369,7 +369,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //四個目のキューブをおく。
  //   //std::cout << "*4th cube:" << std::endl;
     d[3] = fibarea[3]/2 + rad[3][1] - fabs(hole[3]-(hole25[3][0]+gap[3]+sizemax[1]));
-    if (d[3] > 1.1){  // かさ上げ必要なし。
+    if (d[3] > 1.52){  // かさ上げ必要なし。
             fibarea[3] = 2*rad[3][1];
             sizemax[1] = sizemax[1] + hwd[3][2]+gap[3];
     }
@@ -388,7 +388,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //五個目のキューブをおく。
  //   //std::cout << "*5th cube:" << std::endl;
     d[4] = fibarea[4]/2 + rad[4][1] - fabs(hole[4]-(hole25[4][0]+gap[4]+sizemax[1]));
-    if (d[4] > 1.1){  // かさ上げ必要なし。
+    if (d[4] > 1.52){  // かさ上げ必要なし。
             fibarea[4] = 2*rad[4][1];
             sizemax[1] = sizemax[1] + hwd[4][2]+gap[4];
     }
@@ -407,7 +407,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //六個目のキューブをおく。
   //  //std::cout << "*6th cube:" << std::endl;
     d[5] = fibarea[5]/2 + rad[5][1] - fabs(hole[5]-(hole25[5][0]+gap[5]+sizemax[1]));
-    if (d[5] > 1.1){  // かさ上げ必要なし。
+    if (d[5] > 1.52){  // かさ上げ必要なし。
             fibarea[5] = 2*rad[5][1];
             sizemax[1] = sizemax[1] + hwd[5][2]+gap[5];
     }
@@ -426,7 +426,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //七個目のキューブをおく。
  //   //std::cout << "*7th cube:" << std::endl;
     d[6] = fibarea[6]/2 + rad[6][1] - fabs(hole[6]-(hole25[6][0]+gap[6]+sizemax[1]));
-    if (d[6] > 1.1){  // かさ上げ必要なし。
+    if (d[6] > 1.52){  // かさ上げ必要なし。
             fibarea[6] = 2*rad[6][1];
             sizemax[1] = sizemax[1] + hwd[6][2]+gap[6];
     }
@@ -445,7 +445,7 @@ void CubeArrangey2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //八個目のキューブをおく。
 //    //std::cout << "*8th cube:" << std::endl;
     d[7] = fibarea[7]/2 + rad[7][1] - fabs(hole[7]-(hole25[7][0]+gap[7]+sizemax[1]));
-    if (d[7] > 1.1){  // かさ上げ必要なし。
+    if (d[7] > 1.52){  // かさ上げ必要なし。
             fibarea[7] = 2*rad[7][1];
             sizemax[1] = sizemax[1] + hwd[7][2]+gap[7];
     }
@@ -693,7 +693,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //一個めのキューブをおく。
 //    //std::cout << "*1st cube:" << std::endl;
     d[0] = fibarea[0]/2 + rad[0][2] - fabs(hole[0]-(gap[0]+hole36[0][1]));
-    if (d[0] > 1.1){  // かさ上げ必要なし。
+    if (d[0] > 1.52){  // かさ上げ必要なし。
         sizemax[1] = hwd[0][1]+gap[0];
         fibarea[0] = 2*rad[0][2];
     }
@@ -705,7 +705,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //二個目のキューブをおく。
 //    //std::cout << "*2nd cube:" << std::endl;
     d[1] = fibarea[1]/2 + rad[1][2] - fabs(hole[1]-(gap[1]+sizemax[1]+hole36[1][1]));
-    if (d[1] > 1.1){  // かさ上げ必要なし。
+    if (d[1] > 1.52){  // かさ上げ必要なし。
             fibarea[1] = 2*rad[1][2];
             sizemax[1] = sizemax[1] + hwd[1][1]+gap[1];
     }
@@ -725,7 +725,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //三個目のキューブをおく。
 //    //std::cout << "*3rd cube:" << std::endl;
     d[2] = fibarea[2]/2 + rad[2][2] - fabs(hole[2]-(gap[2]+sizemax[1]+hole36[2][1]));
-    if (d[2] > 1.1){  // かさ上げ必要なし。
+    if (d[2] > 1.52){  // かさ上げ必要なし。
             fibarea[2] = 2*rad[2][2];
             sizemax[1] = sizemax[1] + hwd[2][1]+gap[2];
     }
@@ -745,7 +745,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //四個目のキューブをおく。
 //    //std::cout << "*4th cube:" << std::endl;
     d[3] = fibarea[3]/2 + rad[3][2] - fabs(hole[3]-(gap[3]+sizemax[1]+hole36[3][1]));
-    if (d[3] > 1.1){  // かさ上げ必要なし。
+    if (d[3] > 1.52){  // かさ上げ必要なし。
             fibarea[3] = 2*rad[3][2];
             sizemax[1] = sizemax[1] + hwd[3][1]+gap[3];
     }
@@ -764,7 +764,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //五個目のキューブをおく。
 //    //std::cout << "*5th cube:" << std::endl;
     d[4] = fibarea[4]/2 + rad[4][2] - fabs(hole[4]-(gap[4]+sizemax[1]+hole36[4][1]));
-    if (d[4] > 1.1){  // かさ上げ必要なし。
+    if (d[4] > 1.52){  // かさ上げ必要なし。
             fibarea[4] = 2*rad[4][2];
             sizemax[1] = sizemax[1] + hwd[4][1]+gap[4];
     }
@@ -783,7 +783,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //六個目のキューブをおく。
 //    //std::cout << "*6th cube:" << std::endl;
     d[5] = fibarea[5]/2 + rad[5][2] - fabs(hole[5]-(gap[5]+sizemax[1]+hole36[5][1]));
-    if (d[5] > 1.1){  // かさ上げ必要なし。
+    if (d[5] > 1.52){  // かさ上げ必要なし。
             fibarea[5] = 2*rad[5][2];
             sizemax[1] = sizemax[1] + hwd[5][1]+gap[5];
     }
@@ -802,7 +802,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //七個目のキューブをおく。
 //    //std::cout << "*7th cube:" << std::endl;
     d[6] = fibarea[6]/2 + rad[6][2] - fabs(hole[6]-(gap[6]+sizemax[1]+hole36[6][1]));
-    if (d[6] > 1.1){  // かさ上げ必要なし。
+    if (d[6] > 1.52){  // かさ上げ必要なし。
             fibarea[6] = 2*rad[6][2];
             sizemax[1] = sizemax[1] + hwd[6][1]+gap[6];
     }
@@ -821,7 +821,7 @@ void CubeArrangex2(Cube *c1, Cube *c2, Cube *c3, Cube *c4,
     //八個目のキューブをおく。
 //    //std::cout << "*8th cube:" << std::endl;
     d[7] = fibarea[7]/2 + rad[7][2] - fabs(hole[7]-(gap[7]+sizemax[1]+hole36[7][1]));
-    if (d[7] > 1.1){  // かさ上げ必要なし。
+    if (d[7] > 1.52){  // かさ上げ必要なし。
             fibarea[7] = 2*rad[7][2];
             sizemax[1] = sizemax[1] + hwd[7][1]+gap[7];
     }
