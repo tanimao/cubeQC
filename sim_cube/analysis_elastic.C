@@ -29,7 +29,7 @@ void analysis_elastic()
     // TH1F でパラメたの測定分布を読み込む
     TFile * fr = new TFile("201007hist.root", "read");//半径だけはここから持ってくる
     TH1D  * h1  = (TH1D*)fr->Get("h1");  //radius
-    TFile * fin = new TFile("hist_correlation1007.root", "read");//半径だけはここから持ってくる
+    TFile * fin = new TFile("hist_correlation1007.root", "read");//大きさと穴の位置は相関を持たせる
     TH3D * sizexyz = (TH3D*)fin->Get("sizexyz");
     TH2D * hole1   = (TH2D*)fin->Get("hole1");
     TH2D * hole2   = (TH2D*)fin->Get("hole2");
@@ -65,6 +65,7 @@ void analysis_elastic()
 
     for (int icu = 0; icu<cubemax; icu++) {
         sizexyz->GetRandom3(sizehwd[0], sizehwd[1], sizehwd[2]);
+        //sizexyz->GetRandom3(sizehwd[0], sizehwd[1], sizehwd[2]);
         //サイズごとに、参照するヒストグラムを変えることで、相関を表現
         if (sizehwd[0] < _sMean){
             if (sizehwd[1] < _sMean){
@@ -120,9 +121,9 @@ void analysis_elastic()
         }
         if (
          //10/13 現行の条件(以下)
-           8+ 652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
-           8+ 652+0.8-1 < sizehwd[1] && sizehwd[1] < 664+0.8-0.5 && 
-           8+ 652+0.8-1 < sizehwd[2] && sizehwd[2] < 664+0.8-0.5 && 
+            3+ 652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
+            3+ 652+0.8-1 < sizehwd[1] && sizehwd[1] < 664+0.8-0.5 && 
+            3+ 652+0.8-1 < sizehwd[2] && sizehwd[2] < 664+0.8-0.5 && 
 
             168+4.5 < hole14[0] && hole14[0] < 198+1.5 && 
             168+4.5 < hole14[1] && hole14[1] < 198+1.5 && 
