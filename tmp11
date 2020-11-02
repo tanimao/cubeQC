@@ -67,7 +67,7 @@ firststep = input()
 ser.write(b'200\n')
 
 picfolder = 'mao_pictures/pic201102/'
-filename = 'files/data201102_.txt'
+filename = 'files/data201015_.txt'
 
 
 #############################################################################################

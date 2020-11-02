@@ -14,17 +14,30 @@ def checkSign(cubedata):
     
     ##rholemin = 47
     ##rholemax = 53
-
+    '''
     xholemax = 198+2
     yholemax = 198+2
     xholemin = 168+4
     yholemin = 168+4
 
-    xsizemax = 664.8
-    ysizemax = 664.8
-    xsizemin = 652.8
-    ysizemin = 652.8
-    
+    xsizemax = 664.8-0.5
+    ysizemax = 664.8-0.5
+    xsizemin = 651.8
+    ysizemin = 651.8
+    '''
+
+    #10/14変更
+
+    xholemax = 199.5+3
+    yholemax = 199.5+3
+    xholemin = 162.5+2*3
+    yholemin = 162.5+2*3
+
+    xsizemax = 664.3+3
+    ysizemax = 664.3+3
+    xsizemin = 649.5+0
+    ysizemin = 649.5+0
+
     rholemin = 47.8
     rholemax = 100 ## ありえないはず。実質下限のみ用意する。
     Esummax  = 200
@@ -45,7 +58,7 @@ def checkSign(cubedata):
     c[:,0]で第ゼロ番目の縦ベクトルを持ってこれる。
     
     '''
-#    camID = cubedata[:,0]
+    #camID = cubedata[:,0]
     directionID = cubedata[:,0]
     xhole = cubedata[:,1]
     yhole = cubedata[:,2]
@@ -57,58 +70,60 @@ def checkSign(cubedata):
     print('xhole: ', np.round(xhole,4))
     print('yhole: ', np.round(yhole,4))
     print('xsize: ', np.round(xsize,4))
-    print('xsize: ', np.round(ysize,4))
+    print('ysize: ', np.round(ysize,4))
     print('Esum : ', np.round(Esum ,4))
     print('rhole: ', np.round(rhole,4))
     print('bump : ', np.round(bump ,4))
-    filecali = open ('QCpackage2/files/data200901_cali.txt', 'a')
+    filecali = open ('QCpackage2/files/data201102_cali.txt', 'a')
     for i in range (6):
-        filecali.write( str(directionID[i]) +  ' '+
-                   str(np.round(xhole[i], 4))+ ' '+
-                   str(np.round(yhole[i], 4))+' '+
-                   str(np.round(rhole[i], 4))+' '+
-                   str(np.round(Esum[i], 4))+' '+
-                   str(np.round(xsize[i], 4))+' '+
-                   str(np.round(ysize[i], 4))+' '+
-                   str(np.round(bump[i], 4))+' '+
+        filecali.write( str(directionID[i])       + ' ' +
+                        str(np.round(xhole[i], 4))+ ' ' +
+                        str(np.round(yhole[i], 4))+ ' ' +
+                        str(np.round(rhole[i], 4))+ ' ' +
+                        str(np.round(Esum[i],  4))+ ' ' +
+                        str(np.round(xsize[i], 4))+ ' ' +
+                        str(np.round(ysize[i], 4))+ ' ' +
+                        str(np.round(bump[i],  4))+ ' ' +
                      '\n')
     filecali.close()
 
     sign = ''
     for surface in range(6):
-        if xhole[surface] > xholemax+1 or xhole[surface] < xholemin-1 :
+        if xhole[surface] >= xholemax+0.5 or xhole[surface] <= xholemin-0.5 :
             sign = 'bad'
-            print('xhole is bad.')
+            print('xhole({}) is bad.'.format(surface))
 
-        if yhole[surface] > yholemax+1 or yhole[surface] < yholemin-1 :
+        if yhole[surface] >= yholemax+0.5 or yhole[surface] <= yholemin-0.5 :
             sign = 'bad'
-            print('yhole is bad.')
+            print('yhole({}) is bad.'.format(surface))
 
         ###今回(9/28以降はサイズでしっかり切る)
         if xsize[surface] > xsizemax or xsize[surface] < xsizemin :
             sign = 'bad'
-            print('xsize is bad.')
+            print('xsize({}) is bad.'.format(surface))
 
         if ysize[surface] > ysizemax or ysize[surface] < ysizemin :
             sign = 'bad'
-            print('ysize is bad.')
+            print('ysize({}) is bad.'.format(surface))
 
         if Esum[surface]  > Esummax :
             sign = 'bad'
-            print('Esum is bad.')
+            print('Esum({}) is bad.'.format(surface))
 
         if rhole[surface] > rholemax or rhole[surface] < rholemin :
             sign = 'bad'
-            print('rhole is bad.')
+            print('rhole({}) is bad.'.format(surface))
 
         '''
         if bump[surface]  > bumpthr1    and bump[surface]  < bumpmax  :
             sign = 'middle'
             print('There is some bump.')
         '''    
+
+
         if bump[surface]> bumpmax :
             sign = 'bad'
-            print('bump is bad.')
+            print('bump({}) is bad.'.format(surface))
             
         
             
