@@ -3,7 +3,7 @@
 #include <math.h>
 #include <cmath>
 
-void macro_simu(){
+void macro_simu_pix(){
 
 TFile *fin     = new TFile("201007corg.root", "read");
 TTree *tree    = (TTree*)fin->Get("tree");
@@ -13,19 +13,19 @@ TTree *treeb    = (TTree*)finb->Get("tree");
 
 
 
-TH1D* h1 = new TH1D("h1","radius;[mm];",100, 0.01554 * 45,  0.01554 * 55); 
-TH1D* h2 =  new TH1D("h2","xhole;[mm];",100, 0.01554 * 140, 0.01554 * 220); 
-TH1D* h3 =  new TH1D("h3","yhole;[mm];",100, 0.01554 * 140, 0.01554 * 220); 
-TH1D* h4 =  new TH1D("h4","xsize;[mm];",100, 0.01554 * 640, 0.01554 * 680); 
-TH1D* h5 =  new TH1D("h5","ysize;[mm];",100, 0.01554 * 640, 0.01554 * 680); 
+TH1D* h1 = new TH1D("h1","radius;[pix];",100, 45,   55); 
+TH1D* h2 =  new TH1D("h2","xhole;[pix];",100, 140,  220); 
+TH1D* h3 =  new TH1D("h3","yhole;[pix];",100, 140,  220); 
+TH1D* h4 =  new TH1D("h4","xsize;[pix];",100, 640,  680); 
+TH1D* h5 =  new TH1D("h5","ysize;[pix];",100, 640,  680); 
 TH1D* hb =  new TH1D("hb","bump",100,0,1000); 
 TH1D* hE =  new TH1D("hE","Esum",100,0,1000); 
 
-TH1D* h1b =  new TH1D("h1b","radius;[mm];",100, 0.01554 * 45,  0.01554 * 55); 
-TH1D* h2b =  new TH1D("h2b","xhole;[mm];",100, 0.01554 * 140, 0.01554 * 220); 
-TH1D* h3b =  new TH1D("h3b","yhole;[mm];",100, 0.01554 * 140, 0.01554 * 220); 
-TH1D* h4b =  new TH1D("h4b","xsize;[mm];",100, 0.01554 * 640, 0.01554 * 680); 
-TH1D* h5b =  new TH1D("h5b","ysize;[mm];",100, 0.01554 * 640, 0.01554 * 680); 
+TH1D* h1b =  new TH1D("h1b","radius;[pix];",100,  45,   55); 
+TH1D* h2b =  new TH1D("h2b","xhole; [pix];",100,  140,  220); 
+TH1D* h3b =  new TH1D("h3b","yhole; [pix];",100,  140,  220); 
+TH1D* h4b =  new TH1D("h4b","xsize; [pix];",100,  640,  680); 
+TH1D* h5b =  new TH1D("h5b","ysize; [pix];",100,  640,  680); 
 
 //H1D* h1 = new TH1D("h1","radius",100,  45,   55); 
 //H1D* h2 =  new TH1D("h2","xhole",100,  140,  220); 
@@ -88,17 +88,17 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     hb->Fill(bump[fill]);
     hE->Fill(Esum[fill]);
     
-    h1->Fill(0.01554*radius[fill]);
-    h2->Fill(0.01554*xhole[fill]);
-    h3->Fill(0.01554*yhole[fill]);
-    h4->Fill(0.01554*xsize[fill]);
-    h5->Fill(0.01554*ysize[fill]);
+    h1->Fill(radius[fill]);
+    h2->Fill(xhole[fill]);
+    h3->Fill(yhole[fill]);
+    h4->Fill(xsize[fill]);
+    h5->Fill(ysize[fill]);
 
-    h1b->Fill(0.01554*radiusb[fill]);
-    h2b->Fill(0.01554*xholeb[fill]);
-    h3b->Fill(0.01554*yholeb[fill]);
-    h4b->Fill(0.01554*xsizeb[fill]);
-    h5b->Fill(0.01554*ysizeb[fill]);
+    h1b->Fill(radiusb[fill]);
+    h2b->Fill(xholeb[fill]);
+    h3b->Fill(yholeb[fill]);
+    h4b->Fill(xsizeb[fill]);
+    h5b->Fill(ysizeb[fill]);
 
     }
 
