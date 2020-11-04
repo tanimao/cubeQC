@@ -3,9 +3,9 @@
 #include <math.h>
 #include <cmath>
 
-void macro_forrangeif(){
+void macro_futatsuyama(){
 
-TFile *fin     = new TFile("201007corg.root", "read");
+TFile *fin     = new TFile("0829goodsizecor0910.root", "read");
 //TFile *finbad  = new TFile("0828bad0831cor.root","read");
 TTree *tree    = (TTree*)fin->Get("tree");
 //TTree *treebad = (TTree*)finbad->Get("tree");
@@ -28,7 +28,6 @@ TH1D* hball = new TH1D("hball","bump",100,0,1000);
 TH1D* hEall = new TH1D("hEall","Esum",1000,0,500); 
 
 TH1D* holexy= new TH1D("holexy","sqrt(xhole^2+yhole^2)", 100, 220*0.01554,300*0.01554);
-TH1D* holexy1= new TH1D("holexy1","abs(facing sqrt(xhole^2+yhole^2))", 100, 0 ,0.5);
 
 TH1D* h1six = new TH1D("h1six","radius",100,45,55); 
 TH1D* h2six = new TH1D("h2six","xhole_max",100,140,220); 
@@ -416,9 +415,7 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
 
 
             fholexy->Fill( sqrt(xhole[isurf]*xhole[isurf] + yhole[isurf]*yhole[isurf])*0.01554, 
-                           sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf+3]*yhole[isurf+3])*0.01554);
-            holexy1->Fill( fabs(sqrt(xhole[isurf]*xhole[isurf] + yhole[isurf]*yhole[isurf]) 
-                              - sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf+3]*yhole[isurf+3]))*0.01554);
+                           sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf]*yhole[isurf])*0.01554);
         }
     }
 
@@ -589,7 +586,7 @@ std::cout << "CorrelationFactor(fysxh): " << fysxh->GetCorrelationFactor() << st
 std::cout << "CorrelationFactor(fysyh): " << fysyh->GetCorrelationFactor() << std::endl;
 
 
-TFile *fout = new TFile("201007cutg.root", "recreate");
+TFile *fout = new TFile("0829good201102.root", "recreate");
 h1->Write();
 h2->Write();
 h3->Write();
@@ -687,7 +684,7 @@ hist_d->Write();
 sub_hw->Write();
 sub_hd->Write();
 sub_wd->Write();
-holexy1->Write();
+
 TTree *treeclone = tree->CloneTree();
 treeclone->Write();
 
