@@ -184,35 +184,89 @@ void ArrayHole(Cube *c, float x, float y,
                        */
 }
 
+void RotateCube (Cube *c,  float x, float y, float *posxhx, float *posxhy, float tan){
+    //点(x,y)を中心に、座標を回転させるやつ。
+    float cos = sqrt(1/(1 + tan*tan));
+    float hwd[3];
+    c->GetSize(hwd);
+    float width = hwd[1];
+    float depth = hwd[2];
+//    posxhx[1] = cos * (posxhx[1] - x) - cos * tan * (posxhy[1] - y) + x;
+//    posxhy[1] = cos * tan *(posxhx[1] - x) + cos * (posxhy[1] - y) + y;
+//
+//    posxhx[2] = cos * (posxhx[2] - x) - cos * tan * (posxhy[2] - y) + x;
+//    posxhy[2] = cos * tan *(posxhx[2] - x) + cos * (posxhy[2] - y) + y;
+//
+//    posxhx[4] = cos * (posxhx[4] - x) - cos * tan * (posxhy[4] - y) + x;
+//    posxhy[4] = cos * tan *(posxhx[4] - x) + cos * (posxhy[4] - y) + y;
+//
+//    posxhx[5] = cos * (posxhx[5] - x) - cos * tan * (posxhy[5] - y) + x;
+//    posxhy[5] = cos * tan *(posxhx[5] - x) + cos * (posxhy[5] - y) + y;
+      
+      posxhy[1] = posxhy[1] + width * tan /2;
+      posxhy[4] = posxhy[4] - width * tan /2;
 
-void FillDiffy (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6]){
+      posxhx[2] = posxhx[2] - depth * tan /2;
+      posxhx[5] = posxhx[5] + depth * tan /2;
+}
+
+void checkdiff (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
+
+    for (int icubey=0; icubey < 8; icubey++){
+        for (int icubex=0; icubex < 8 ; icubex++){
+            hist->Fill( 
+                        (posxhy[icubey][icubex][4] - posxhy[icubey][icubex][1])
+                      );
+            //cout << "icubex: "<< icubex << ", icubey: " << icubey << endl ;
+        }
+    }
+//    TCanvas * can1 = new TCanvas("can1", "can1");
+//    hist->Draw();
+//    if (hist->Integral(0,50) > 0 ){
+//        cannot = 1;
+//    }
+}
+
+
+
+void FillDiffy (TH1F * hist, TH2F * hist2, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
 
     for (int icubey=0; icubey < 8; icubey++){
         for (int icubex=0; icubex < 7 ; icubex++){
             hist->Fill( sqrt(
                         std::pow((posxhy[icubey][icubex][4] - posxhy[icubey][icubex+1][1]),2)
-                      + std::pow((posxhz[icubey][icubex][4] - posxhz[icubey][icubex+1][1]),2))
+              + std::pow((posxhz[icubey][icubex][4] - posxhz[icubey][icubex+1][1]),2))
                       );
+            
+            hist2->Fill((posxhy[icubey][icubex][4] - posxhy[icubey][icubex+1][1]),
+              (posxhz[icubey][icubex][4] - posxhz[icubey][icubex+1][1]));
             //cout << "icubex: "<< icubex << ", icubey: " << icubey << endl ;
         }
     }
-    TCanvas * can1 = new TCanvas("can1", "can1");
-    hist->Draw();
+    //TCanvas * can1 = new TCanvas("can1", "can1");
+    //hist2->SetMarkerStyle(8);
+    //hist2->Draw();
+//    if (hist->Integral(0,50) > 0 ){
+//        cannot = 1;
+//    }
 }
 
-void FillDiffx (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6]){
+void FillDiffx (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
 
     for (int icubex2=0; icubex2 < 8; icubex2++){
         for (int icubey2=0; icubey2 < 7 ; icubey2++){
             hist->Fill( sqrt(
                         std::pow((posxhx[icubey2][icubex2][5] - posxhx[icubey2+1][icubex2][2]),2)
-                      + std::pow((posxhz[icubey2][icubex2][5] - posxhz[icubey2+1][icubex2][2]),2) ) 
+              + std::pow((posxhz[icubey2][icubex2][5] - posxhz[icubey2+1][icubex2][2]),2) ) 
                       );
             //cout << "filled: "<< 7* icubex2 + icubey2 << endl ;
         }
     }
-    TCanvas * can2 = new TCanvas("can2", "can2");
-    hist->Draw();
+//    TCanvas * can2 = new TCanvas("can2", "can2");
+//    hist->Draw();
+//    if (hist->Integral(0,50) > 0){
+//        cannot = 1;
+//    }
 }
 
 void CubeArrangey1(Cube *c1, Cube *c2, Cube *c3, Cube *c4,

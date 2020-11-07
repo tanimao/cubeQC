@@ -82,6 +82,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         }
         if (
          //スキャン用の条件
+         /*
          649.5 + smin < sizehwd[0] && sizehwd[0] < 664.3 + smax &&
          649.5 + smin < sizehwd[1] && sizehwd[1] < 664.3 + smax &&
          649.5 + smin < sizehwd[2] && sizehwd[2] < 664.3 + smax &&
@@ -106,6 +107,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
          47.8 < r[3] &&
          47.8 < r[4] &&
          47.8 < r[5] &&
+         */
          //10/13 現行の条件(以下)
          /*
              652+0.8-1 < sizehwd[0] && sizehwd[0] < 664+0.8-0.5 && 
@@ -164,7 +166,19 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     float posxhy[8][8][6] = {0.};
     float posxhz[8][8][6] = {0.};
     float pitch = 10.3;
+    //float tan = 0.4/102.4;
+    float tan = 0/102.4;
+    int cannotx = 0;
+    int cannoty = 0;
+    int cannot  = 0;
 
+
+    std::ofstream fout("sizemax.txt" );
+
+    //キューブをシャッフルする。
+    for (int shuff = 0; shuff <unitnum; shuff++){
+        std::mt19937_64 get_rand_mt(shuff);
+        std::shuffle(cube.begin(), cube.end(), get_rand_mt );
     for (int iarry = 0; iarry < 8; iarry ++){
         for (int iarrx = 0; iarrx < 8; iarrx ++){
 
@@ -173,19 +187,38 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
                       posxhy[iarry][iarrx],
                       posxhz[iarry][iarrx]);
                         
-            for (int i6 = 0; i6 <6 ; i6++){
-                cout << posxhx[iarry][iarrx][i6] << endl;
-                cout << posxhy[iarry][iarrx][i6] << endl;
-            }
+//            for (int i6 = 0; i6 <6 ; i6++){
+//                cout << posxhx[iarry][iarrx][i6] << endl;
+//                cout << posxhy[iarry][iarrx][i6] << endl;
+//
+//            }
+            RotateCube(cube[8*iarry + iarrx], pitch*(iarrx+1), pitch*(iarry+1),
+                      posxhx[iarry][iarrx],
+                      posxhy[iarry][iarrx],
+                      -tan);
 
         }
     }
     
-    TH1F * hdiffx = new TH1F ("hdiffx", "differential of two hole centers",100, 0, 1);
-    TH1F * hdiffy = new TH1F ("hdiffy", "differential of two hole centers",100, 0, 1);
+    TH1F * hdiffx = new TH1F ("hdiffx", "differential of two hole centers",50, 0, 1);
+    TH1F * hdiffy = new TH1F ("hdiffy", "differential of two hole centers",50, 0, 1);
+    TH1F * hdiffown = new TH1F ("hdiffown", "differential of each side of hole ",50, -1, 1);
+    TH2F * nexthole = new TH2F ("nexthole", "points where next hole is", 50, -1, 1 , 50, -1, 1); 
 
-    FillDiffy( hdiffx, posxhx, posxhy, posxhz);
-    FillDiffx( hdiffy, posxhx, posxhy, posxhz);
+    cannotx = 0;
+    cannoty = 0;
+    FillDiffy( hdiffx, nexthole,  posxhx, posxhy, posxhz, cannoty);
+    FillDiffx( hdiffy, posxhx, posxhy, posxhz, cannotx);
+    checkdiff( hdiffown, posxhx, posxhy, posxhz, cannotx);
+    
+
+    if (hdiffx->Integral(25,50) > 0 || hdiffy->Integral(25,50) > 0){
+        cannot ++;
+    }
+    hdiffx->Delete();
+    hdiffy->Delete();
+    hdiffown->Delete();
+    nexthole->Delete();
 
     /*
     TCanvas * can1 = new TCanvas("can1", "can1");
@@ -194,17 +227,12 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     hdiffy->Draw();
     */
 
-    //キューブをシャッフルする。
     int miss   = 0;
     int OutOfRange = 0;
     int yclear = 0;
     int xclear = 0;    
     int andclear = 0;
 
-    std::ofstream fout("sizemax.txt" );
-    for (int shuff = 0; shuff <unitnum; shuff++){
-        std::mt19937_64 get_rand_mt(shuff);
-        std::shuffle(cube.begin(), cube.end(), get_rand_mt );
     
      
        // hogehoge
@@ -513,18 +541,15 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
        std::cout << "good cube      : "<< cube.size() << std::endl;
        std::cout << "good rate      : "<< (float) cube.size()*100/cubemax << "%" << std::endl;
        std::cout << "************************************************" << std::endl;
-       std::cout << "miss : "   << miss     << " /" << unitnum << ", " << (float) miss*100/unitnum     << "%" << std::endl;
-       std::cout << "OutOfRange : "<<OutOfRange<< " /" <<unitnum<< ", "<< (float) OutOfRange*100/unitnum<< "%" << std::endl;
-       std::cout << "yclear : " << yclear   << " /" << unitnum << ", " << (float) yclear*100/unitnum   << "%" << std::endl;
-       std::cout << "xclear : " << xclear   << " /" << unitnum << ", " << (float) xclear*100/unitnum   << "%" << std::endl;
-       std::cout << "both   : " << andclear << " /" << unitnum << ", " << (float) andclear*100/unitnum << "%" << std::endl;
+       std::cout << "tan      : " << tan    << std::endl; 
+       std::cout << "cannot   : " << cannot << " /" << unitnum << ", " << (float) cannot*100/unitnum << "%" << std::endl;
    std::cout << "time : "<< (unsigned int) time(NULL) << std::endl; 
 
 
     //テキストファイルに出力
     std::ofstream ratetxt("good_clear_ela.txt", std::ios::app);
-    ratetxt << Nall << " " << (float) cube.size() * 100/cubemax
-                    << " " << (float) andclear * 100/unitnum << std::endl;
+//    ratetxt << Nall << " " << (float) cube.size() * 100/cubemax
+//                    << " " << (float) andclear * 100/unitnum << std::endl;
 
     ratetxt.close();
 
@@ -555,10 +580,10 @@ void analysis_hole()
 //                    std::cout << "hole max = 199.5 + " << ihmax << std::endl;
 
                     Nall = 1;//Nall +1 ;
-                    hmax = 1;// ihmax ;
-                    hmin = 1;// 2*ihmin ;
-                    smax = 1;// ismax ;
-                    smin = 1;// ismin ;
+                    hmax =  3;// ihmax ;
+                    hmin =  2*3;// 2*ihmin ;
+                    smax =  3;// ismax ;
+                    smin =  0;// ismin ;
                     analysis_hole1(fr, fin, fh, Nall, hmax, hmin, smax, smin);
 //                }
 //            }

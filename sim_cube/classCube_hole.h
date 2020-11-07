@@ -51,11 +51,15 @@ class Cube : public TObject
     void GetHole5 (float holexy[2]);
 
     void ArrayHole (Cube *c, float x, float y, float *posxhx[6], float *posxhy[6]);
+//    void RotateCube(float x, float y, float *posxhx[6], float *posxhy[6], float tan);
+    void RotateCube(Cube *c, float x, float y, float *posxhx[6], float *posxhy[6], float tan);
+    void checkdiff (TH1F * hist, 
+            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
 
-    void FillDiffy (TH1F * hist, 
-            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6]);
+    void FillDiffy (TH1F * hist, TH2F * hist2, 
+            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
     void FillDiffx (TH1F * hist, 
-            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6]);
+            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
     
     void CubeArrangey1(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
                       Cube *c5, Cube *c6, Cube *c7, Cube *c8,
