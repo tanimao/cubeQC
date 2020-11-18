@@ -1,17 +1,18 @@
 /*
-互いに面する穴同士の共通部分が1ミリ以上あることを要求する関数を書く。
-
+互いに面する穴同士の共通部分が直径1ミリ以上あることを要求する関数を書く。
 */
 #include "classCube_hole.h"
 #include <vector>
 #include <cmath>
 #include <random>
 #include <algorithm>
+        
 ClassImp(Cube)
 
 Cube::Cube()
 {
 }
+
 
 Cube::Cube(int id,
            float height, float width, float depth,
@@ -22,7 +23,7 @@ Cube::Cube(int id,
            float xhole4, float yhole4,
            float xhole5, float yhole5,
            float r1, float r2, float r3, float r4, float r5, float r6
-          )
+        ) 
         : _id(0),
           _height(0.), _width(0.), _depth(0.),
           _xhole0(0.), _yhole0(0.),
@@ -32,15 +33,15 @@ Cube::Cube(int id,
           _xhole4(0.), _yhole4(0.),
           _xhole5(0.), _yhole5(0.),
           _r1(0.), _r2(0.), _r3(0.), _r4(0.), _r5(0.), _r6(0.)
-
+                  
 {
 
    _id = id;
    _height = height;
-   _width = width;
+            _width = width;
    _depth = depth;
    //_depth = width;
-   
+      
    _xhole0 = xhole0;
    _yhole0 = yhole0;
    _xhole1 = xhole1;
@@ -61,7 +62,7 @@ Cube::Cube(int id,
    _r5 = r5;
    _r6 = r6;
 
-
+           
 
 
 
@@ -141,7 +142,61 @@ void Cube::GetRadius(float radius[6])
     radius[5] = _r6;
 }
 
-void ArrayHole(Cube *c, float x, float y, 
+
+
+void FillCenter1(Cube * c, TH2F * h){
+    float hwd[3], hole[6][2];
+    c->GetSize(hwd);
+
+    c->GetHole0(hole[0]);
+    c->GetHole1(hole[1]);
+    c->GetHole2(hole[2]);
+    c->GetHole3(hole[3]);
+    c->GetHole4(hole[4]);
+    c->GetHole5(hole[5]);
+    
+    float x,y;
+    y = (hole[1][1]+hole[4][1])/2;
+    x = hwd[2] - (hole[0][1]+hole[3][1])/2 - (hole[1][0]+hole[4][0])/2;
+
+    h->Fill(x,y);
+}
+
+
+void FillCenter2(Cube * c, TH2F * h){
+    float hwd[3], hole[6][2];
+    c->GetSize(hwd);
+
+    c->GetHole0(hole[0]);
+    c->GetHole1(hole[1]);
+    c->GetHole2(hole[2]);
+    c->GetHole3(hole[3]);
+    c->GetHole4(hole[4]);
+    c->GetHole5(hole[5]);
+    
+    float x,y;
+    y = hwd[0] - (hole[2][0]+hole[5][0])/2;
+    x = hwd[1] - (hole[0][0]+hole[3][0])/2 - (hole[2][1]+hole[5][1])/2;
+
+    h->Fill(x,y);
+}
+void GetPols(TH2F * h, float p[2][2]){
+    //一次関数を用意してフィット、パラメータを決める
+    TF1 * f1 = new TF1 ("f1", "[1]*x + [0]", 0,10);
+    h->Fit("f1");
+    p[0][1] = f1->GetParameter(1);
+    p[0][0] = f1->GetParameter(0);
+    //上の一次関数に垂直な一次関数を作り、パラメータを決める
+    double a,b;//ヒストグラムの平均のところ
+    a = h->GetMean(1);
+    b = h->GetMean(2);
+
+    p[1][0] = b + a/(p[0][1]);
+    p[1][1] = -1/(p[0][1]);
+}
+
+    
+void ArrangebyHole(Cube *c, float x, float y, 
                float * posxhx, float * posxhy, float * posxhz){
     float hwd[3], hole[6][2];
     c->GetSize(hwd);
@@ -160,20 +215,20 @@ void ArrayHole(Cube *c, float x, float y,
     float yhole = (hole[0][1] + hole[3][1])/2 ;
     //xhole1のx,y座標
     posxhx[1] = x - (width - xhole);
-    posxhy[1] = y - yhole + (width - hole[1][0]);
+    posxhy[1] = y - yhole + (depth - hole[1][0]);
     posxhz[1] = height - hole[1][1];
     //xhole4のx,y座標
     posxhx[4] = x + xhole;
     posxhy[4] = y - yhole + (depth - hole[4][0]);
     posxhz[4] = height - hole[4][1];
     //xhole2のx,y座標
-    posxhx[2] = x - (width - xhole) + hole[2][0];
+    posxhx[2] = x - (width - xhole) + hole[2][1];
     posxhy[2] = y - yhole;
-    posxhz[2] = hole[2][1];
+    posxhz[2] = hole[2][0];
     //xhole5のx,y座標
-    posxhx[5] = x - (width - xhole) + hole[5][0];
+    posxhx[5] = x - (width - xhole) + hole[5][1];
     posxhy[5] = y - yhole + depth;
-    posxhz[5] = hole[5][1];
+    posxhz[5] = hole[5][0];
 
 
     /*
@@ -191,17 +246,17 @@ void RotateCube (Cube *c,  float x, float y, float *posxhx, float *posxhy, float
     c->GetSize(hwd);
     float width = hwd[1];
     float depth = hwd[2];
-//    posxhx[1] = cos * (posxhx[1] - x) - cos * tan * (posxhy[1] - y) + x;
-//    posxhy[1] = cos * tan *(posxhx[1] - x) + cos * (posxhy[1] - y) + y;
+//    posxhx[1] = cos * (posxhx[1] - x) + cos * tan * (posxhy[1] - y) + x;
+//    posxhy[1] = cos * (-tan) *(posxhx[1] - x) + cos * (posxhy[1] - y) + y;
 //
-//    posxhx[2] = cos * (posxhx[2] - x) - cos * tan * (posxhy[2] - y) + x;
-//    posxhy[2] = cos * tan *(posxhx[2] - x) + cos * (posxhy[2] - y) + y;
+//    posxhx[2] = cos * (posxhx[2] - x) + cos * tan * (posxhy[2] - y) + x;
+//    posxhy[2] = cos * (-tan) *(posxhx[2] - x) + cos * (posxhy[2] - y) + y;
 //
-//    posxhx[4] = cos * (posxhx[4] - x) - cos * tan * (posxhy[4] - y) + x;
-//    posxhy[4] = cos * tan *(posxhx[4] - x) + cos * (posxhy[4] - y) + y;
+//    posxhx[4] = cos * (posxhx[4] - x) + cos * tan * (posxhy[4] - y) + x;
+//    posxhy[4] = cos * (-tan) *(posxhx[4] - x) + cos * (posxhy[4] - y) + y;
 //
-//    posxhx[5] = cos * (posxhx[5] - x) - cos * tan * (posxhy[5] - y) + x;
-//    posxhy[5] = cos * tan *(posxhx[5] - x) + cos * (posxhy[5] - y) + y;
+//    posxhx[5] = cos * (posxhx[5] - x) + cos * tan * (posxhy[5] - y) + x;
+//    posxhy[5] = cos * (-tan) *(posxhx[5] - x) + cos * (posxhy[5] - y) + y;
       
       posxhy[1] = posxhy[1] + width * tan /2;
       posxhy[4] = posxhy[4] - width * tan /2;
@@ -209,6 +264,42 @@ void RotateCube (Cube *c,  float x, float y, float *posxhx, float *posxhy, float
       posxhx[2] = posxhx[2] - depth * tan /2;
       posxhx[5] = posxhx[5] + depth * tan /2;
 }
+
+
+void RotateCubeFull ( float x, float y, float *posxhx, float *posxhy, float tan){
+    //点(x,y)を中心に、座標を回転させるやつ。
+    float cos = sqrt(1/(1 + tan*tan));
+    posxhx[1] = cos * (posxhx[1] - x) + cos * tan * (posxhy[1] - y) + x;
+    posxhy[1] = cos * (-tan) *(posxhx[1] - x) + cos * (posxhy[1] - y) + y;
+
+    posxhx[2] = cos * (posxhx[2] - x) + cos * tan * (posxhy[2] - y) + x;
+    posxhy[2] = cos * (-tan) *(posxhx[2] - x) + cos * (posxhy[2] - y) + y;
+
+    posxhx[4] = cos * (posxhx[4] - x) + cos * tan * (posxhy[4] - y) + x;
+    posxhy[4] = cos * (-tan) *(posxhx[4] - x) + cos * (posxhy[4] - y) + y;
+
+    posxhx[5] = cos * (posxhx[5] - x) + cos * tan * (posxhy[5] - y) + x;
+    posxhy[5] = cos * (-tan) *(posxhx[5] - x) + cos * (posxhy[5] - y) + y;
+}
+
+void RotateEachCube( float x, float y, float *posxhx, float *posxhy){
+    //こちらは各キューブを、穴の傾きが減るように回転させる関数
+    //横の穴について:
+    float tan1 ;
+    tan1 =  (posxhy[1] - posxhy[4])/( posxhx[1] - posxhx[4]);
+
+    //縦の穴について:
+    float tan2 ;
+    tan2 = -(posxhx[2] - posxhx[5])/( posxhy[2] - posxhy[5]);
+
+    //平均をとる:
+    float tanmean = (tan1 + tan2) /2;
+    
+    RotateCubeFull( x, y, posxhx, posxhy, tanmean);
+
+}
+
+
 
 void checkdiff (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
 
@@ -229,21 +320,45 @@ void checkdiff (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], flo
 
 
 
-void FillDiffy (TH1F * hist, TH2F * hist2, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
+void FillDiffy (TH1F * hist, TH1F * hist2, int &num_over, TH2F * hpos, 
+                float posxhx[8][8][6], float posxhy[8][8][6], 
+                float posxhz[8][8][6], int cannot, float pitch, int shuff){
 
+    float distance ;
     for (int icubey=0; icubey < 8; icubey++){
         for (int icubex=0; icubex < 7 ; icubex++){
-            hist->Fill( sqrt(
-                        std::pow((posxhy[icubey][icubex][4] - posxhy[icubey][icubex+1][1]),2)
-              + std::pow((posxhz[icubey][icubex][4] - posxhz[icubey][icubex+1][1]),2))
-                      );
             
-            hist2->Fill((posxhy[icubey][icubex][4] - posxhy[icubey][icubex+1][1]),
-              (posxhz[icubey][icubex][4] - posxhz[icubey][icubex+1][1]));
+            distance =  sqrt(
+                        std::pow((posxhy[icubey][icubex][4] 
+                                - posxhy[icubey][icubex+1][1]),2)
+                      + std::pow((posxhz[icubey][icubex][4] 
+                                - posxhz[icubey][icubex+1][1]),2));
+
+            if (distance >= 0.5){
+                
+               
+                num_over ++ ;
+                if(distance >= 0.54){
+                    std::cout << "distance = " << distance << ", shuff: " << shuff << endl;
+                }
+
+            }else{}
+
+            hist->Fill(distance); 
+            
+            hist2->Fill(distance); 
+            
+//            hist2->Fill((posxhy[icubey][icubex][4] 
+//                       - posxhy[icubey][icubex+1][1]),
+//                        (posxhz[icubey][icubex][4] 
+//                       - posxhz[icubey][icubex+1][1]));
             //cout << "icubex: "<< icubex << ", icubey: " << icubey << endl ;
+            hpos->SetBinContent(3*icubex+3, 3*icubey-1+3, distance);                    
         }
     }
+//    std::cout<< "num_over : " << num_over << std::endl; 
     //TCanvas * can1 = new TCanvas("can1", "can1");
+    //hist->Draw();
     //hist2->SetMarkerStyle(8);
     //hist2->Draw();
 //    if (hist->Integral(0,50) > 0 ){
@@ -251,19 +366,33 @@ void FillDiffy (TH1F * hist, TH2F * hist2, float  posxhx[8][8][6], float  posxhy
 //    }
 }
 
-void FillDiffx (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], float posxhz[8][8][6], int cannot){
+void FillDiffx (TH1F * hist, TH1F * hist2, int &num_over, TH2F * hpos,  
+                float posxhx[8][8][6], float posxhy[8][8][6], 
+                float posxhz[8][8][6], int cannot, float pitch){
 
+    float distance;
     for (int icubex2=0; icubex2 < 8; icubex2++){
         for (int icubey2=0; icubey2 < 7 ; icubey2++){
-            hist->Fill( sqrt(
-                        std::pow((posxhx[icubey2][icubex2][5] - posxhx[icubey2+1][icubex2][2]),2)
-              + std::pow((posxhz[icubey2][icubex2][5] - posxhz[icubey2+1][icubex2][2]),2) ) 
-                      );
+            distance =  sqrt(
+                        std::pow((posxhx[icubey2][icubex2][5] 
+                                - posxhx[icubey2+1][icubex2][2]),2)
+                      + std::pow((posxhz[icubey2][icubex2][5] 
+                                - posxhz[icubey2+1][icubex2][2]),2) ) ;
+
+            if (distance >= 0.5){
+
+                num_over ++ ;
+            }else{}
+
+
+            hist->Fill( distance );
+            hist2->Fill(distance ); 
             //cout << "filled: "<< 7* icubex2 + icubey2 << endl ;
+            hpos->SetBinContent(3*icubex2-2+3, 3*icubey2+3, distance);  
         }
     }
-//    TCanvas * can2 = new TCanvas("can2", "can2");
-//    hist->Draw();
+    ////TCanvas * can2 = new TCanvas("can2", "can2");
+    ////hist->Draw();
 //    if (hist->Integral(0,50) > 0){
 //        cannot = 1;
 //    }

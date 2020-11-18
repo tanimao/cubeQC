@@ -5,7 +5,7 @@
 
 void macro_forrangeif(){
 
-TFile *fin     = new TFile("201007corg.root", "read");
+TFile *fin     = new TFile("201102.root", "read");
 //TFile *finbad  = new TFile("0828bad0831cor.root","read");
 TTree *tree    = (TTree*)fin->Get("tree");
 //TTree *treebad = (TTree*)finbad->Get("tree");
@@ -31,10 +31,10 @@ TH1D* holexy= new TH1D("holexy","sqrt(xhole^2+yhole^2)", 100, 220*0.01554,300*0.
 TH1D* holexy1= new TH1D("holexy1","abs(facing sqrt(xhole^2+yhole^2))", 100, 0 ,0.5);
 
 TH1D* h1six = new TH1D("h1six","radius",100,45,55); 
-TH1D* h2six = new TH1D("h2six","xhole_max",100,140,220); 
-TH1D* h3six = new TH1D("h3six","yhole_max",100,140,220); 
-TH1D* h4six = new TH1D("h4six","xsize_max",100,640,680); 
-TH1D* h5six = new TH1D("h5six","ysize_max",100,640,680); 
+TH1D* h2six = new TH1D("h2six","xhole_max",100,140*0.01554,220*0.01554); 
+TH1D* h3six = new TH1D("h3six","yhole_max",100,140*0.01554,220*0.01554); 
+TH1D* h4six = new TH1D("h4six","xsize_max",100,640*0.01554,680*0.01554); 
+TH1D* h5six = new TH1D("h5six","ysize_max",100,640*0.01554,680*0.01554); 
 TH1D* hdsix = new TH1D("hdsix","distance",100,0,100); 
 TH1D* hbsix = new TH1D("hbsix","bump",100,0,1000); 
 TH1D* hEsix = new TH1D("hEsix","Esum",1000,0,500); 
@@ -100,6 +100,18 @@ TH2D * fyhyh= new TH2D ("fyhyh", "facing yhole_yhole; yhole [mm]; yhole [mm]",
                         100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
 TH2D * fholexy= new TH2D ("fholexy", "facing sqrt(xhole^2+yhole^2); holexy [mm]; holexy [mm]",
                         100, 0.01554*220, 0.01554*300, 100, 0.01554*220, 0.01554*300);
+
+TH2D * fxhxh_half1= new TH2D ("fxhxh_half1", "facing xhole_xhole; xhole [mm]; xhole [mm]",
+                        100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
+TH2D * fyhyh_half1= new TH2D ("fyhyh_half1", "facing yhole_yhole; yhole [mm]; yhole [mm]",
+                        100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
+TH2D * fxhxh_half2= new TH2D ("fxhxh_half2", "facing xhole_xhole; xhole [mm]; xhole [mm]",
+                        100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
+TH2D * fyhyh_half2= new TH2D ("fyhyh_half2", "facing yhole_yhole; yhole [mm]; yhole [mm]",
+                        100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
+
+
+
 
 TH2D * fxsxh= new TH2D ("fxsxh", "facing xsize_xhole; xsize [mm]; xhole [mm]",
                         100, 0.01554*640, 0.01554*680, 100, 0.01554*140, 0.01554*220);
@@ -419,6 +431,16 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
                            sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf+3]*yhole[isurf+3])*0.01554);
             holexy1->Fill( fabs(sqrt(xhole[isurf]*xhole[isurf] + yhole[isurf]*yhole[isurf]) 
                               - sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf+3]*yhole[isurf+3]))*0.01554);
+
+
+            if (sqrt(xhole[isurf]*xhole[isurf] + yhole[isurf]*yhole[isurf])  
+                - sqrt(xhole[isurf+3]*xhole[isurf+3] + yhole[isurf]*yhole[isurf+3]) > 0 ){
+                fxhxh_half1->Fill(xhole[isurf]*0.01554, xhole[isurf+3]*0.01554);
+                fyhyh_half1->Fill(yhole[isurf]*0.01554, yhole[isurf+3]*0.01554);
+            }else{
+                fxhxh_half2->Fill(xhole[isurf]*0.01554, xhole[isurf+3]*0.01554);
+                fyhyh_half2->Fill(yhole[isurf]*0.01554, yhole[isurf+3]*0.01554);
+            }
         }
     }
 
@@ -493,10 +515,10 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     
     for (int fill =0; fill<6; fill++){
     h1six->Fill(radius[fill]);
-    h2six->Fill(xhole[fill]);
-    h3six->Fill(yhole[fill]);
-    h4six->Fill(xsize[fill]);
-    h5six->Fill(ysize[fill]);
+    h2six->Fill(xhole[fill]*0.01554);
+    h3six->Fill(yhole[fill]*0.01554);
+    h4six->Fill(xsize[fill]*0.01554);
+    h5six->Fill(ysize[fill]*0.01554);
     hbsix->Fill(bump[fill]);
     hEsix->Fill(Esum[fill]);
 
@@ -561,6 +583,13 @@ fxhyh->SetMarkerStyle(6);
 fyhyh->SetMarkerStyle(6);
 fholexy->SetMarkerStyle(6);
 
+
+
+fxhxh_half1->SetMarkerStyle(6);
+fyhyh_half1->SetMarkerStyle(6);
+fxhxh_half2->SetMarkerStyle(6);
+fyhyh_half2->SetMarkerStyle(6);
+
 fxsxh->SetMarkerStyle(6);
 fxsyh->SetMarkerStyle(6);
 fysxh->SetMarkerStyle(6);
@@ -589,7 +618,7 @@ std::cout << "CorrelationFactor(fysxh): " << fysxh->GetCorrelationFactor() << st
 std::cout << "CorrelationFactor(fysyh): " << fysyh->GetCorrelationFactor() << std::endl;
 
 
-TFile *fout = new TFile("201007cutg.root", "recreate");
+TFile *fout = new TFile("201102cut.root", "recreate");
 h1->Write();
 h2->Write();
 h3->Write();
@@ -666,6 +695,13 @@ fxhxh->Write();
 fxhyh->Write();
 fyhyh->Write();
 fholexy->Write();
+
+
+fxhxh_half1->Write();
+fyhyh_half1->Write();
+fxhxh_half2->Write();
+fyhyh_half2->Write();
+
 
 fxsxh->Write();
 fxsyh->Write();

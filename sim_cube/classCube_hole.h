@@ -50,16 +50,26 @@ class Cube : public TObject
     void GetHole4 (float holexy[2]);
     void GetHole5 (float holexy[2]);
 
-    void ArrayHole (Cube *c, float x, float y, float *posxhx[6], float *posxhy[6]);
+
+    void FillCenter1(Cube * c, TH2F * h);
+    void FillCenter2(Cube * c, TH2F * h);
+    void GetPols(TH2F * h, float p[2][2]);
+    void ArrangebyHole (Cube *c, float x, float y, float *posxhx[6], float *posxhy[6]);
 //    void RotateCube(float x, float y, float *posxhx[6], float *posxhy[6], float tan);
+//
     void RotateCube(Cube *c, float x, float y, float *posxhx[6], float *posxhy[6], float tan);
+    void ROtateCubeFull(float x, float y, float *posxhx[6], float *posxhy[6], float tan);
     void checkdiff (TH1F * hist, 
             float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
 
-    void FillDiffy (TH1F * hist, TH2F * hist2, 
-            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
-    void FillDiffx (TH1F * hist, 
-            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot);
+
+    void RotateEachCube(float x, float y, float *posxhx[6], float *posxhy[6]);
+
+
+    void FillDiffy (TH1F * hist, TH1F * hist2, int &num_over, TH2F * hpos, 
+            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot, float pitch, int shuff);
+    void FillDiffx (TH1F * hist, TH1F * hist2, int &num_over, TH2F * hpos,
+            float posxhx[8][8][6], float posxhy[8][8][6], float posxhz[8][8][6], int cannot, float pitch);
     
     void CubeArrangey1(Cube *c1, Cube *c2, Cube *c3, Cube *c4, 
                       Cube *c5, Cube *c6, Cube *c7, Cube *c8,
