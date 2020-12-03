@@ -1,6 +1,8 @@
 # pdf file, key file
 *.pdf
 *.key
+*.npy
+
 
 # Compiled Object files
 *.slo
