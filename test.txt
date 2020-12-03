@@ -1,0 +1,5 @@
+hello.
+picfolder = 'mao_pictures/pic200930/'
+filename = 'files/data200928_.txt'
+
+
