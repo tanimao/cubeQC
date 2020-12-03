@@ -54,7 +54,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     int igood = 0;
     
     int cubemax = 10000;//つくるキューブの数
-    int unitnum = 50000;//つくる8x8セットの数
+    int unitnum = 5000;//つくる8x8セットの数
 
     TH2F * h_decideTop = new TH2F("h_decideTop","h_decideTop",
                                      100, 140*0.01554, 220*0.01554,
@@ -347,7 +347,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 
 ////////////////////////////////////////////////////
 //楕円でカットをかける。さらに４領域に分類する。
-/*
+///*
     for(int icube = 0; icube < igood; icube++){
         //cube[icube]の穴位置(X,Y)を求めておく。
         float X1 = 0;
@@ -537,7 +537,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 //        }
         }
     }
-*/
+//*/
     for (int icat = 0; icat <16; icat ++){
         //std::cout << "Category " << icat +1 << ":" 
           //        << CatNum[icat] << std::endl;
@@ -575,7 +575,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     //キューブをシャッフルする。
     //シャッフルして隣り合うやつとの大きさをみる。
     //さらに、隣り合うやつとの穴の位置のずれをみる。
-/*
+///*
     for (int shuff = 0; shuff <unitnum; shuff++){
         //std::mt19937_64 get_rand_mt(shuff);
         std::mt19937_64 get_rand_mt(0);
@@ -879,7 +879,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             
    } 
 
-*/  
+//*/  
         TEllipse * e = new TEllipse(0,0,SDevX2*1, SDevY2*1);
         TCanvas * canvas1 = new TCanvas("canvas1", "canvas1");
         hdiffx->Draw();
