@@ -1,5 +1,6 @@
 #include <iostream>
 
+
 #include <fstream>
 #include <math.h>
 #include <cmath>
@@ -22,7 +23,8 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
                       int hmax, int hmin, int smax, int smin)
 {
 
-    gRandom->SetSeed(2);
+        gRandom->SetSeed(2);
+
 //    gRandom->SetSeed((unsigned int ) time(NULL));
 //    srand(1);
 //    srand((unsigned int) time(NULL));
@@ -178,7 +180,6 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     std::vector < Cube* > cubeHH;
 
 
-    Cube *cubeSizeCheck[64];
     
 
 
@@ -287,9 +288,9 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 
    // selection cut かける
    //キューブを64個穴基準で並べる 
-    float posxhx[8][8][6] = {0.};
-    float posxhy[8][8][6] = {0.};
-    float posxhz[8][8][6] = {0.};
+    float posxhx[8][8][6] = {};
+    float posxhy[8][8][6] = {};
+    float posxhz[8][8][6] = {};
     float pitch = 10.40;
     //float tan = 0.4/102.4;
     float tan = 0/102.4;
@@ -803,14 +804,16 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             22,0,22, 23,0,23);
     TH1F * h_over = new TH1F ("h_over", "h_over",10,0,10);
     Int_t num_over= 0;
-    float checkhwd[64][3];
-    float checkhole0[64][2];
-    float checkhole3[64][2];
+    float checkhwd[8][8][3];
+    float checkhole0[8][8][2];
+    float checkhole3[8][8][2];
     int OverPitch     = 0;
     int OverPitch_each= 0;
     int OverPitch_set = 0;
     TH1F * h_overPitch = new TH1F ("h_overPitch", "h_overPitch", 100,10,11);
 
+
+    Cube *cubeSizeCheck[8][8];
 
 //****************************************************************************
 //****************************************************************************
@@ -892,79 +895,102 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         std::shuffle(cubeHH.begin(), cubeHH.end(), get_rand_mt);
 
         //隣り合うやつの大きさをみる
-        for (int i = 0; i < 64; i++){
-            for (int j = 0; j < 3 ; j++){
-                checkhwd[i][j]  = 0.;
-                if (j < 2){
-                checkhole0[i][j] = 0.;
-                checkhole3[i][j] = 0.;
+        //配列の初期化
+        for (int iy = 0; iy < 8; iy ++){
+            for (int ix = 0; ix < 8; ix ++){
+                for (int j = 0; j < 3 ; j++){
+                    checkhwd[ix][iy][j]  = 0.;
+                    
+                    if (j < 2){
+                        checkhole0[ix][iy][j] = 0.;
+                        checkhole3[ix][iy][j] = 0.;
+                    }
                 }
             }
         }
        
-
         for (int i = 0 ;i<2; i++ ){
-            cubeSizeCheck[0 +i] = cubeAB[i];
-            cubeSizeCheck[2 +i] = cubeAC[i];
-            cubeSizeCheck[4 +i] = cubeAF[i];
-            cubeSizeCheck[6 +i] = cubeAG[i];
-            cubeSizeCheck[8 +i] = cubeBB[i];
-            cubeSizeCheck[10+i] = cubeBC[i];
-            cubeSizeCheck[12+i] = cubeBF[i];
-            cubeSizeCheck[14+i] = cubeBG[i];
-            cubeSizeCheck[16+i] = cubeCB[i];
-            cubeSizeCheck[18+i] = cubeCC[i];
-            cubeSizeCheck[20+i] = cubeCF[i];
-            cubeSizeCheck[22+i] = cubeCG[i];
-            cubeSizeCheck[24+i] = cubeDB[i];
-            cubeSizeCheck[26+i] = cubeDC[i];
-            cubeSizeCheck[28+i] = cubeDF[i];
-            cubeSizeCheck[30+i] = cubeDG[i];
-            cubeSizeCheck[32+i] = cubeEB[i];
-            cubeSizeCheck[34+i] = cubeEC[i];
-            cubeSizeCheck[36+i] = cubeEF[i];
-            cubeSizeCheck[38+i] = cubeEG[i];
-            cubeSizeCheck[40+i] = cubeFB[i];
-            cubeSizeCheck[42+i] = cubeFC[i];
-            cubeSizeCheck[44+i] = cubeFF[i];
-            cubeSizeCheck[46+i] = cubeFG[i];
-            cubeSizeCheck[48+i] = cubeGB[i];
-            cubeSizeCheck[50+i] = cubeGC[i];
-            cubeSizeCheck[52+i] = cubeGF[i];
-            cubeSizeCheck[54+i] = cubeGG[i];
-            cubeSizeCheck[56+i] = cubeHB[i];
-            cubeSizeCheck[58+i] = cubeHC[i];
-            cubeSizeCheck[60+i] = cubeHF[i];
-            cubeSizeCheck[62+i] = cubeHG[i];
+            cubeSizeCheck[0][0+i] = cubeAB[i];
+            cubeSizeCheck[0][2+i] = cubeAC[i];
+            cubeSizeCheck[0][4+i] = cubeAF[i];
+            cubeSizeCheck[0][6+i] = cubeAG[i];
+
+            cubeSizeCheck[1][0+i] = cubeBB[i];
+            cubeSizeCheck[1][2+i] = cubeBC[i];
+            cubeSizeCheck[1][4+i] = cubeBF[i];
+            cubeSizeCheck[1][6+i] = cubeBG[i];
+
+            cubeSizeCheck[2][0+i] = cubeCB[i];
+            cubeSizeCheck[2][2+i] = cubeCC[i];
+            cubeSizeCheck[2][4+i] = cubeCF[i];
+            cubeSizeCheck[2][6+i] = cubeCG[i];
+
+            cubeSizeCheck[3][0+i] = cubeDB[i];
+            cubeSizeCheck[3][2+i] = cubeDC[i];
+            cubeSizeCheck[3][4+i] = cubeDF[i];
+            cubeSizeCheck[3][6+i] = cubeDG[i];
+
+            cubeSizeCheck[4][0+i] = cubeEB[i];
+            cubeSizeCheck[4][2+i] = cubeEC[i];
+            cubeSizeCheck[4][4+i] = cubeEF[i];
+            cubeSizeCheck[4][6+i] = cubeEG[i];
+
+            cubeSizeCheck[5][0+i] = cubeFB[i];
+            cubeSizeCheck[5][2+i] = cubeFC[i];
+            cubeSizeCheck[5][4+i] = cubeFF[i];
+            cubeSizeCheck[5][6+i] = cubeFG[i];
+
+            cubeSizeCheck[6][0+i] = cubeGB[i];
+            cubeSizeCheck[6][2+i] = cubeGC[i];
+            cubeSizeCheck[6][4+i] = cubeGF[i];
+            cubeSizeCheck[6][6+i] = cubeGG[i];
+
+            cubeSizeCheck[7][0+i] = cubeHB[i];
+            cubeSizeCheck[7][2+i] = cubeHC[i];
+            cubeSizeCheck[7][4+i] = cubeHF[i];
+            cubeSizeCheck[7][6+i] = cubeHG[i];
+
         }
+/*
+        for (int y =0;y < 8; y++){
+
+            for (int x =0;x < 4; x++){
+                cubeSizeCheck[y][x] = cubeBC[8*y+x];
+                cubeSizeCheck[y][x+4] = cubeBB[8*y+x];
+            }
+        }
+        */
         //各キューブの大きさを得る
-        for (int isize2 = 0; isize2 < 64 ; isize2 ++){
-            cubeSizeCheck[isize2]->GetSize (checkhwd[isize2] );
-            cubeSizeCheck[isize2]->GetHole0(checkhole0[isize2]);
-            cubeSizeCheck[isize2]->GetHole3(checkhole3[isize2]);
+        for (int isize2y = 0; isize2y < 8 ; isize2y ++){
+            for (int isize2x = 0; isize2x < 8 ; isize2x ++){
+
+                cubeSizeCheck[isize2y][isize2x]->GetSize (checkhwd  [isize2y][isize2x] );
+                cubeSizeCheck[isize2y][isize2x]->GetHole0(checkhole0[isize2y][isize2x]);
+                cubeSizeCheck[isize2y][isize2x]->GetHole3(checkhole3[isize2y][isize2x]);
+            }
         }
         OverPitch_each = 0;
         //隣り合うやつの大きさを調べる
         //右と下の一行ずつは一旦無視する
-        for (int ix = 0; ix < 7; ix ++){
-            for(int iy = 0; iy < 7; iy ++){
+        for(int iy = 0; iy < 7; iy ++){
+            for (int ix = 0; ix < 7; ix ++){
                 h_overPitch->Fill(
-                    ((checkhole0[8*iy+ ix   ][0]+checkhole3[8*iy+ ix   ][0])/2 
-                   + (checkhwd[  8*iy+(ix+1)][1] 
-                   - (checkhole0[8*iy+(ix+1)][0]+checkhole3[8*iy+(ix+1)][0])/2)));
+                     (checkhole0[iy][ix]  [0]+checkhole3[iy][ix]  [0])/2 
+                   + (checkhwd  [iy][ix+1][1]               
+                   - (checkhole0[iy][ix+1][0]+checkhole3[iy][ix+1][0])/2));
 
                 h_overPitch->Fill(
-                    ((checkhwd[  8* iy   +ix][2] 
-                   - (checkhole0[8* iy   +ix][1]+checkhole3[8* iy   +ix][1])/2)
-                   + (checkhole0[8*(iy+1)+ix][1]+checkhole3[8*(iy+1)+ix][1])/2)); 
+                     (checkhwd  [iy]  [ix][2] 
+                   - (checkhole0[iy]  [ix][1]+checkhole3[iy]  [ix][1])/2)
+                   + (checkhole0[iy+1][ix][1]+checkhole3[iy+1][ix][1])/2 ); 
 
-                if (((checkhole0[8*iy+ ix   ][0]+checkhole3[8*iy+ ix   ][0])/2 
-                   + (checkhwd[  8*iy+(ix+1)][1] 
-                   - (checkhole0[8*iy+(ix+1)][0]+checkhole3[8*iy+(ix+1)][0])/2)) 
+                if ( (checkhole0[iy][ix]  [0]+checkhole3[iy][ix]  [0])/2 
+                   + (checkhwd  [iy][ix+1][1]               
+                   - (checkhole0[iy][ix+1][0]+checkhole3[iy][ix+1][0])/2) 
                      > pitch ||
-                    ((checkhwd[  8* iy   +ix][2] 
-                   - (checkhole0[8* iy   +ix][1]+checkhole3[8* iy   +ix][1])/2)
-                   + (checkhole0[8*(iy+1)+ix][1]+checkhole3[8*(iy+1)+ix][1])/2) 
+                     (checkhwd  [iy]  [ix][2] 
+                   - (checkhole0[iy]  [ix][1]+checkhole3[iy]  [ix][1])/2)
+                   + (checkhole0[iy+1][ix][1]+checkhole3[iy+1][ix][1])/2 
                      > pitch){
                     
 //                        std::cout << 
@@ -984,13 +1010,13 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         //右の一行(ix = 7)
         for (int iy = 0; iy < 7; iy ++){
                 h_overPitch->Fill(
-                 (checkhwd[  8*iy     +7][2] 
-               - (checkhole0[8*iy     +7][1]+ checkhole3[8*iy +    7][1])/2) 
-               + (checkhole0[8*(iy+1) +7][1]+ checkhole3[8*(iy+1) +7][1])/2);
-
-            if (((checkhwd[  8*iy     +7][2] 
-               - (checkhole0[8*iy     +7][1]+ checkhole3[8*iy +    7][1])/2) 
-               + (checkhole0[8*(iy+1) +7][1]+ checkhole3[8*(iy+1) +7][1])/2) > pitch){
+                 (checkhwd  [iy]  [7][2] 
+               - (checkhole0[iy]  [7][1]+ checkhole3[iy]  [7][1])/2) 
+               + (checkhole0[iy+1][7][1]+ checkhole3[iy+1][7][1])/2);
+                                                             
+            if ( (checkhwd  [iy]  [7][2]                     
+               - (checkhole0[iy]  [7][1]+ checkhole3[iy]  [7][1])/2) 
+               + (checkhole0[iy+1][7][1]+ checkhole3[iy+1][7][1])/2 > pitch){
                 OverPitch ++;
                 OverPitch_each ++;
             }
@@ -998,13 +1024,13 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         //下の一行(iy = 7)
         for (int ix = 0; ix <7; ix ++){
                 h_overPitch->Fill(
-                 (checkhole0[8*7+ ix   ][0]+checkhole3[8*7 + ix   ][0])/2 
-               + (checkhwd[  8*7+(ix+1)][1] 
-               - (checkhole0[8*7+(ix+1)][0]+checkhole3[8*7 +(ix+1)][0])/2));
-
-            if (((checkhole0[8*7+ ix   ][0]+checkhole3[8*7 + ix   ][0])/2 
-               + (checkhwd[  8*7+(ix+1)][1] 
-               - (checkhole0[8*7+(ix+1)][0]+checkhole3[8*7 +(ix+1)][0])/2)) > pitch){
+                 (checkhole0[7][ix][0]+checkhole3[7][ix]  [0])/2 
+               + (checkhwd  [7][ix][1]              
+               - (checkhole0[7][ix][0]+checkhole3[7][ix+1][0])/2));
+                                                    
+            if ( (checkhole0[7][ix][0]+checkhole3[7][ix]  [0])/2 
+               + (checkhwd  [7][ix][1]              
+               - (checkhole0[7][ix][0]+checkhole3[7][ix+1][0])/2) > pitch){
 
                 OverPitch ++;
                 OverPitch_each ++;
@@ -1017,7 +1043,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             for (int iarrx = 0; iarrx < 8; iarrx ++){
     
                 
-                ArrangebyHole(cubeSizeCheck[8*iarry + iarrx], 
+                ArrangebyHole(cubeSizeCheck[iarry][iarrx], 
                           pitch*(iarrx+1), pitch*(iarry+1), 
                           posxhx[iarry][iarrx], 
                           posxhy[iarry][iarrx],
