@@ -1,6 +1,7 @@
 #include <iostream>
 
 
+
 #include <fstream>
 #include <math.h>
 #include <cmath>
@@ -55,8 +56,8 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     Double_t r[6];
     
     int igood = 0;
-    int cubemax = 10000;
-    int unitnum = 50000;
+    int cubemax = 100000;
+    int unitnum = 5000;
 
     TH2F * h_decideTop = new TH2F("h_decideTop","h_decideTop",
                                      100, 140*0.01554, 220*0.01554,
@@ -233,7 +234,15 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
          47.8 < r[3] &&
          47.8 < r[4] &&
          47.8 < r[5] &&
-         */
+
+*/
+            sqrt (std::pow(hole0[0] - hole3[0],2) + std::pow(hole0[1] - hole0[1],2)) 
+                 < 0.48 / 0.01554 &&
+            sqrt (std::pow(hole1[0] - hole4[0],2) + std::pow(hole1[1] - hole4[1],2)) 
+                 < 0.48 / 0.01554 &&
+            sqrt (std::pow(hole2[0] - hole5[0],2) + std::pow(hole2[1] - hole5[1],2)) 
+                 < 0.48 / 0.01554 &&
+
             1==1
 
             ){        
@@ -412,9 +421,9 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         //ここで求めたX1,Y1,X2,Y2を以下の分類のところで有効活用する
 
        if (
-           EllipseCut1(cube[icube], SDevX1*2.3, SDevY1*3, 
+           EllipseCut1(cube[icube], SDevX1*2.5, SDevY1*3, 
                       center1mean1, center1mean2, p1_tan) == 1 &&
-           EllipseCut2(cube[icube], SDevX2*2.3, SDevY2*3,
+           EllipseCut2(cube[icube], SDevX2*2.5, SDevY2*3,
                       center2mean1, center2mean2, p2_tan) == 1 &&
            //Y2 < -0.22*X2 && 
            //Y2 > 0.48*X2 && 
@@ -1152,21 +1161,23 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
                 "differential of two hole centers",50, 0, 1);
         TH1F * hdiffySingle = new TH1F ("hdiffySingle", 
                 "differential of two hole centers",50, 0, 1);
-    //    TH1F * hdiffown = new TH1F ("hdiffown", 
-    //          "differential of each side of hole ",50, -1, 1);
     //    TH2F * nexthole = new TH2F ("nexthole", 
     //          "points where next hole is", 50, -1, 1 , 50, -1, 1); 
     
         num_over = 0;
         cannotx = 0;
         cannoty = 0;
-        //if (shuff==2747){
+        //if (shuff==4883){
+        //TH1F * hdiffown = new TH1F ("hdiffown", 
+        //      "differential of each side of hole ",50, -1, 1);
         FillDiffy( hdiffx, hdiffxSingle, num_over, hpos, 
                    posxhx, posxhy, posxhz, cannoty, pitch,shuff);
         FillDiffx( hdiffy, hdiffySingle, num_over, hpos, 
                    posxhx, posxhy, posxhz, cannotx, pitch);
+        //checkdiff( hdiffown, posxhx, posxhy, posxhz, cannotx);
+        //hdiffown->Draw();
         //}
-    //    checkdiff( hdiffown, posxhx, posxhy, posxhz, cannotx);
+
         
     //    std::cout << "num_over : " << num_over << std::endl;
     
@@ -1177,6 +1188,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             hdiffySingle->Integral(hdiffySingle->GetXaxis()->FindBin(0.5),
                                    hdiffySingle->GetXaxis()->FindBin(1.)) > 0){
     
+            //std::cout << "unit num : " << shuff <<  std::endl; 
             cannot ++;
         }
         hdiffxSingle->Delete();

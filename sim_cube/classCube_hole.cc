@@ -626,7 +626,7 @@ void checkdiff (TH1F * hist, float  posxhx[8][8][6], float  posxhy[8][8][6], flo
     for (int icubey=0; icubey < 8; icubey++){
         for (int icubex=0; icubex < 8 ; icubex++){
             hist->Fill( 
-                        (posxhy[icubey][icubex][4] - posxhy[icubey][icubex][1])
+                        (posxhz[icubey][icubex][4] - posxhz[icubey][icubex][1])
                       );
             //cout << "icubex: "<< icubex << ", icubey: " << icubey << endl ;
         }
@@ -657,11 +657,33 @@ void FillDiffy (TH1F * hist, TH1F * hist2, int &num_over, TH2F * hpos,
 
             if (distance >= 0.5){
                 
-               
+                          
                 num_over ++ ;
                // if(distance >= 0.54){
-               //     std::cout << "distance = " << 
-               //     distance << ", shuff: " << shuff << endl;
+/*
+                    std::cout << "pos(icubey = "<< icubey <<
+                              ", "<<"icubex  = "  << icubex << ") : " <<
+                                  posxhy[icubey][icubex][4] 
+                                - posxhy[icubey][icubex+1][1] << ", " << 
+                                  posxhz[icubey][icubex][4] 
+                                - posxhz[icubey][icubex+1][1] << ", " << 
+                             " "  << std::endl;
+                    std::cout << "pos(icubey = "<< icubey <<
+                              ", "<<"icubex  = "  << icubex << ") : " <<
+                                  posxhy[icubey][icubex][1] 
+                                - posxhy[icubey][icubex][4] << ", " << 
+                                  posxhz[icubey][icubex][1] 
+                                - posxhz[icubey][icubex][4] << ", " << 
+                             " "  << std::endl;
+
+                    std::cout << "pos(icubey = "<< icubey <<
+                              ", "<<"icubex+1  = "  << icubex+1 << ") : " <<
+                                  posxhy[icubey][icubex+1][1] 
+                                - posxhy[icubey][icubex+1][4] << ", " << 
+                                  posxhz[icubey][icubex+1][1] 
+                                - posxhz[icubey][icubex+1][4] << ", " << 
+                             " "  << std::endl;
+*/
                //}
 
             }else{}
