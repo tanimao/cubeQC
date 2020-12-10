@@ -56,7 +56,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     Double_t r[6];
     
     int igood = 0;
-    int cubemax = 100000;
+    int cubemax = 10000;
     int unitnum = 5000;
 
     TH2F * h_decideTop = new TH2F("h_decideTop","h_decideTop",
@@ -95,6 +95,13 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     TH1F * hcenterY1 = new TH1F ("hcenterY1", "hcenterY1", 100, -0.5, 0.5);
     TH1F * hcenterX2 = new TH1F ("hcenterX2", "hcenterX2", 100, -0.5, 0.5);
     TH1F * hcenterY2 = new TH1F ("hcenterY2", "hcenterY2", 100, -0.5, 0.5);
+
+
+    //向かい合う穴位置のズレを記録するヒストグラム
+    TH1F * fdhxy = new TH1F ("fdhxy", "facing sqrt(delta(xh)^2+delta(yh)^2); dhxy[mm]",
+                             100, 0, 1);
+
+
 //    TH2F * hcenterXYXY1 = new  TH2F ("hcenterXYXY1", "hcenterXYXY1", 
 //                                    100, -0.5, 0.5, 100, -0.5, 0.5);
 //    TH2F * hcenterXYXY2 = new  TH2F ("hcenterXYXY2", "hcenterXYXY2", 
@@ -108,6 +115,10 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
  
     //16通りの分類
     //64通りの分類をつくってみる
+
+    std::vector < std::vector <Cube*> > cubeCategory;
+    cubeCategory.resize(64);
+
     std::vector < Cube* > cubeAA;
     std::vector < Cube* > cubeAB;
     std::vector < Cube* > cubeAC;
@@ -236,12 +247,12 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
          47.8 < r[5] &&
 
 */
-            sqrt (std::pow(hole0[0] - hole3[0],2) + std::pow(hole0[1] - hole0[1],2)) 
-                 < 0.48 / 0.01554 &&
+            sqrt (std::pow(hole0[0] - hole3[0],2) + std::pow(hole0[1] - hole3[1],2)) 
+                 < 0.35 / 0.01554 &&
             sqrt (std::pow(hole1[0] - hole4[0],2) + std::pow(hole1[1] - hole4[1],2)) 
-                 < 0.48 / 0.01554 &&
+                 < 0.35 / 0.01554 &&
             sqrt (std::pow(hole2[0] - hole5[0],2) + std::pow(hole2[1] - hole5[1],2)) 
-                 < 0.48 / 0.01554 &&
+                 < 0.35 / 0.01554 &&
 
             1==1
 
@@ -279,6 +290,12 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
                              0.01554*(hole2[1]+hole5[1])/2);
            h_decideTopx0->Fill(0.01554*(hole0[0]+hole3[0])/2); 
 
+           //fdhxy->Fill(0.01554 * sqrt(std::pow(hole0[0]-hole3[0], 2)
+           //                         + std::pow(hole0[1]-hole3[1], 2)));
+           //fdhxy->Fill(0.01554 * sqrt(std::pow(hole1[0]-hole4[0], 2)
+           //                         + std::pow(hole1[1]-hole4[1], 2)));
+           //fdhxy->Fill(0.01554 * sqrt(std::pow(hole2[0]-hole5[0], 2)
+           //                         + std::pow(hole2[1]-hole5[1], 2)));
         //  id と parameter :  必要な parameter は自分で定義する
         //    cube[igood-1]->GetSurf1(parlist);
         }
@@ -416,14 +433,16 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         float Y1 = 0;
         float X2 = 0;
         float Y2 = 0;
+        //向かい合う面の穴位置のズレを調べる
+        Fill_fdhxy(cube[icube], fdhxy);
         GetEllipse1(cube[icube], center1mean1, center1mean2, p1_tan, X1, Y1);
         GetEllipse2(cube[icube], center2mean1, center2mean2, p2_tan, X2, Y2);
         //ここで求めたX1,Y1,X2,Y2を以下の分類のところで有効活用する
 
        if (
-           EllipseCut1(cube[icube], SDevX1*2.5, SDevY1*3, 
+           EllipseCut1(cube[icube], SDevX1*2.3, SDevY1*3, 
                       center1mean1, center1mean2, p1_tan) == 1 &&
-           EllipseCut2(cube[icube], SDevX2*2.5, SDevY2*3,
+           EllipseCut2(cube[icube], SDevX2*2.3, SDevY2*3,
                       center2mean1, center2mean2, p2_tan) == 1 &&
            //Y2 < -0.22*X2 && 
            //Y2 > 0.48*X2 && 
@@ -439,12 +458,6 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         cube[icube]-> GetHole3(gethole3);
 
 
-        //以下ではだめ。
-        ////穴位置の両面での平均をだした。
-        //hxm14 = (gethole1[0] + gethole4[0])/2;
-        //hym14 = (gethole1[1] + gethole4[1])/2;
-        //hxm25 = (gethole2[0] + gethole5[0])/2;
-        //hym25 = (gethole2[1] + gethole5[1])/2;
         
         //14面について
         //垂直方向の穴の位置を基準にその他の穴位置を求めておく
@@ -452,97 +465,9 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 
 
 
-        /*
-        hxm14 = gethwd[2] - (gethole0[1] + gethole3[1])/2
-                          - (gethole1[0] + gethole4[0])/2;
-        hym14 = (gethole1[1] + gethole4[1])/2;
 
-        hxm25 = gethwd[1] - (gethole0[0] + gethole3[0])/2
-                          - (gethole2[1] + gethole5[1])/2;
-        hym25 = gethwd[0] - (gethole2[0] + gethole5[0])/2;
 
-        if       (hym14 <  p1[0][1]* hxm14 + p1[0][0] &&
-                  hym14 <  p1[1][1]* hxm14 + p1[1][0]){
-            //1面の分類はA
-            if      (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[0]++;
-                cubeAA.push_back(cube[icube]);}
-            else if (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[1]++;
-                cubeAB.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[2]++;
-                cubeAC.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[3]++;
-                cubeAD.push_back(cube[icube]);}
-
-        }else if (hym14 <  p1[0][1]* hxm14 + p1[0][0] &&
-                  hym14 >= p1[1][1]* hxm14 + p1[1][0]){
-            //1面の分類はB
-            if      (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[4]++;
-                cubeBA.push_back(cube[icube]);}
-            else if (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[5]++;
-                cubeBB.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[6]++;
-                cubeBC.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[7]++;
-                cubeBD.push_back(cube[icube]);}
-
-        }else if (hym14 >= p1[0][1]* hxm14 + p1[0][0] &&
-                  hym14 >= p1[1][1]* hxm14 + p1[1][0]){
-            //1面の分類はC
-            if      (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[8]++;
-                cubeCA.push_back(cube[icube]);}
-            else if (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[9]++;
-                cubeCB.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[10]++;
-                cubeCC.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[11]++;
-                cubeCD.push_back(cube[icube]);}
-            
-        }else if (hym14 >= p1[0][1]* hxm14 + p1[0][0] &&
-                  hym14 <  p1[1][1]* hxm14 + p1[1][0]){
-            //1面の分類はD
-            if      (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[12]++;
-                cubeDA.push_back(cube[icube]);}
-            else if (hym25 <  p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[13]++;
-                cubeDB.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 >= p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[14]++;
-                cubeDC.push_back(cube[icube]);}
-            else if (hym25 >= p2[0][1]* hxm25 + p2[0][0] &&
-                     hym25 <  p2[1][1]* hxm25 + p2[1][0]){
-                CatNum[15]++;
-                cubeDD.push_back(cube[icube]);}
-        }
-        */
-
+            /*
             //8x8=64の分類に分ける
         double factor = 1.5;
         if       (X1 < -factor*SDevX1  && Y1 >= 0){
@@ -786,11 +711,22 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             //
         }
 
+*/
+            //8x8=64の分類に分ける
+        double factor = 1.5;
+        int icategory;
+        CheckCategory(X1, Y1, X2, Y2, factor, SDevX1, SDevX2, &icategory);
 
+        CatNum[icategory] ++;
+        cubeCategory[icategory].push_back(cube[icube]);
 
 
         }
+       
     }
+
+
+    
     for (int icat = 0; icat <64; icat ++){
         std::cout << "Category " << icat +1 << ":" 
                   << CatNum[icat] << std::endl;
@@ -833,7 +769,13 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         std::mt19937_64 get_rand_mt(shuff);
         //std::mt19937_64 get_rand_mt(0);
         std::shuffle(cube.begin(), cube.end(), get_rand_mt );
+        
         //分類ごとにシャッフルする
+
+        for (int icat = 0; icat < 64; icat ++){
+            std::shuffle(cubeCategory[icat].begin(),
+                         cubeCategory[icat].end(), get_rand_mt);
+        }
         std::shuffle(cubeAA.begin(), cubeAA.end(), get_rand_mt);
         std::shuffle(cubeAB.begin(), cubeAB.end(), get_rand_mt);
         std::shuffle(cubeAC.begin(), cubeAC.end(), get_rand_mt);
@@ -918,7 +860,12 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             }
         }
        
-        for (int i = 0 ;i<2; i++ ){
+        for (int i = 0 ;i<8; i++ ){
+            for (int j = 0; j<8; j++){
+                cubeSizeCheck[i][j] = cubeCategory[ 8*i + j][0];
+            }
+        }
+/*
             cubeSizeCheck[0][0+i] = cubeAB[i];
             cubeSizeCheck[0][2+i] = cubeAC[i];
             cubeSizeCheck[0][4+i] = cubeAF[i];
@@ -958,8 +905,8 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             cubeSizeCheck[7][2+i] = cubeHC[i];
             cubeSizeCheck[7][4+i] = cubeHF[i];
             cubeSizeCheck[7][6+i] = cubeHG[i];
-
         }
+*/
 /*
         for (int y =0;y < 8; y++){
 
@@ -1018,7 +965,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         }   
         //右の一行(ix = 7)
         for (int iy = 0; iy < 7; iy ++){
-                h_overPitch->Fill(
+            h_overPitch->Fill(
                  (checkhwd  [iy]  [7][2] 
                - (checkhole0[iy]  [7][1]+ checkhole3[iy]  [7][1])/2) 
                + (checkhole0[iy+1][7][1]+ checkhole3[iy+1][7][1])/2);
@@ -1026,13 +973,14 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             if ( (checkhwd  [iy]  [7][2]                     
                - (checkhole0[iy]  [7][1]+ checkhole3[iy]  [7][1])/2) 
                + (checkhole0[iy+1][7][1]+ checkhole3[iy+1][7][1])/2 > pitch){
+
                 OverPitch ++;
                 OverPitch_each ++;
             }
         }
         //下の一行(iy = 7)
         for (int ix = 0; ix <7; ix ++){
-                h_overPitch->Fill(
+            h_overPitch->Fill(
                  (checkhole0[7][ix][0]+checkhole3[7][ix]  [0])/2 
                + (checkhwd  [7][ix][1]              
                - (checkhole0[7][ix][0]+checkhole3[7][ix+1][0])/2));
@@ -1229,7 +1177,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             }
             
    } 
-    
+    /*
         TEllipse * e = new TEllipse(0,0,SDevX2*1, SDevY2*1);
         TCanvas * canvas1 = new TCanvas("canvas1", "canvas1");
         hdiffx->Draw();
@@ -1248,6 +1196,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         h_decideTopd->Draw();
         TCanvas* c_decidemin = new TCanvas("c_decidemin", "c_decidemin");
         h_decideTopdmin->Draw();
+        */
 //        TCanvas * c_centerXYXY= new TCanvas("c_centerXYXY", "c_centerXYXY");
 //        hcenterXYXY2->Draw();
         TCanvas * c_pos   = new TCanvas("c_pos", "c_pos");

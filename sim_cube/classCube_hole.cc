@@ -145,6 +145,26 @@ void Cube::GetRadius(float radius[6])
     radius[4] = _r5;
     radius[5] = _r6;
 }
+//向かい合う面の穴位置のズレを記録する
+void Fill_fdhxy(Cube * c, TH1F * h){
+    float hwd[3], hole[6][2];
+    c->GetSize(hwd);
+    c->GetHole0(hole[0]);
+    c->GetHole1(hole[1]);
+    c->GetHole2(hole[2]);
+    c->GetHole3(hole[3]);
+    c->GetHole4(hole[4]);
+    c->GetHole5(hole[5]);
+
+    //h->Fill(sqrt(std::pow(hole[0][0] - hole[3][0],2) 
+    //           + std::pow(hole[0][1] - hole[3][1],2)));
+
+    ////h->Fill(sqrt(std::pow(hole[1][0] - hole[4][0],2) 
+    ////           + std::pow(hole[1][1] - hole[4][1],2)));
+
+    h->Fill(sqrt(std::pow(hole[2][0] - hole[5][0],2) 
+               + std::pow(hole[2][1] - hole[5][1],2)));
+}
 
 //穴の位置が最も平均に近いものが天面に来るように
 //キューブの向きを変える
@@ -189,8 +209,8 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
     float d25 = sqrt (xh25*xh25 + yh25*yh25);
 
     h->Fill(d03);
-    h->Fill(d14);
-    h->Fill(d25);
+    //h->Fill(d14);
+    //h->Fill(d25);
 
     int id = 0;
     c->GetId(id);
@@ -203,24 +223,25 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
         //今のままでいいので何もしない
         //横穴をチェックしてわける
         hmin->Fill(d03);
-        //if (pos14 >= pos25){
-        ////今のままでいいので何もしない
-        //}else{
-        //       c1 = Cube(id, hwd[0], hwd[2], hwd[1],
-        //                     hole[3][1], hole[3][0],
-        //                     hole[5][1], hole[5][0],
-        //                     hole[4][1], hole[4][0],
-        //                     hole[0][1], hole[0][0],
-        //                     hole[2][1], hole[2][0],
-        //                     hole[1][1], hole[1][0],
-        //                     radius[3], radius[5], radius[4],
-        //                     radius[0], radius[2], radius[1]);
-       
-        //       *c = c1;  
-        //}
+
+        //if (d14 >= d25){
+        //今のままでいいので何もしない
+      //  }else{
+      //         c1 = Cube(id, hwd[0], hwd[2], hwd[1],
+      //                       hole[3][1], hole[3][0],
+      //                       hole[5][1], hole[5][0],
+      //                       hole[4][1], hole[4][0],
+      //                       hole[0][1], hole[0][0],
+      //                       hole[2][1], hole[2][0],
+      //                       hole[1][1], hole[1][0],
+      //                       radius[3], radius[5], radius[4],
+      //                       radius[0], radius[2], radius[1]);
+      // 
+      //         *c = c1;  
+      //  }
     }
     else if (d14 <= d03 && d14 <= d25){
-        //if (pos25 >= pos03){
+      //  if (d25 >= d03){
        //一面だったところを天面にする
        //(h,w,d)->(d,h,w)
        //(0,1,2,3,4,5)->(2,0,1,5,3,4)
@@ -236,21 +257,21 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
                                  radius[4], radius[5], radius[3]);
             *c = c1;  
 
-        //}else{
-        //     c1 = Cube(id, hwd[1], hwd[0], hwd[2],
-        //                     hole[4][1], hole[4][0],
-        //                     hole[3][1], hole[3][0],
-        //                     hole[5][1], hole[5][0],
-        //                     hole[1][1], hole[1][0],
-        //                     hole[0][1], hole[0][0],
-        //                     hole[2][1], hole[2][0],
-        //                     radius[4], radius[3], radius[5],
-        //                     radius[1], radius[0], radius[2]);
+       // }else{
+       //      c1 = Cube(id, hwd[1], hwd[0], hwd[2],
+       //                      hole[4][1], hole[4][0],
+       //                      hole[3][1], hole[3][0],
+       //                      hole[5][1], hole[5][0],
+       //                      hole[1][1], hole[1][0],
+       //                      hole[0][1], hole[0][0],
+       //                      hole[2][1], hole[2][0],
+       //                      radius[4], radius[3], radius[5],
+       //                      radius[1], radius[0], radius[2]);
 
-        //    *c = c1;  
+       //     *c = c1;  
 
 
-        //}
+       // }
     hmin->Fill(d14);
     }
     else{
@@ -262,7 +283,7 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
 //        std::cout << "before (h,w,d): (" << hwd[0] <<", "<<hwd[1] <<", "
 //                  << hwd[2] << ")" << std::endl; 
 
-        //if (pos03 >= pos14){
+       // if (d03 >= d14){
              c1 = Cube(id, hwd[2], hwd[0], hwd[1],
                                   hole[2][0], hole[2][1],
                                   hole[0][0], hole[0][1],
@@ -273,18 +294,18 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
                                   radius[2], radius[0], radius[1],
                                   radius[5], radius[3], radius[4]);
              *c = c1; 
-        //}else{
-        //     c1 = Cube(id, hwd[2], hwd[1], hwd[0],
-        //                      hole[5][1], hole[5][0],
-        //                      hole[4][1], hole[4][0],
-        //                      hole[3][1], hole[3][0],
-        //                      hole[2][1], hole[2][0],
-        //                      hole[1][1], hole[1][0],
-        //                      hole[0][1], hole[0][0],
-        //                      radius[5], radius[4], radius[3],
-        //                      radius[2], radius[1], radius[0] );
-        //     *c = c1;
-        //}
+       // }else{
+       //      c1 = Cube(id, hwd[2], hwd[1], hwd[0],
+       //                       hole[5][1], hole[5][0],
+       //                       hole[4][1], hole[4][0],
+       //                       hole[3][1], hole[3][0],
+       //                       hole[2][1], hole[2][0],
+       //                       hole[1][1], hole[1][0],
+       //                       hole[0][1], hole[0][0],
+       //                       radius[5], radius[4], radius[3],
+       //                       radius[2], radius[1], radius[0] );
+       //      *c = c1;
+       // }
 
 
        // float hwd2[3];
@@ -395,6 +416,54 @@ void GetEllipse2(Cube * c, float x0, float y0, float p1, float &X, float &Y){
     Y = cos * (-(x-x0)* p1 + (y-y0)    ) ;
    
 }
+
+
+//X1,Y1,X2,Y2の値に応じてカテゴリのindexを出力する
+void CheckCategory(float X1, float Y1, float X2, float Y2, float factor,
+                   float SDevX1, float SDevX2, int * icategory){
+    int iX1, iY1, iX2, iY2;
+    if (X1 < -factor * SDevX1){
+        iX1 = 0;
+    }else if (-factor * SDevX1 <= X1 && X1 < 0){
+        iX1 = 1;
+    }else if (0 <= X1 && X1 < factor *SDevX1){
+        iX1 = 2;
+    }else{
+        iX1 = 3;
+    }
+
+    if (Y1 >= 0){
+        iY1 = 0;
+    }else{
+        iY1 = 1;
+    }
+
+
+
+    if (X2 < -factor * SDevX2){
+        iX2 = 0;
+    }else if (-factor * SDevX2 <= X2 && X2 < 0){
+        iX2 = 1;
+    }else if (0 <= X2 && X2 < factor *SDevX2){
+        iX2 = 2;
+    }else{
+        iX2 = 3;
+    }
+
+    if (Y2 >= 0){
+        iY2 = 0;
+    }else{
+        iY2 = 1;
+    }
+
+    int iXY1, iXY2;
+    
+    iXY1 = 2*iX1 + iY1;
+    iXY2 = 2*iX2 + iY2;
+    
+    *icategory = 8*iXY1 + iXY2;
+}    
+
 void FillCenterXY1(Cube * c, TH2F * h, TH1F * hx, TH1F * hy,
                    float x0, float y0, float p1){
 

@@ -51,10 +51,17 @@ class Cube : public TObject
     void GetHole4 (float holexy[2]);
     void GetHole5 (float holexy[2]);
 
+    //向かい合う面の穴位置のずれを記録する
+    void Fill_fdhxy(Cube *c, TH1F * h);
 
     //穴の位置が最も平均に近いものが天面に来るように
     //キューブの向きを変える
     void ChangeCubeDirection(Cube * c, float xhMean, float yhMean, TH1F * h, TH1F * hmin);
+
+
+    //X1,Y1,X2,Y2の値に応じてカテゴリのindexを出力する
+    void CheckCategory(float X1, float Y1, float X2, float Y2, float factor, 
+                       float SDevX1, float SDevX2, int * icategory);
     //生の穴位置(x,y)をフィルする
     void FillCenter1(Cube * c, TH2F * h);
     void FillCenter2(Cube * c, TH2F * h);
