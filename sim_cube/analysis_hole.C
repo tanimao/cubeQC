@@ -1,3 +1,4 @@
+
 #include <iostream>
 
 
@@ -56,8 +57,8 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     Double_t r[6];
     
     int igood = 0;
-    int cubemax = 10000;
-    int unitnum = 5000;
+    int cubemax = 100000;
+    int unitnum = 10000;
 
     TH2F * h_decideTop = new TH2F("h_decideTop","h_decideTop",
                                      100, 140*0.01554, 220*0.01554,
@@ -113,83 +114,10 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
    //Cube *cube[12000];
     std::vector < Cube* > cube;
  
-    //16通りの分類
     //64通りの分類をつくってみる
 
     std::vector < std::vector <Cube*> > cubeCategory;
     cubeCategory.resize(64);
-
-    std::vector < Cube* > cubeAA;
-    std::vector < Cube* > cubeAB;
-    std::vector < Cube* > cubeAC;
-    std::vector < Cube* > cubeAD;
-    std::vector < Cube* > cubeAE;
-    std::vector < Cube* > cubeAF;
-    std::vector < Cube* > cubeAG;
-    std::vector < Cube* > cubeAH;
-    
-    std::vector < Cube* > cubeBA;
-    std::vector < Cube* > cubeBB;
-    std::vector < Cube* > cubeBC;
-    std::vector < Cube* > cubeBD;
-    std::vector < Cube* > cubeBE;
-    std::vector < Cube* > cubeBF;
-    std::vector < Cube* > cubeBG;
-    std::vector < Cube* > cubeBH;
-
-    std::vector < Cube* > cubeCA;
-    std::vector < Cube* > cubeCB;
-    std::vector < Cube* > cubeCC;
-    std::vector < Cube* > cubeCD;
-    std::vector < Cube* > cubeCE;
-    std::vector < Cube* > cubeCF;
-    std::vector < Cube* > cubeCG;
-    std::vector < Cube* > cubeCH;
-
-    std::vector < Cube* > cubeDA;
-    std::vector < Cube* > cubeDB;
-    std::vector < Cube* > cubeDC;
-    std::vector < Cube* > cubeDD;
-    std::vector < Cube* > cubeDE;
-    std::vector < Cube* > cubeDF;
-    std::vector < Cube* > cubeDG;
-    std::vector < Cube* > cubeDH;
-
-    std::vector < Cube* > cubeEA;
-    std::vector < Cube* > cubeEB;
-    std::vector < Cube* > cubeEC;
-    std::vector < Cube* > cubeED;
-    std::vector < Cube* > cubeEE;
-    std::vector < Cube* > cubeEF;
-    std::vector < Cube* > cubeEG;
-    std::vector < Cube* > cubeEH;
-
-    std::vector < Cube* > cubeFA;
-    std::vector < Cube* > cubeFB;
-    std::vector < Cube* > cubeFC;
-    std::vector < Cube* > cubeFD;
-    std::vector < Cube* > cubeFE;
-    std::vector < Cube* > cubeFF;
-    std::vector < Cube* > cubeFG;
-    std::vector < Cube* > cubeFH;
-
-    std::vector < Cube* > cubeGA;
-    std::vector < Cube* > cubeGB;
-    std::vector < Cube* > cubeGC;
-    std::vector < Cube* > cubeGD;
-    std::vector < Cube* > cubeGE;
-    std::vector < Cube* > cubeGF;
-    std::vector < Cube* > cubeGG;
-    std::vector < Cube* > cubeGH;
-
-    std::vector < Cube* > cubeHA;
-    std::vector < Cube* > cubeHB;
-    std::vector < Cube* > cubeHC;
-    std::vector < Cube* > cubeHD;
-    std::vector < Cube* > cubeHE;
-    std::vector < Cube* > cubeHF;
-    std::vector < Cube* > cubeHG;
-    std::vector < Cube* > cubeHH;
 
 
     
@@ -246,7 +174,6 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
          47.8 < r[4] &&
          47.8 < r[5] &&
 
-*/
             sqrt (std::pow(hole0[0] - hole3[0],2) + std::pow(hole0[1] - hole3[1],2)) 
                  < 0.35 / 0.01554 &&
             sqrt (std::pow(hole1[0] - hole4[0],2) + std::pow(hole1[1] - hole4[1],2)) 
@@ -254,6 +181,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             sqrt (std::pow(hole2[0] - hole5[0],2) + std::pow(hole2[1] - hole5[1],2)) 
                  < 0.35 / 0.01554 &&
 
+*/
             1==1
 
             ){        
@@ -372,7 +300,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
     float hxm25=0;
     float hym25=0;
 
-    for(int icubepre  =0; icubepre <igood; icubepre++){
+    for(int icubepre = 0; icubepre < igood; icubepre ++){
         
         //穴位置の2Dヒストグラムをつくる
         FillCenter1(cube[icubepre], hcenter1);
@@ -440,9 +368,9 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         //ここで求めたX1,Y1,X2,Y2を以下の分類のところで有効活用する
 
        if (
-           EllipseCut1(cube[icube], SDevX1*2.3, SDevY1*3, 
+           EllipseCut1(cube[icube], SDevX1*2.5, SDevY1*3, 
                       center1mean1, center1mean2, p1_tan) == 1 &&
-           EllipseCut2(cube[icube], SDevX2*2.3, SDevY2*3,
+           EllipseCut2(cube[icube], SDevX2*2.5, SDevY2*3,
                       center2mean1, center2mean2, p2_tan) == 1 &&
            //Y2 < -0.22*X2 && 
            //Y2 > 0.48*X2 && 
@@ -467,251 +395,6 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 
 
 
-            /*
-            //8x8=64の分類に分ける
-        double factor = 1.5;
-        if       (X1 < -factor*SDevX1  && Y1 >= 0){
-            //1面の分類はA
-            //
-            //
-
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[0]++;
-                cubeAA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[1]++;
-                cubeAB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[2]++;
-                cubeAC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[3]++;
-                cubeAD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[4]++;
-                cubeAE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[5]++;
-                cubeAF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[6]++;
-                cubeAG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[7]++;
-                cubeAH.push_back(cube[icube]);}
-
-
-        }else if (X1 >= -factor*SDevX1 && X1 < 0 && Y1 >= 0){
-            //1面の分類はB
-            //
-
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[8]++;
-                cubeBA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[9]++;
-                cubeBB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[10]++;
-                cubeBC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[11]++;
-                cubeBD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[12]++;
-                cubeBE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[13]++;
-                cubeBF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[14]++;
-                cubeBG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[15]++;
-                cubeBH.push_back(cube[icube]);}
-            //
-
-        }else if (X1 >= 0 && X1 < factor*SDevX1 && Y1 >=0){
-            //1面の分類はC
-            //
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[16]++;
-                cubeCA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[17]++;
-                cubeCB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[18]++;
-                cubeCC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[19]++;
-                cubeCD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[20]++;
-                cubeCE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[21]++;
-                cubeCF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[22]++;
-                cubeCG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[23]++;
-                cubeCH.push_back(cube[icube]);}
-            //
-            
-        }else if (X1 >= factor*SDevX1 && Y1 >= 0){
-            //1面の分類はD
-            //
-            //
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[24]++;
-                cubeDA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[25]++;
-                cubeDB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[26]++;
-                cubeDC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[27]++;
-                cubeDD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[28]++;
-                cubeDE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[29]++;
-                cubeDF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[30]++;
-                cubeDG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[31]++;
-                cubeDH.push_back(cube[icube]);}
-            //
-        }
-         else if   (X1 < -factor*SDevX1  && Y1 < 0){
-            //1面の分類はE
-            //
-            //
-
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[32]++;
-                cubeEA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[33]++;
-                cubeEB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[34]++;
-                cubeEC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[35]++;
-                cubeED.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[36]++;
-                cubeEE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[37]++;
-                cubeEF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[38]++;
-                cubeEG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[39]++;
-                cubeEH.push_back(cube[icube]);}
-
-
-        }else if (X1 >= -factor*SDevX1 && X1 < 0 && Y1 < 0){
-            //1面の分類はF
-            //
-
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[40]++;
-                cubeFA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[41]++;
-                cubeFB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[42]++;
-                cubeFC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[43]++;
-                cubeFD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[44]++;
-                cubeFE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[45]++;
-                cubeFF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[46]++;
-                cubeFG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[47]++;
-                cubeFH.push_back(cube[icube]);}
-            //
-
-        }else if (X1 >= 0 && X1 < factor*SDevX1 && Y1 < 0){
-            //1面の分類はG
-            //
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[48]++;
-                cubeGA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[49]++;
-                cubeGB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[50]++;
-                cubeGC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[51]++;
-                cubeGD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[52]++;
-                cubeGE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[53]++;
-                cubeGF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[54]++;
-                cubeGG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[55]++;
-                cubeGH.push_back(cube[icube]);}
-            //
-            
-        }else if (X1 >= factor*SDevX1 && Y1 < 0){
-            //1面の分類はH
-            //
-            //
-            if      (X2 < -factor*SDevX2 && Y2 >= 0){
-                CatNum[56]++;
-                cubeHA.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 >= 0){
-                CatNum[57]++;
-                cubeHB.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 >= 0){
-                CatNum[58]++;
-                cubeHC.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 >= 0){
-                CatNum[59]++;
-                cubeHD.push_back(cube[icube]);}
-            else if (X2 < -factor*SDevX2 && Y2 < 0){
-                CatNum[60]++;
-                cubeHE.push_back(cube[icube]);}
-            else if (X2 >= -factor*SDevX2 && X2 < 0 && Y2 < 0){
-                CatNum[61]++;
-                cubeHF.push_back(cube[icube]);}
-            else if (X2 >= 0 && X2 < factor*SDevX2 && Y2 < 0){
-                CatNum[62]++;
-                cubeHG.push_back(cube[icube]);}
-            else if (X2 >= factor*SDevX2 && Y2 < 0){
-                CatNum[63]++;
-                cubeHH.push_back(cube[icube]);}
-            //
-        }
-
-*/
             //8x8=64の分類に分ける
         double factor = 1.5;
         int icategory;
@@ -728,15 +411,10 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
 
     
     for (int icat = 0; icat <64; icat ++){
-        std::cout << "Category " << icat +1 << ":" 
+        std::cout << "Category " << icat  << ":" 
                   << CatNum[icat] << std::endl;
     }
 
-        //std::cout << "cubeAA :" << cubeAA.size() << std::endl;
-        //std::cout << "cubeAB :" << cubeAB.size() << std::endl;
-        //std::cout << "cubeAC :" << cubeAC.size() << std::endl;
-        //std::cout << "cubeAD :" << cubeAD.size() << std::endl;
-    //gStyle->SetOptStat(0);
 
 
     std::ofstream fout("sizemax.txt" );
@@ -776,74 +454,6 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
             std::shuffle(cubeCategory[icat].begin(),
                          cubeCategory[icat].end(), get_rand_mt);
         }
-        std::shuffle(cubeAA.begin(), cubeAA.end(), get_rand_mt);
-        std::shuffle(cubeAB.begin(), cubeAB.end(), get_rand_mt);
-        std::shuffle(cubeAC.begin(), cubeAC.end(), get_rand_mt);
-        std::shuffle(cubeAD.begin(), cubeAD.end(), get_rand_mt);
-        std::shuffle(cubeAE.begin(), cubeAE.end(), get_rand_mt);
-        std::shuffle(cubeAF.begin(), cubeAF.end(), get_rand_mt);
-        std::shuffle(cubeAG.begin(), cubeAG.end(), get_rand_mt);
-        std::shuffle(cubeAH.begin(), cubeAH.end(), get_rand_mt);
-        std::shuffle(cubeBA.begin(), cubeBA.end(), get_rand_mt);
-        std::shuffle(cubeBB.begin(), cubeBB.end(), get_rand_mt);
-        std::shuffle(cubeBC.begin(), cubeBC.end(), get_rand_mt);
-        std::shuffle(cubeBD.begin(), cubeBD.end(), get_rand_mt);
-        std::shuffle(cubeBE.begin(), cubeBE.end(), get_rand_mt);
-        std::shuffle(cubeBF.begin(), cubeBF.end(), get_rand_mt);
-        std::shuffle(cubeBG.begin(), cubeBG.end(), get_rand_mt);
-        std::shuffle(cubeBH.begin(), cubeBH.end(), get_rand_mt);
-        std::shuffle(cubeCA.begin(), cubeCA.end(), get_rand_mt);
-        std::shuffle(cubeCB.begin(), cubeCB.end(), get_rand_mt);
-        std::shuffle(cubeCC.begin(), cubeCC.end(), get_rand_mt);
-        std::shuffle(cubeCD.begin(), cubeCD.end(), get_rand_mt);
-        std::shuffle(cubeCE.begin(), cubeCE.end(), get_rand_mt);
-        std::shuffle(cubeCF.begin(), cubeCF.end(), get_rand_mt);
-        std::shuffle(cubeCG.begin(), cubeCG.end(), get_rand_mt);
-        std::shuffle(cubeCH.begin(), cubeCH.end(), get_rand_mt);
-        std::shuffle(cubeDA.begin(), cubeDA.end(), get_rand_mt);
-        std::shuffle(cubeDB.begin(), cubeDB.end(), get_rand_mt);
-        std::shuffle(cubeDC.begin(), cubeDC.end(), get_rand_mt);
-        std::shuffle(cubeDD.begin(), cubeDD.end(), get_rand_mt);
-        std::shuffle(cubeDE.begin(), cubeDE.end(), get_rand_mt);
-        std::shuffle(cubeDF.begin(), cubeDF.end(), get_rand_mt);
-        std::shuffle(cubeDG.begin(), cubeDG.end(), get_rand_mt);
-        std::shuffle(cubeDH.begin(), cubeDH.end(), get_rand_mt);
-
-        std::shuffle(cubeEA.begin(), cubeEA.end(), get_rand_mt);
-        std::shuffle(cubeEB.begin(), cubeEB.end(), get_rand_mt);
-        std::shuffle(cubeEC.begin(), cubeEC.end(), get_rand_mt);
-        std::shuffle(cubeED.begin(), cubeED.end(), get_rand_mt);
-        std::shuffle(cubeEE.begin(), cubeEE.end(), get_rand_mt);
-        std::shuffle(cubeEF.begin(), cubeEF.end(), get_rand_mt);
-        std::shuffle(cubeEG.begin(), cubeEG.end(), get_rand_mt);
-        std::shuffle(cubeEH.begin(), cubeEH.end(), get_rand_mt);
-
-        std::shuffle(cubeFA.begin(), cubeFA.end(), get_rand_mt);
-        std::shuffle(cubeFB.begin(), cubeFB.end(), get_rand_mt);
-        std::shuffle(cubeFC.begin(), cubeFC.end(), get_rand_mt);
-        std::shuffle(cubeFD.begin(), cubeFD.end(), get_rand_mt);
-        std::shuffle(cubeFE.begin(), cubeFE.end(), get_rand_mt);
-        std::shuffle(cubeFF.begin(), cubeFF.end(), get_rand_mt);
-        std::shuffle(cubeFG.begin(), cubeFG.end(), get_rand_mt);
-        std::shuffle(cubeFH.begin(), cubeFH.end(), get_rand_mt);
-
-        std::shuffle(cubeGA.begin(), cubeGA.end(), get_rand_mt);
-        std::shuffle(cubeGB.begin(), cubeGB.end(), get_rand_mt);
-        std::shuffle(cubeGC.begin(), cubeGC.end(), get_rand_mt);
-        std::shuffle(cubeGD.begin(), cubeGD.end(), get_rand_mt);
-        std::shuffle(cubeGE.begin(), cubeGE.end(), get_rand_mt);
-        std::shuffle(cubeGF.begin(), cubeGF.end(), get_rand_mt);
-        std::shuffle(cubeGG.begin(), cubeGG.end(), get_rand_mt);
-        std::shuffle(cubeGH.begin(), cubeGH.end(), get_rand_mt);
-
-        std::shuffle(cubeHA.begin(), cubeHA.end(), get_rand_mt);
-        std::shuffle(cubeHB.begin(), cubeHB.end(), get_rand_mt);
-        std::shuffle(cubeHC.begin(), cubeHC.end(), get_rand_mt);
-        std::shuffle(cubeHD.begin(), cubeHD.end(), get_rand_mt);
-        std::shuffle(cubeHE.begin(), cubeHE.end(), get_rand_mt);
-        std::shuffle(cubeHF.begin(), cubeHF.end(), get_rand_mt);
-        std::shuffle(cubeHG.begin(), cubeHG.end(), get_rand_mt);
-        std::shuffle(cubeHH.begin(), cubeHH.end(), get_rand_mt);
 
         //隣り合うやつの大きさをみる
         //配列の初期化
@@ -863,6 +473,7 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
         for (int i = 0 ;i<8; i++ ){
             for (int j = 0; j<8; j++){
                 cubeSizeCheck[i][j] = cubeCategory[ 8*i + j][0];
+                //cubeSizeCheck[i][j] = cube[8*i + j];
             }
         }
 /*
@@ -1005,88 +616,12 @@ void analysis_hole1(TFile* fr, TFile* fin, TFile* fh,  int Nall,
                           posxhx[iarry][iarrx], 
                           posxhy[iarry][iarrx],
                           posxhz[iarry][iarrx]);
-                /*            
-                ArrangebyHole(cubeAA[kx+2*ky], 
-                          pitch*(1+4*kx), pitch*(1+4*ky), 
-                          posxhx[4*ky][4*kx], 
-                          posxhy[4*ky][4*kx],
-                          posxhz[4*ky][4*kx]);
-                ArrangebyHole(cubeAB[kx+2*ky], 
-                          pitch*(1+1+4*kx), pitch*(1+4*ky), 
-                          posxhx[4*ky][1+4*kx], 
-                          posxhy[4*ky][1+4*kx],
-                          posxhz[4*ky][1+4*kx]);
-                ArrangebyHole(cubeAC[kx+2*ky], 
-                          pitch*(1+2+4*kx), pitch*(1+4*ky), 
-                          posxhx[4*ky][2+4*kx], 
-                          posxhy[4*ky][2+4*kx],
-                          posxhz[4*ky][2+4*kx]);
-                ArrangebyHole(cubeAD[kx+2*ky], 
-                          pitch*(1+3+4*kx), pitch*(1+4*ky), 
-                          posxhx[4*ky][3+4*kx], 
-                          posxhy[4*ky][3+4*kx],
-                          posxhz[4*ky][3+4*kx]);
-                ArrangebyHole(cubeBA[kx+2*ky], 
-                          pitch*(1+4*kx), pitch*(1+1+4*ky), 
-                          posxhx[1+4*ky][4*kx], 
-                          posxhy[1+4*ky][4*kx],
-                          posxhz[1+4*ky][4*kx]);
-                ArrangebyHole(cubeBB[kx+2*ky], 
-                          pitch*(1+1+4*kx), pitch*(1+1+4*ky), 
-                          posxhx[1+4*ky][1+4*kx], 
-                          posxhy[1+4*ky][1+4*kx],
-                          posxhz[1+4*ky][1+4*kx]);
-                ArrangebyHole(cubeBC[kx+2*ky], 
-                          pitch*(1+2+4*kx), pitch*(1+1+4*ky), 
-                          posxhx[1+4*ky][2+4*kx], 
-                          posxhy[1+4*ky][2+4*kx],
-                          posxhz[1+4*ky][2+4*kx]);
-                ArrangebyHole(cubeBD[kx+2*ky], 
-                          pitch*(1+3+4*kx), pitch*(1+1+4*ky), 
-                          posxhx[1+4*ky][3+4*kx], 
-                          posxhy[1+4*ky][3+4*kx],
-                          posxhz[1+4*ky][3+4*kx]);
-                ArrangebyHole(cubeCA[kx+2*ky], 
-                          pitch*(1+4*kx), pitch*(1+2+4*ky), 
-                          posxhx[2+4*ky][4*kx], 
-                          posxhy[2+4*ky][4*kx],
-                          posxhz[2+4*ky][4*kx]);
-                ArrangebyHole(cubeCB[kx+2*ky], 
-                          pitch*(1+1+4*kx), pitch*(1+2+4*ky), 
-                          posxhx[2+4*ky][1+4*kx], 
-                          posxhy[2+4*ky][1+4*kx],
-                          posxhz[2+4*ky][1+4*kx]);
-                ArrangebyHole(cubeCC[kx+2*ky], 
-                          pitch*(1+2+4*kx), pitch*(1+2+4*ky), 
-                          posxhx[2+4*ky][2+4*kx], 
-                          posxhy[2+4*ky][2+4*kx],
-                          posxhz[2+4*ky][2+4*kx]);
-                ArrangebyHole(cubeCD[kx+2*ky], 
-                          pitch*(1+3+4*kx), pitch*(1+2+4*ky), 
-                          posxhx[2+4*ky][3+4*kx], 
-                          posxhy[2+4*ky][3+4*kx],
-                          posxhz[2+4*ky][3+4*kx]);
-                ArrangebyHole(cubeDA[kx+2*ky], 
-                          pitch*(1+4*kx), pitch*(1+3+4*ky), 
-                          posxhx[3+4*ky][4*kx], 
-                          posxhy[3+4*ky][4*kx],
-                          posxhz[3+4*ky][4*kx]);
-                ArrangebyHole(cubeDB[kx+2*ky], 
-                          pitch*(1+1+4*kx), pitch*(1+3+4*ky), 
-                          posxhx[3+4*ky][1+4*kx], 
-                          posxhy[3+4*ky][1+4*kx],
-                          posxhz[3+4*ky][1+4*kx]);
-                ArrangebyHole(cubeDC[kx+2*ky], 
-                          pitch*(1+2+4*kx), pitch*(1+3+4*ky), 
-                          posxhx[3+4*ky][2+4*kx], 
-                          posxhy[3+4*ky][2+4*kx],
-                          posxhz[3+4*ky][2+4*kx]);
-                ArrangebyHole(cubeDD[kx+2*ky], 
-                          pitch*(1+3+4*kx), pitch*(1+3+4*ky), 
-                          posxhx[3+4*ky][3+4*kx], 
-                          posxhy[3+4*ky][3+4*kx],
-                          posxhz[3+4*ky][3+4*kx]);
-                */
+
+
+
+
+
+
     //            for (int i6 = 0; i6 <6 ; i6++){
     //                cout << posxhx[iarry][iarrx][i6] << endl;
     //                cout << posxhy[iarry][iarrx][i6] << endl;

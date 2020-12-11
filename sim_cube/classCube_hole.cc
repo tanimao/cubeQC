@@ -224,24 +224,25 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
         //横穴をチェックしてわける
         hmin->Fill(d03);
 
-        //if (d14 >= d25){
-        //今のままでいいので何もしない
-      //  }else{
-      //         c1 = Cube(id, hwd[0], hwd[2], hwd[1],
-      //                       hole[3][1], hole[3][0],
-      //                       hole[5][1], hole[5][0],
-      //                       hole[4][1], hole[4][0],
-      //                       hole[0][1], hole[0][0],
-      //                       hole[2][1], hole[2][0],
-      //                       hole[1][1], hole[1][0],
-      //                       radius[3], radius[5], radius[4],
-      //                       radius[0], radius[2], radius[1]);
-      // 
-      //         *c = c1;  
-      //  }
+        if (d14 >= d25){
+      //今のままでいいので何もしない
+        }else{
+               //c1 = Cube(id, hwd[0], hwd[2], hwd[1],
+               c1 = Cube(id, hwd[0], hwd[1], hwd[2],
+                             hole[3][1], hole[3][0],
+                             hole[5][1], hole[5][0],
+                             hole[4][1], hole[4][0],
+                             hole[0][1], hole[0][0],
+                             hole[2][1], hole[2][0],
+                             hole[1][1], hole[1][0],
+                             radius[3], radius[5], radius[4],
+                             radius[0], radius[2], radius[1]);
+       
+               *c = c1;  
+        }
     }
     else if (d14 <= d03 && d14 <= d25){
-      //  if (d25 >= d03){
+        if (d25 >= d03){
        //一面だったところを天面にする
        //(h,w,d)->(d,h,w)
        //(0,1,2,3,4,5)->(2,0,1,5,3,4)
@@ -257,21 +258,22 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
                                  radius[4], radius[5], radius[3]);
             *c = c1;  
 
-       // }else{
-       //      c1 = Cube(id, hwd[1], hwd[0], hwd[2],
-       //                      hole[4][1], hole[4][0],
-       //                      hole[3][1], hole[3][0],
-       //                      hole[5][1], hole[5][0],
-       //                      hole[1][1], hole[1][0],
-       //                      hole[0][1], hole[0][0],
-       //                      hole[2][1], hole[2][0],
-       //                      radius[4], radius[3], radius[5],
-       //                      radius[1], radius[0], radius[2]);
+        }else{
+             //c1 = Cube(id, hwd[1], hwd[0], hwd[2],
+             c1 = Cube(id, hwd[1], hwd[2], hwd[0],
+                             hole[4][1], hole[4][0],
+                             hole[3][1], hole[3][0],
+                             hole[5][1], hole[5][0],
+                             hole[1][1], hole[1][0],
+                             hole[0][1], hole[0][0],
+                             hole[2][1], hole[2][0],
+                             radius[4], radius[3], radius[5],
+                             radius[1], radius[0], radius[2]);
 
-       //     *c = c1;  
+            *c = c1;  
 
 
-       // }
+        }
     hmin->Fill(d14);
     }
     else{
@@ -283,7 +285,7 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
 //        std::cout << "before (h,w,d): (" << hwd[0] <<", "<<hwd[1] <<", "
 //                  << hwd[2] << ")" << std::endl; 
 
-       // if (d03 >= d14){
+        if (d03 >= d14){
              c1 = Cube(id, hwd[2], hwd[0], hwd[1],
                                   hole[2][0], hole[2][1],
                                   hole[0][0], hole[0][1],
@@ -294,18 +296,19 @@ void ChangeCubeDirection(Cube * c, float xhMean, float yhMean,
                                   radius[2], radius[0], radius[1],
                                   radius[5], radius[3], radius[4]);
              *c = c1; 
-       // }else{
-       //      c1 = Cube(id, hwd[2], hwd[1], hwd[0],
-       //                       hole[5][1], hole[5][0],
-       //                       hole[4][1], hole[4][0],
-       //                       hole[3][1], hole[3][0],
-       //                       hole[2][1], hole[2][0],
-       //                       hole[1][1], hole[1][0],
-       //                       hole[0][1], hole[0][0],
-       //                       radius[5], radius[4], radius[3],
-       //                       radius[2], radius[1], radius[0] );
-       //      *c = c1;
-       // }
+        }else{
+             //c1 = Cube(id, hwd[2], hwd[1], hwd[0],
+             c1 = Cube(id, hwd[2], hwd[0], hwd[1],
+                              hole[5][1], hole[5][0],
+                              hole[4][1], hole[4][0],
+                              hole[3][1], hole[3][0],
+                              hole[2][1], hole[2][0],
+                              hole[1][1], hole[1][0],
+                              hole[0][1], hole[0][0],
+                              radius[5], radius[4], radius[3],
+                              radius[2], radius[1], radius[0] );
+             *c = c1;
+        }
 
 
        // float hwd2[3];
