@@ -81,7 +81,7 @@ def ANALYSIS(saveName, ImageName, camID):
          #           saveName  = 'cube'+str(cubenumber+1)+'cam'+str(k+4)+'_'+str(i+1)+str(j+1)
  #                   ImageName = 'mao_pictures/pic200912/'+ saveName + '.jpg' 
                  #   print (saveName)   
-                    filename = 'files/data201102_.txt'
+                    filename = 'files/data201225_.txt'
                     imgG= cv2.imread(ImageName,0)
                     if imgG is None :
                         print('image not found!')

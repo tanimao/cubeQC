@@ -66,8 +66,8 @@ print('勝手にジグが回転したでしょう？\n目の前の台座にキ�
 firststep = input()
 ser.write(b'200\n')
 
-picfolder = 'mao_pictures/pic201102/'
-filename = 'files/data201015_.txt'
+picfolder = 'mao_pictures/pic201225/'
+filename = 'files/data201224_.txt'
 
 
 #############################################################################################
@@ -219,7 +219,7 @@ while True:
         datacali[1][icam] = calibration.calibration(daizalist[cubeID%8-1], cubedata[1][icam], icam)
 
     ###これを突っ込む。
-    sign[0] = checkSign.checkSign(datacali[1])
+    sign[0] = checkSign.checkSign(cubeID, datacali[1])
 #    file = open ('QCpackage2/cubedata_good.txt','a')
 #    file.write(str(cubeID)+ '  '+ str(cubedata[2])+ '\n')
 #    file.close()
