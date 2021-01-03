@@ -29,6 +29,10 @@ TH1D* hEall = new TH1D("hEall","Esum",1000,0,500);
 
 TH1D* holexy= new TH1D("holexy","sqrt(xhole^2+yhole^2)", 100, 220*0.01554,300*0.01554);
 TH1D* holexy1= new TH1D("holexy1","abs(facing sqrt(xhole^2+yhole^2))", 100, 0 ,0.5);
+TH1D* bestxhole= new TH1D("bestxhole","bestxholepos;xhole[mm]", 100, 140*0.01554,220*0.01554);
+TH1D* bestyhole= new TH1D("bestyhole","bestyholepos;yhole[mm]", 100, 140*0.01554,220*0.01554);
+TH1D* besthole= new TH1D("besthole","sqrt(dxhole^2+dyhole^2);hole[mm]", 100, 0, 0.5);
+TH1D* fdhole6= new TH1D("fdhole6","sqrt(dxhole^2+dyhole^2);hole[mm]", 100, 0, 0.5);
 
 TH1D* h1six = new TH1D("h1six","radius",100,45,55); 
 TH1D* h2six = new TH1D("h2six","xhole_max",100,140*0.01554,220*0.01554); 
@@ -100,6 +104,9 @@ TH2D * fyhyh= new TH2D ("fyhyh", "facing yhole_yhole; yhole [mm]; yhole [mm]",
                         100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
 TH2D * fholexy= new TH2D ("fholexy", "facing sqrt(xhole^2+yhole^2); holexy [mm]; holexy [mm]",
                         100, 0.01554*220, 0.01554*300, 100, 0.01554*220, 0.01554*300);
+
+TH1D * fdhxy= new TH1D ("fdhxy", "facing sqrt(delta(xh)^2+delta(yh)^2); dhxy [mm]",
+                        100, 0, 1);
 
 TH2D * fxhxh_half1= new TH2D ("fxhxh_half1", "facing xhole_xhole; xhole [mm]; xhole [mm]",
                         100, 0.01554*140, 0.01554*220, 100, 0.01554*140, 0.01554*220);
@@ -421,6 +428,9 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
             fxhyh->Fill(xhole[isurf]*0.01554, yhole[isurf+3]*0.01554);
             fyhyh->Fill(yhole[isurf]*0.01554, yhole[isurf+3]*0.01554);
 
+            fdhxy->Fill(sqrt(std::pow(xhole[isurf]-xhole[isurf+3],2) 
+                           + std::pow(yhole[isurf]-yhole[isurf+3],2) )*0.01554);
+
             fxsxh->Fill(xsize[isurf]*0.01554, xhole[isurf+3]*0.01554);
             fxsyh->Fill(xsize[isurf]*0.01554, yhole[isurf+3]*0.01554);
             fysxh->Fill(ysize[isurf]*0.01554, xhole[isurf+3]*0.01554);
@@ -544,6 +554,34 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
 
 }
 
+double h2mean = h2all->GetMean();
+double h3mean = h3all->GetMean();
+        //h3all->Fill( yhole[isurf]);
+double fdh[6];
+double fdhmin = 100;
+
+for (int ientry2=0 ; ientry2 < nentries ; ientry2++){
+
+    fdhmin = 100;
+    int  minIndex;
+    tree->GetEntry(ientry2);
+    for (int isurf=0; isurf < 6; isurf++){
+        fdh[isurf] = sqrt (std::pow(xhole[isurf]-h2mean,2) + std::pow(yhole[isurf]-h3mean,2));
+        fdhole6->Fill(fdh[isurf]*0.01554);
+    }
+    for (int isurf2=0; isurf2 < 6; isurf2++){
+        if(fdh[isurf2] <= fdhmin){
+            fdhmin = fdh[isurf2];
+            minIndex = isurf2;
+        }
+    }
+
+    bestxhole->Fill(xhole[minIndex]*0.01554);
+    bestyhole->Fill(yhole[minIndex]*0.01554);
+    besthole ->Fill(fdhmin*0.01554);
+
+    
+}
 
 xsxhMax->SetMarkerStyle(6);
 xsyhMax->SetMarkerStyle(6);
@@ -618,7 +656,7 @@ std::cout << "CorrelationFactor(fysxh): " << fysxh->GetCorrelationFactor() << st
 std::cout << "CorrelationFactor(fysyh): " << fysyh->GetCorrelationFactor() << std::endl;
 
 
-TFile *fout = new TFile("201102cut.root", "recreate");
+TFile *fout = new TFile("201102cut1218.root", "recreate");
 h1->Write();
 h2->Write();
 h3->Write();
@@ -696,6 +734,7 @@ fxhyh->Write();
 fyhyh->Write();
 fholexy->Write();
 
+fdhxy->Write();
 
 fxhxh_half1->Write();
 fyhyh_half1->Write();
@@ -724,6 +763,13 @@ sub_hw->Write();
 sub_hd->Write();
 sub_wd->Write();
 holexy1->Write();
+
+bestxhole->Write();
+bestyhole->Write();
+besthole->Write();
+fdhole6->Write();
+
+
 TTree *treeclone = tree->CloneTree();
 treeclone->Write();
 
