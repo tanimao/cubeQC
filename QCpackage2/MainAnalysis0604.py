@@ -236,6 +236,7 @@ def ANALYSIS(saveName, ImageName, camID):
                     #print(cube_size)
             
             
+                    #pixValはほとんどコメントアウトしてるので何もしてなさそう1/1追記
                     pixVal.get_PixelValues(saveName, img_sample, 1, cube_size)
                     print('outline(xmin, ymin, xmax, ymax); houghline(xmin, ymin, xmax, ymax) is \n ({}, {}, {}, {}); ({}, {}, {}, {})'
                             .format(outlinexmin, outlineymin, outlinexmax, outlineymax, 
