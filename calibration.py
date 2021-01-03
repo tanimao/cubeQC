@@ -73,7 +73,7 @@ def calibration( cubedata ,i, filename):
     return calidata
 
 if __name__ == '__main__':
-    f = np.loadtxt('files/data201102.txt')
-    for i in range(3456):
-        calibration(f[i],i, 'files/data201102cor.txt')
+    f = np.loadtxt('files/data201225.txt')
+    for i in range(126):
+        calibration(f[i],i, 'files/data201225cor.txt')
     ###f[0]が一行目

@@ -1,6 +1,10 @@
 import numpy as np
+###12/24追記
+###穴が右上にある時の横をxとしている。
+###height,width,depthを計算してテキストファイルに書き出すことをする。
 
-def checkSign(cubedata):
+
+def checkSign(cubeID, cubedata):
     ###good,badの分布を見て範囲を書いておく。
     ###9/28のけっかから範囲を更新
     ##xholemax = 202
@@ -74,7 +78,7 @@ def checkSign(cubedata):
     print('Esum : ', np.round(Esum ,4))
     print('rhole: ', np.round(rhole,4))
     print('bump : ', np.round(bump ,4))
-    filecali = open ('QCpackage2/files/data201102_cali.txt', 'a')
+    filecali = open ('QCpackage2/files/data201225_cali.txt', 'a')
     for i in range (6):
         filecali.write( str(directionID[i])       + ' ' +
                         str(np.round(xhole[i], 4))+ ' ' +
@@ -86,6 +90,29 @@ def checkSign(cubedata):
                         str(np.round(bump[i],  4))+ ' ' +
                      '\n')
     filecali.close()
+
+###12/24追記
+###height, width, depth を計算する。
+###1面が天面に来るような向き
+
+    height = (ysize[2-1] + xsize[3-1]
+            + xsize[5-1] + ysize[6-1] ) /4
+
+    width  = (xsize[1-1] + ysize[3-1]
+            + ysize[4-1] + xsize[6-1] ) /4
+
+    depth  = (ysize[1-1] + xsize[2-1]
+            + xsize[4-1] + ysize[5-1] ) /4
+    
+    sizeoutput = open ('sizeoutput.txt','a')##aは追記する、というオプション
+
+    sizeoutput.write( str(cubeID) + ' ' +
+                      str(np.round(height, 4)) + ' ' +
+                      str(np.round(width,  4)) + ' ' +
+                      str(np.round(depth,  4)) + ' ' +
+                      '\n')
+    sizeoutput.close()
+
 
     sign = ''
     for surface in range(6):
