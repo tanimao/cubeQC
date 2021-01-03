@@ -1,2 +1,99 @@
+# pdf file, key file
+*.pdf
+*.key
+*.npy
 
-mao_pictures/
+
+# Compiled Object files
+*.slo
+*.lo
+*.o
+*.obj
+
+# Precompiled Headers
+*.gch
+*.pch
+
+# Compiled Dynamic libraries
+*.so
+*.dylib
+*.dll
+
+# Fortran module files
+*.mod
+
+# Compiled Static libraries
+*.lai
+*.la
+*.a
+*.lib
+
+# Executables
+*.exe
+*.out
+*.app
+
+# Logfiles
+*.tlog
+*.log
+
+# Build
+/examples/build/*
+
+LICENSE
+LICENSE.matplotlib
+
+Makefile
+README.md
+contrib/CMakeLists.txt
+contrib/README.md
+contrib/WinBuild.cmd
+examples/.gitignore
+examples/animation.cpp
+examples/animation.gif
+examples/bar.cpp
+examples/bar.png
+examples/basic.cpp
+examples/basic.png
+examples/fill.cpp
+examples/fill.png
+examples/fill_between.png
+examples/fill_inbetween.cpp
+examples/imshow.cpp
+examples/minimal.cpp
+examples/minimal.png
+examples/modern.cpp
+examples/modern.png
+
+pdf/*
+.ipynb_checkpoints/
+.package_cube/
+.recog_rinkaku_size.py
+.recog_scan0108.py
+.recog_scan1108.py
+.recog_scan1115.py
+.recog_scan1212.py
+.recog_scan2.py
+.rectangle.py
+.streaming.py
+
+examples/nonblock.cpp
+examples/quiver.cpp
+examples/quiver.png
+examples/subplot.cpp
+examples/subplot2grid.cpp
+examples/surface.cpp
+examples/surface.png
+examples/update.cpp
+examples/xkcd.cpp
+examples/xkcd.png
+matplotlib-cpp
+matplotlibcpp.h
+numpy_flags.py
+
+mao_pictures/*
+mao_pictures/check.jpg
+edge/*
+edgebad/*
+cubeQC0827.py
+

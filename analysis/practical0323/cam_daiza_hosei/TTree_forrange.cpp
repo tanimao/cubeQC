@@ -6,8 +6,8 @@
 
 void TTree_forrange(){
 
-TString filedate = "201007cordaiza";
-TString dumpdate = "201007corgdaiza";
+TString filedate = "201102cor";
+TString dumpdate = "201102";
 TString makeroot = ".root";
 TString opentxt1 = "../../../files/data";
 TString opentxt2 = ".txt";
@@ -24,7 +24,7 @@ if(fin.fail()){
     cerr << "cannot open file. " << endl;
     return 1;
 }
- Int_t n_cube = 600; //cube数
+ Int_t n_cube = 576; //cube数
  Int_t n = 6;        //6面
 
 std::string saveName[n];
@@ -55,13 +55,15 @@ tree->Branch("daiza",daiza,"daiza[6]/I");
 for(Int_t i=0; i<n_cube;i++){
     for(Int_t j=0; j<n; j++){
         if (j==0 || j==1 || j==2){
-        fin >>  daiza[j] >> icam[j] >> direction[j] 
+        fin //>>  daiza[j] 
+            >> icam[j] >> direction[j] 
             >> xhole[j] >> yhole[j]
             >> radius[j] >> Esum[j] 
             >> xsize[j] >> ysize[j] >> bump[j];
         }
         if (j==3 || j==4 || j==5){
-        fin >>  daiza[j] >> icam[j] >> direction[j] 
+        fin //>>  daiza[j] 
+            >> icam[j] >> direction[j] 
             >> yhole[j] >> xhole[j]
             >> radius[j] >> Esum[j] 
             >> ysize[j] >> xsize[j] >> bump[j];
