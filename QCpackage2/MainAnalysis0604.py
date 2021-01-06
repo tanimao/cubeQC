@@ -283,6 +283,10 @@ def ANALYSIS(saveName, ImageName, camID):
                     elapsed_time = time.time() - start
                     print ("elapsed_time:{0}".format(elapsed_time) + "[sec]")    
                     
+                    #修論用の画像を出す
+                    fig = plt.figure(figsize=(8,6), dpi=100)
+                    fig.suptitle('hole after minimization', fontsize=24)
+                    plt.imshow(imgG)
                     ####################################################################
                     Xhole = min(xmax - xhole, xhole - xmin)##xhole,yholeはハフ変換の結果。
                     Yhole = min(ymax - yhole, yhole - ymin)##多分もう使わない。
