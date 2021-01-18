@@ -78,7 +78,7 @@ def checkSign(cubeID, cubedata):
     print('Esum : ', np.round(Esum ,4))
     print('rhole: ', np.round(rhole,4))
     print('bump : ', np.round(bump ,4))
-    filecali = open ('QCpackage2/files/data201225_cali.txt', 'a')
+    filecali = open ('QCpackage2/files/data210118_cali.txt', 'a')
     for i in range (6):
         filecali.write( str(directionID[i])       + ' ' +
                         str(np.round(xhole[i], 4))+ ' ' +
