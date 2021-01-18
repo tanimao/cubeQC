@@ -12,7 +12,9 @@
 
 void sizecheck201224()
 {
-    TH2D * h = new TH2D ("h", "nogisu vs. system; nogisu[mm]; system[pix]",80,10.1,10.4, 200, 650*0.0156, 670*0.0156);
+    TH2D * h = new TH2D ("h", 
+            "nogisu vs. system; nogisu[mm]; system[pix]",
+            80,10.1,10.4, 200, 10.1/0.0156, 10.4/0.0156);//650*0.0156, 670*0.0156);
     std::ifstream ifsys ("data201224cor.txt");
     std::ifstream ifnog ("xsizeysizenogisu201224.txt");
 
@@ -24,8 +26,8 @@ void sizecheck201224()
     for (int i=0; i<60; i++){
         ifsys >> cube1 >> surf1 >> xsys >> ysys ;
         ifnog >> cube2 >> surf2 >> xnog >> ynog ;
-        h ->Fill(xnog, xsys*0.0156);
-        h ->Fill(ynog, ysys*0.0156);
+        h ->Fill(xnog, xsys);//*0.0156);
+        h ->Fill(ynog, ysys);//*0.0156);
     }
     h->SetMarkerStyle(8);
     h->SetMarkerSize(0.5);
