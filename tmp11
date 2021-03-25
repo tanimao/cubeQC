@@ -66,8 +66,8 @@ print('勝手にジグが回転したでしょう？\n目の前の台座にキ�
 firststep = input()
 ser.write(b'200\n')
 
-picfolder = 'mao_pictures/pic210118/'
-filename = 'files/data201225_.txt'
+picfolder = 'mao_pictures/pic210126/'
+filename = 'files/data210125_.txt'
 
 
 #############################################################################################

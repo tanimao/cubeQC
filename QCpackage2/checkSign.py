@@ -1,4 +1,5 @@
 import numpy as np
+import math
 ###12/24追記
 ###穴が右上にある時の横をxとしている。
 ###height,width,depthを計算してテキストファイルに書き出すことをする。
@@ -78,7 +79,7 @@ def checkSign(cubeID, cubedata):
     print('Esum : ', np.round(Esum ,4))
     print('rhole: ', np.round(rhole,4))
     print('bump : ', np.round(bump ,4))
-    filecali = open ('QCpackage2/files/data210118_cali.txt', 'a')
+    filecali = open ('QCpackage2/files/data210126_cali.txt', 'a')
     for i in range (6):
         filecali.write( str(directionID[i])       + ' ' +
                         str(np.round(xhole[i], 4))+ ' ' +
@@ -114,32 +115,153 @@ def checkSign(cubeID, cubedata):
     sizeoutput.close()
 
 
+
+###2021/1/25追記
+###キューブの穴位置での分類を実装する
+###向かい合う面での平均を計算
+    xhole14 = (xhole[1-1] + yhole[4-1])/2
+    yhole14 = (yhole[1-1] + xhole[4-1])/2
+    xhole25 = (xhole[2-1] + yhole[5-1])/2
+    yhole25 = (yhole[2-1] + xhole[5-1])/2
+    xhole36 = (xhole[3-1] + yhole[6-1])/2
+    yhole36 = (yhole[3-1] + xhole[6-1])/2
+
+    xholemean = 181.7
+    yholemean = 181.9
+
+    dhole14 = math.sqrt((xhole14-xholemean)**2 + (yhole14-yholemean)**2)
+    dhole25 = math.sqrt((xhole25-xholemean)**2 + (yhole25-yholemean)**2)
+    dhole36 = math.sqrt((xhole36-xholemean)**2 + (yhole36-yholemean)**2)
+
+##ズレが最も小さい面を探す
+    dhole = dhole14
+    topsurf = 0
+    yokosurf= 1
+    tatesurf= 2
+
+    if dhole25 < dhole :
+        dhole = dhole25
+        topsurf = 1
+        yokosurf= 2
+        tatesurf= 0
+
+    if dhole36 < dhole :
+        dhole = dhole36
+        topsurf = 2
+        yokosurf= 0
+        tatesurf= 1
+
+##height,width,depth をあらためて定義。後半の面ではxyが入れ替わっていることに注意
+    height_2 = (ysize[yokosurf]   + xsize[tatesurf] 
+              + xsize[yokosurf+3] + ysize[tatesurf+3])/4
+    width_2  = (xsize[topsurf]    + ysize[tatesurf]
+              + ysize[topsurf+3]  + xsize[tatesurf+3])/4
+    depth_2  = (ysize[topsurf]    + xsize[yokosurf]
+              + xsize[topsurf+3]  + ysize[yokosurf+3])/4
+
+##垂直方向の穴位置を基準に測った穴位置を定義
+    yoko2Dx = (depth_2 - (xhole[yokosurf] + yhole[yokosurf+3])/2
+                       - (yhole[topsurf]  + xhole[topsurf+3])/2)
+    yoko2Dy = (yhole[yokosurf] + xhole[yokosurf+3])/2
+
+    tate2Dx = (width_2 - (yhole[tatesurf] + xhole[tatesurf+3])/2
+                       - (xhole[topsurf]  + yhole[topsurf+3])/2)
+    tate2Dy = (xhole[tatesurf]+ yhole[tatesurf+3])/2
+
+##座標変換のための2D分布の平均と傾き
+    yoko2Dmean = [295.4, 182.2]
+    tate2Dmean = [295.5, 181.7]
+    yoko2Dp1   = 0.522
+    tate2Dp1   = 0.4116
+    yokocos = math.sqrt(1/(1+ yoko2Dp1**2))
+    tatecos = math.sqrt(1/(1+ tate2Dp1**2))
+
+##２回回転させる
+    yoko2Dp1_2   = 0.0957
+    tate2Dp1_2   = 0.1091
+    yokocos_2 = math.sqrt(1/(1+ yoko2Dp1_2**2))
+    tatecos_2 = math.sqrt(1/(1+ tate2Dp1_2**2))
+
+##座標変換
+    yoko2DX = yokocos * ((yoko2Dx - yoko2Dmean[0]) - yoko2Dp1*(yoko2Dy - yoko2Dmean[1]))
+    yoko2DY = yokocos * (yoko2Dp1*(yoko2Dx - yoko2Dmean[0]) + (yoko2Dy - yoko2Dmean[1]))
+    tate2DX = tatecos * ((tate2Dx - tate2Dmean[0]) - tate2Dp1*(tate2Dy - tate2Dmean[1]))
+    tate2DY = tatecos * (tate2Dp1*(tate2Dx - tate2Dmean[0]) + (tate2Dy - tate2Dmean[1]))
+
+    yoko2DX2 = yokocos_2 * ((yoko2DX) - yoko2Dp1_2*(yoko2DY))
+    yoko2DY2 = yokocos_2 * (yoko2Dp1_2*(yoko2DX) + (yoko2DY))
+    tate2DX2 = tatecos_2 * ((tate2DX) - tate2Dp1_2*(tate2DY))
+    tate2DY2 = tatecos_2 * (tate2Dp1_2*(tate2DX) + (tate2DY))
+
+##楕円の内部カット
+    print("yoko:(", str(yoko2DX2),", ", str(yoko2DY2), ")")
+    print("tate:(", str(tate2DX2),", ", str(tate2DY2), ")")
+    if ((yoko2DX2**2)/((2.3*8.135)**2) + (yoko2DY2**2)/((3*3.34)**2) < 1 and 
+        (tate2DX2**2)/((2.3*7.741)**2) + (tate2DY2**2)/((3*3.804)**2) < 1) :
+
+
+
+        print("this cube is inside the ellipse!")
+
+        if yoko2DY2 >=0 :
+           if yoko2DX2 < 0 :
+               yokoClass = "A"
+           else :
+                yokoClass = "B"
+        else :
+            if yoko2DX2 < 0 :
+                yokoClass = "C"
+            else :
+                yokoClass = "D"
+
+        if tate2DY2 >=0 :
+           if tate2DX2 < 0 :
+               tateClass = "A"
+           else :
+                tateClass = "B"
+        else :
+            if tate2DX2 < 0 :
+                tateClass = "C"
+            else :
+                tateClass = "D"
+
+        print("topsurface is ", str(topsurf+1), ", (1, 2, 3).")
+    #    print("yoko:(", str(yoko2DX),", ", str(yoko2DY), ")")
+    #    print("tate:(", str(tate2DX),", ", str(tate2DY), ")")
+        print("yokoClass is ", yokoClass)
+        print("tateClass is ", tateClass)
+
+    else : 
+        print("this cube is outside the ellipse!")
+    
+
+
     sign = ''
     for surface in range(6):
         if xhole[surface] >= xholemax+0.5 or xhole[surface] <= xholemin-0.5 :
             sign = 'bad'
-            print('xhole({}) is bad.'.format(surface))
+#            print('xhole({}) is bad.'.format(surface))
 
         if yhole[surface] >= yholemax+0.5 or yhole[surface] <= yholemin-0.5 :
             sign = 'bad'
-            print('yhole({}) is bad.'.format(surface))
+#            print('yhole({}) is bad.'.format(surface))
 
         ###今回(9/28以降はサイズでしっかり切る)
         if xsize[surface] > xsizemax or xsize[surface] < xsizemin :
             sign = 'bad'
-            print('xsize({}) is bad.'.format(surface))
+#            print('xsize({}) is bad.'.format(surface))
 
         if ysize[surface] > ysizemax or ysize[surface] < ysizemin :
             sign = 'bad'
-            print('ysize({}) is bad.'.format(surface))
+#            print('ysize({}) is bad.'.format(surface))
 
         if Esum[surface]  > Esummax :
             sign = 'bad'
-            print('Esum({}) is bad.'.format(surface))
+#            print('Esum({}) is bad.'.format(surface))
 
         if rhole[surface] > rholemax or rhole[surface] < rholemin :
             sign = 'bad'
-            print('rhole({}) is bad.'.format(surface))
+#            print('rhole({}) is bad.'.format(surface))
 
         '''
         if bump[surface]  > bumpthr1    and bump[surface]  < bumpmax  :
@@ -150,7 +272,7 @@ def checkSign(cubeID, cubedata):
 
         if bump[surface]> bumpmax :
             sign = 'bad'
-            print('bump({}) is bad.'.format(surface))
+#            print('bump({}) is bad.'.format(surface))
             
         
             
@@ -177,7 +299,7 @@ def checkSign(cubeID, cubedata):
             (xhole[5] > xholemax-0.5 and xhole[5] < xholemax +0.5) ) :
         
         sign = 'middle'
-        print("xhole is around threshold:", sign)
+#        print("xhole is around threshold:", sign)
         return sign
 
 
@@ -195,7 +317,7 @@ def checkSign(cubeID, cubedata):
             (yhole[5] > yholemax-0.5 and yhole[5] < yholemax +0.5) ) :
         
         sign = 'middle'
-        print("yhole is around threshold:", sign)
+#        print("yhole is around threshold:", sign)
         return sign
 
 
@@ -204,7 +326,7 @@ def checkSign(cubeID, cubedata):
     elif    bump[0] > bumpthr1 or  bump[1] > bumpthr1 or bump[2] > bumpthr1 or bump[3] > bumpthr1 or bump[4] > bumpthr1 or bump[5] > bumpthr1 :
         
         sign = 'middle'
-        print ('There are some bump:',sign)
+#        print ('There are some bump:',sign)
         return sign
     
     ##elif    xsize[0] > xsizemax or xsize[0] < xsizemin or xsize[1] > xsizemax or xsize[1] < xsizemin or xsize[2] > xsizemax or xsize[2] < xsizemin or xsize[3] > xsizemax or xsize[3] < xsizemin or xsize[4] > xsizemax or xsize[4] < xsizemin or xsize[5] > xsizemax or xsize[5] < xsizemin :

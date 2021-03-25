@@ -176,6 +176,19 @@ TH2D * sizex2y1= new TH2D ("sizex2y1", "height ; height(xsize2); height(ysize1)"
                         100,640,680, 100,640,680);
 TH2D * sizex1y3= new TH2D ("sizex1y3", "width ; width(xsize1); width(ysize3)",
                         100,640,680, 100,640,680);
+
+
+//2021/1/25追記。向かい合う面での穴位置の平均をとる
+TH1D * xholemean = new TH1D("xholemean", "xholemean", 100, 140, 220);
+TH1D * yholemean = new TH1D("yholemean", "yholemean", 100, 140, 220);
+//水平方向の穴の2D分布を作る
+TH2D * yoko2D = new TH2D("yoko2D","yoko2D", 100, 140*4/3+40, 220*4/3+40, 100,140, 220);
+TH2D * tate2D = new TH2D("tate2D","tate2D", 100, 140*4/3+40, 220*4/3+40, 100,140, 220);
+TH2D * yoko2DXY = new TH2D("yoko2DXY","yoko2DXY", 100, -50, +50, 100, -40, +40);
+TH2D * tate2DXY = new TH2D("tate2DXY","tate2DXY", 100, -50, +50, 100, -40, +40);
+TH2D * yoko2DXY2 = new TH2D("yoko2DXY2","yoko2DXY2", 100, -50, +50, 100, -40, +40);
+TH2D * tate2DXY2 = new TH2D("tate2DXY2","tate2DXY2", 100, -50, +50, 100, -40, +40);
+
 Int_t n = 6;
 Double_t radius[n];
 Double_t xhole[n];
@@ -266,6 +279,7 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     //std::cout << xhole[1] << std::endl;
 
     //平均値からの距離maxをfillする
+    //ここでは初期化してるだけ
     radiabs  = fabs(radius[0]-rMean);
     xholeabs = fabs(xhole[0]-xhMean);
     yholeabs = fabs(yhole[0]-yhMean);
@@ -313,6 +327,17 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     yhole25 = (yhole[1] +yhole[4])/2;
     xhole36 = (xhole[2] +xhole[5])/2;
     yhole36 = (yhole[2] +yhole[5])/2;
+
+
+    //2021/1/25追記
+    xholemean->Fill(xhole14);
+    xholemean->Fill(xhole25);
+    xholemean->Fill(xhole36);
+    yholemean->Fill(yhole14);
+    yholemean->Fill(yhole25);
+    yholemean->Fill(yhole36);
+
+
 
     if (height < xsMean){
         if (width < xsMean){
@@ -553,6 +578,33 @@ for ( int ientry = 0; ientry < nentries; ientry++ )
     }
 
 }
+//2021/1/25追記
+double xholemeanpos = xholemean->GetMean();
+double yholemeanpos = yholemean->GetMean();
+double xhole14_2, xhole25_2, xhole36_2;
+double yhole14_2, yhole25_2, yhole36_2;
+double dhole;
+double dhole14, dhole25, dhole36;
+int topsurf, yokosurf, tatesurf;
+double width_2, depth_2, height_2;
+double yoko2Dx, yoko2Dy, tate2Dx, tate2Dy;
+double yoko2DX, yoko2DY, tate2DX, tate2DY;
+double yoko2DX2, yoko2DY2, tate2DX2, tate2DY2;
+
+//座標変換のための2D分布の平均と傾き
+double yoko2Dmean[2] = {295.4, 182.2};
+double tate2Dmean[2] = {295.5, 181.7};
+double yoko2Dp1 = 0.522;
+double tate2Dp1 = 0.4116;
+double yokocos = sqrt(1/ (1+yoko2Dp1*yoko2Dp1));
+double tatecos = sqrt(1/ (1+tate2Dp1*tate2Dp1));
+
+
+//回転を2回する
+double yoko2Dp1_2 = 0.0957;
+double tate2Dp1_2 = 0.1091;
+double yokocos_2 = sqrt(1/ (1+yoko2Dp1_2*yoko2Dp1_2));
+double tatecos_2 = sqrt(1/ (1+tate2Dp1_2*tate2Dp1_2));
 
 double h2mean = h2all->GetMean();
 double h3mean = h3all->GetMean();
@@ -580,7 +632,78 @@ for (int ientry2=0 ; ientry2 < nentries ; ientry2++){
     bestyhole->Fill(yhole[minIndex]*0.01554);
     besthole ->Fill(fdhmin*0.01554);
 
+    //2021/1/25追記
+    //平均からの距離のズレが最大の面を探す。
+    xhole14_2 = (xhole[0] +xhole[3])/2;
+    yhole14_2 = (yhole[0] +yhole[3])/2;
+    xhole25_2 = (xhole[1] +xhole[4])/2;
+    yhole25_2 = (yhole[1] +yhole[4])/2;
+    xhole36_2 = (xhole[2] +xhole[5])/2;
+    yhole36_2 = (yhole[2] +yhole[5])/2;
+
+
+    //dholeの決定
+    dhole14 = sqrt( std::pow(xhole14_2 - xholemeanpos, 2) + std::pow(yhole14_2 - yholemeanpos, 2));
+    dhole25 = sqrt( std::pow(xhole25_2 - xholemeanpos, 2) + std::pow(yhole25_2 - yholemeanpos, 2));
+    dhole36 = sqrt( std::pow(xhole36_2 - xholemeanpos, 2) + std::pow(yhole36_2 - yholemeanpos, 2));
+
+    //dholeからキューブの向きを決める。
+    dhole = dhole14;
+    topsurf = 0;
+    yokosurf= 1;
+    tatesurf= 2; 
     
+    if (dhole25 < dhole){
+        dhole = dhole25;
+        topsurf = 1;
+        yokosurf= 2;
+        tatesurf= 0;
+    }
+    if (dhole36 < dhole){
+        dhole = dhole36;
+        topsurf = 2;
+        yokosurf= 0;
+        tatesurf= 1;
+    }
+
+
+    height_2 = (ysize[yokosurf] + xsize[tatesurf] 
+              + ysize[yokosurf+3] + xsize[tatesurf+3])/4; // 高さ
+    width_2  = (xsize[topsurf] + ysize[tatesurf] 
+              + xsize[topsurf+3] + ysize[tatesurf+3])/4;// 幅
+    depth_2 = (ysize[topsurf] + xsize[yokosurf] 
+              + ysize[topsurf+3] + xsize[yokosurf+3])/4;// 奥行き
+
+    yoko2D->Fill(depth_2 - (xhole[yokosurf]+xhole[yokosurf+3])/2 
+                         - (yhole[topsurf] +yhole[topsurf+3]) /2,
+                 (yhole[yokosurf]+yhole[yokosurf+3])/2);
+    tate2D->Fill(width_2 - (yhole[tatesurf]+yhole[tatesurf+3])/2
+                         - (xhole[topsurf] +xhole[topsurf+3]) /2,
+                 (xhole[tatesurf]+xhole[tatesurf+3])/2);
+
+   //変数を定義 
+    yoko2Dx = depth_2 - (xhole[yokosurf]+xhole[yokosurf+3])/2 
+                      - (yhole[topsurf] +yhole[topsurf+3]) /2;
+    yoko2Dy = (yhole[yokosurf]+yhole[yokosurf+3])/2;
+    tate2Dx = width_2 - (yhole[tatesurf]+yhole[tatesurf+3])/2
+                      - (xhole[topsurf] +xhole[topsurf+3]) /2;
+    tate2Dy = (xhole[tatesurf]+xhole[tatesurf+3])/2;
+
+    //座標変換
+    yoko2DX = yokocos * ((yoko2Dx - yoko2Dmean[0]) - yoko2Dp1*(yoko2Dy - yoko2Dmean[1])); 
+    yoko2DY = yokocos * (yoko2Dp1*(yoko2Dx - yoko2Dmean[0]) + (yoko2Dy - yoko2Dmean[1])); 
+    tate2DX = tatecos * ((tate2Dx - tate2Dmean[0]) - tate2Dp1*(tate2Dy - tate2Dmean[1])); 
+    tate2DY = tatecos * (tate2Dp1*(tate2Dx - tate2Dmean[0]) + (tate2Dy - tate2Dmean[1])); 
+
+    yoko2DX2 = yokocos_2 * ((yoko2DX) - yoko2Dp1_2*(yoko2DY)); 
+    yoko2DY2 = yokocos_2 * (yoko2Dp1_2*(yoko2DX) + (yoko2DY)); 
+    tate2DX2 = tatecos_2 * ((tate2DX) - tate2Dp1_2*(tate2DY)); 
+    tate2DY2 = tatecos_2 * (tate2Dp1_2*(tate2DX) + (tate2DY)); 
+
+    yoko2DXY->Fill(yoko2DX, yoko2DY);
+    tate2DXY->Fill(tate2DX, tate2DY);
+    yoko2DXY2->Fill(yoko2DX2, yoko2DY2);
+    tate2DXY2->Fill(tate2DX2, tate2DY2);
 }
 
 xsxhMax->SetMarkerStyle(6);
@@ -641,6 +764,12 @@ sizexyz->SetMarkerStyle(6);
 
 sizex2y1->SetMarkerStyle(6);
 sizex1y3->SetMarkerStyle(6);
+yoko2D->SetMarkerStyle(8);
+tate2D->SetMarkerStyle(8);
+yoko2DXY->SetMarkerStyle(8);
+tate2DXY->SetMarkerStyle(8);
+yoko2DXY2->SetMarkerStyle(8);
+tate2DXY2->SetMarkerStyle(8);
 
 std::cout << "CorrelationFactor(fxsxs): " << fxsxs->GetCorrelationFactor() << std::endl;
 std::cout << "CorrelationFactor(fxsys): " << fxsys->GetCorrelationFactor() << std::endl;
@@ -656,7 +785,7 @@ std::cout << "CorrelationFactor(fysxh): " << fysxh->GetCorrelationFactor() << st
 std::cout << "CorrelationFactor(fysyh): " << fysyh->GetCorrelationFactor() << std::endl;
 
 
-TFile *fout = new TFile("201102cut1218.root", "recreate");
+TFile *fout = new TFile("201102cut0125.root", "recreate");
 h1->Write();
 h2->Write();
 h3->Write();
@@ -768,6 +897,18 @@ bestxhole->Write();
 bestyhole->Write();
 besthole->Write();
 fdhole6->Write();
+
+
+
+//2021/1/25追記
+xholemean->Write();
+yholemean->Write();
+yoko2D->Write();
+tate2D->Write();
+yoko2DXY->Write();
+tate2DXY->Write();
+yoko2DXY2->Write();
+tate2DXY2->Write();
 
 
 TTree *treeclone = tree->CloneTree();

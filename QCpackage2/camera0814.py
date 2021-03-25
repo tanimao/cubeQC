@@ -51,7 +51,7 @@ def write_3pic(img_cam1, img_cam2, img_cam3, cubeID, key):
     
 
 
-    picfolder = 'mao_pictures/pic210118/'
+    picfolder = 'mao_pictures/pic210126/'
 
 
 
@@ -171,7 +171,7 @@ def read_6Cams(cam1, cam2, cam3, cam4, cam5, cam6, x, y, cubeID):
 def write_6pic(img_cam1, img_cam2, img_cam3, img_cam4, img_cam5, img_cam6, cubeID, key):
 #    print("PRESS 1 to ROTATE and WRITE PICTURE")
 
-    picfolder = 'mao_pictures/pic210118/'
+    picfolder = 'mao_pictures/pic210126/'
     if key == ord('1') : 
         print( 'WRITING IMAGEs ...')
         #ser1.write(1)
